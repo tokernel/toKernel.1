@@ -1,0 +1,119 @@
+#
+# toKernel - Universal PHP Framework.
+# URL Rewriting configuration file.
+#
+# This file is part of toKernel.
+# 
+# toKernel is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# toKernel is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with toKernel. If not, see <http://www.gnu.org/licenses/>.
+#
+# @category   application
+# @package    toKernel
+# @subpackage main
+# @author     toKernel development team <framework@tokernel.com>
+# @copyright  Copyright (c) 2011 toKernel
+# @license    http://www.gnu.org/copyleft/gpl.html GNU Public License
+# @version    1.0.1
+# @link       http://www.tokernel.com
+# @since      File available since Release 1.0.0
+#
+# Please read this note before using this file.
+#
+# It is possible to get an error at runtime, if the line - 
+# 'Options +FollowSymLinks' uncommented. Comment the line listed below if 
+# the error occured. Reason - is the some server mod_rewrite configuration.
+
+# Comment this line if an error occurred. Read the note above.
+Options +FollowSymLinks
+
+# mod_rewrite in use
+RewriteEngine On
+
+# Disable directories browsing, that don't have an index file. 
+#Options -Indexes
+
+# There are possible options to configure the 'RewriteBase'.
+#
+# Option 1. There is a domain name for your website and the website 
+#           is placed in 'www' directory (documentroot).
+#
+#           RewriteBase /
+#
+# Option 2. There is a domain name for your website and the website 
+#           is placed in subdirectory called "mysite"
+#
+#           RewriteBase /mysite/
+#
+# Option 3. There is no domain name for your website and the website 
+#           is placed in 'www' directory (documentroot).
+#
+#           RewriteBase /~your_username/
+#
+# Option 4. There is no domain name for your website and the website 
+#           is placed in subdirectory called "mysite"
+#
+#           RewriteBase /~your_username/mysite/
+#
+# configured with option 2
+RewriteBase /tokernel
+
+# Rewrite conditions configuration
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ index.php?tokernel_params=$1 [QSA,L]
+
+# Disallow access to files with *.ini extension.
+# WARNING!: All configuration and language files have *.ini extension.
+<FilesMatch "\.ini$">
+    Order Allow,Deny
+    Deny from all
+</FilesMatch>
+
+# Disallow access to files with *.log extension.
+# WARNING!: All log files have *.log extension.
+<FilesMatch "\.log$">
+    Order Allow,Deny
+    Deny from all
+</FilesMatch>
+
+# Disallow access to files with *.view.php extension.
+<FilesMatch "\.view.php$">
+    Order Allow,Deny
+    Deny from all
+</FilesMatch>
+
+# Disallow access to files with *.tpl.php extension.
+<FilesMatch "\.tpl.php$">
+    Order Allow,Deny
+    Deny from all
+</FilesMatch>
+
+# Disallow access to files with *.lib.php extension.
+<FilesMatch "\.lib.php$">
+    Order Allow,Deny
+    Deny from all
+</FilesMatch>
+
+# Disallow access to files with *.class.php extension.
+<FilesMatch "\.class.php$">
+    Order Allow,Deny
+    Deny from all
+</FilesMatch>
+
+# Disallow access to files with *.hook.php extension.
+<FilesMatch "\.hook.php$">
+    Order Allow,Deny
+    Deny from all
+</FilesMatch>
+
+# End of file

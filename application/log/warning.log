@@ -1,0 +1,1 @@
+[13-10-2012 06:19:33 http] Warning: file_put_contents(/data/www/tokernel/application/photos_cache/759abd650d4657d44d40ae49c6fc4320): failed to open stream: No such file or directory in /data/www/tokernel/tokernel.framework/lib/photo.lib.php on line 377

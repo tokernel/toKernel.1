@@ -1,0 +1,181 @@
+=================================================
+ toKernel - Universal PHP Framework - CHANGELOG
+=================================================
+
+ Version 1.0.4 - 03/21/2012
+ --------------------------
+ 
+ * r.14 - tokernel.framework/kernel/app.http.class.php
+	Fixed method call $thid->get_mode() in kernel/app class
+	
+ * r.15 - tokernel.framework/kernel/app.cli.class.php
+	Fixed addon's action checking process for CLI mode.
+ 
+ Version 1.0.5 - 03/31/2012
+ --------------------------
+ 
+ * r.17 - tokernel.framework/lib/data.lib.php
+	New method in class library "data" v.1.4.0. Converts any url to html link tag.
+
+ Version 1.0.6 - 04/05/2012
+ --------------------------
+ 
+ * r.18 - tokernel.framework/lib/template.lib.php
+	Changed the string "TK_NL" to "!_TK_NL_@"
+
+ * r.18 - tokernel.framework/kernel/app.http.class.php
+	Appended URL arguments to function url() for caching process 
+	in application run() method.
+ 
+ * r.18 - tokernel.framework/lib/url.lib.php
+	Changed associations of url values assoc array 
+	in function parse_params_assoc().
+	Now, it is possible to receive last item from url even if it is empty.
+
+ Version 1.0.7 - 04/10/2012
+ --------------------------
+ 
+ * r.19 - tokernel.framework/lib/filter.lib.php
+	Class library - filter_lib / v.1.1.3
+	Methods encode_html_entities() and decode_html_entities() 
+	now accepts mixed values for data - array | string.
+
+ Version 1.1.0 - 04/12/2012
+ --------------------------
+ 
+ * r.20 - tokernel.framework/lib/mysql.lib.php
+	Class library - mysql_lib / v.1.2.1
+	Method fetch_assoc() returns false if mysql query
+	triggered an error or warning.
+	
+ * r.20 - tokernel.framework/lib/client.lib.php
+	New class library client_liv / v.1.0.0
+	Collecting information of the OS, browser, mobile 
+	device of the client.
+	File framework/config/platforms.ini required as reference.
+
+ Version 1.1.1 - 05/09/2012
+ --------------------------
+ 
+ * r.21 - tokernel.framework/kernel/app.http.class.php
+	Application kernel for http mode / v.1.2.4
+	Methods app_url() and theme_url() returns correct url
+	if the constant TK_CUSTOM_DIR is empty.
+
+ Version 1.1.2 - 05/22/2012
+ --------------------------
+ 
+ * r.22 - tokernel.framework/lib/url.lib.php
+	URL parsing library / v.2.0.7
+	Fixed bug at alias parsing time.
+	Now, it is parses alias with url params properly.
+
+ Version 1.1.3 - 05/28/2012
+ --------------------------
+ 
+ * r.23 - tokernel.framework/lib/mysql.lib.php
+	MySQL library / v.1.2.2
+	Changed instance() method logic.
+	Calling destructor for new cloned object.
+	
+ Version 1.2.0 - 06/14/2012
+ --------------------------
+ 
+ * r.24 - tokernel.framework/tokernel.inc.php
+	Framework loader v.2.0.1
+	Fixed definition of constant TK_CUSTOM_PATH.
+	When the constant TK_CUSTOM_DIR in index.php is empty, 
+	TK_CUSTOM_PATH will be defined without double slashes.
+	
+ * r.24 - tokernel.framework/kernel/view.class.php
+	View base class v.1.3.0
+	Created new magic method __isset(), for 
+	checking whether a variable has been defined 
+	
+ * r.24 - tokernel.framework/kernel/view.class.php
+	View base class v.1.3.0
+	Created new magic method __unset(), which
+	gives ability to unset view object values.
+	
+ * r.24 - tokernel.framework/kernel/app.http.class.php
+	Main application class for working with http mode v.1.2.5
+	If the requested action for addon lib (controller) does not
+	exist, the application will log that issue as an Error 404
+	(Page not found) instead of a Regular method missing error.
+
+* r.24 - tokernel.framework/lib/photo.lib.php, 
+	application/config/photos.ini
+	New Photo file processing class library v.1.0.0
+	Resizing, caching and more...
+ 
+* r.25 - tokernel.framework/lib/mysql.lib.php
+	Class library for working with MySQL Server v.1.3.0
+	New methods.
+	
+	1. fetch_all_assoc(string query[, bool benchmark])
+		Return array of all records by query string
+	   
+	2. fetch_all_object(string query[, bool benchmark])
+		Return array of all records as objects by query string
+
+ Version 1.2.1 - 08/09/2012
+ --------------------------
+ 
+ * r.26 - tokernel.framework/lib/mysql.lib.php
+	Class library for working with MySQL Server v.1.3.1
+	
+	1. Changed the functionality of benchmark with count() function.
+	2. Fixed typo in the function fetch_all_assoc(). $row instead of $arr.
+
+ * r.26 - tokernel.framework/lib/pagination.lib.php
+	Pagination class library v.1.0.4
+		
+	1. Corrected the generation of the page url 
+	2. Changed the indexing method to pages instead of records
+	
+ * r.26 - tokernel.framework/lib/session.lib.php
+	Session class library v.1.1.0
+	New method regenerate(). Regenerate session id to discard
+	current session data (maybe old) and start over.
+
+ * r.26 - tokernel.framework/lib/photo.lib.php
+	Photo file processing class library v.1.0.1
+	Some fixes in garbage collection.
+
+ * r.27 - tokernel.framework/lib/url.lib.php
+	URL parsing library v.2.1.0
+	Define application language from client browser 
+	if not defined in url string.
+
+ Version 1.2.2 - 09/19/2012
+ --------------------------
+ 
+ * r.28 - tokernel.framework/lib/file.lib.php
+	Class library for working with files v.1.3.3
+	1. Fixed the method 'ext' where checking the file extension.
+	2. Fixed the method 'ls' where checking the file extension.
+
+ * r.28 - tokernel.framework/lib/mysql.lib.php
+	Class library for working with MySQL Server v.1.3.2
+	1. Added ability to connect with user selected port (in databases.ini configuration file).
+	2. Refactoring of method reconnect()
+	3. Fixed the bug in method count() at query building state.
+	4. Added new $exp parameter to method count() which gives ability to set query expression 'AND' or 'OR'
+
+ * r.28 - tokernel.framework/lib/template.lib.php
+	Templates interpretation library v.1.0.6
+	Fixed method interpret() for some comment like tags.
+	
+ * r.28 - tokernel.framework/config/platforms.ini
+	Added "Windows 8" defination.
+
+ Version 1.2.3 - 10/14/2012
+ --------------------------
+
+ * r.29 - tokernel.framework/lib/mysql.lib.php
+	Class library for working with MySQL Server v.1.3.3
+	1. Fixed method reconnect().
+
+ * r.19 - tokernel.framework/lib/filter.lib.php
+	Class library for data filtering v.1.1.4
+	1. Fixed methods strip_slashes() and clean_data()
