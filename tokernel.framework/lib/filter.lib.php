@@ -24,7 +24,7 @@
  * @author     toKernel development team <framework@tokernel.com>
  * @copyright  Copyright (c) 2012 toKernel
  * @license    http://www.gnu.org/copyleft/gpl.html GNU Public License
- * @version    1.1.4
+ * @version    1.1.5
  * @link       http://www.tokernel.com
  * @since      File available since Release 1.0.0
  */
@@ -305,16 +305,6 @@ class filter_lib {
 		
 	} elseif (is_string($data)) {
 
-		/* Decode html entities by application encoding */
-		/* This part is now commented because some issues detected */
-		// $data = $this->decode_html_entities($data);
-    
- 		if(function_exists('get_magic_quotes_gpc')) {
-			if(get_magic_quotes_gpc()) {
-				$data = stripslashes($data);
-			}	
-		}
-		
 		$data = str_replace(array("\r\n", "\r"), "\n", $data);
 		$data = trim($data);
 		
@@ -454,22 +444,6 @@ class filter_lib {
  	
  } // end func clean_nl
   
-/**
- * Strip slashes if magic_quotes is on.
- * 
- * @access public
- * @param string
- * @return string
- */
- function strip_slashes($data) {
-	if(function_exists('get_magic_quotes_gpc')) {
-		if(get_magic_quotes_gpc()) {
-			$data = stripslashes($data);
-		}
-	}
-	return $data;
- } // end func strip_slashes
-
 /**
  * Clean string as a-z, A-Z, 0-9.
  * pass chars defined in $allowed_chars array.

@@ -24,7 +24,7 @@
  * @author     toKernel development team <framework@tokernel.com>
  * @copyright  Copyright (c) 2012 toKernel
  * @license    http://www.gnu.org/copyleft/gpl.html GNU Public License
- * @version    2.0.1
+ * @version    2.0.2
  * @link       http://www.tokernel.com
  * @since      File available since Release 1.0.0
  */ 
@@ -83,7 +83,6 @@ if(!empty($argc) and php_sapi_name() == 'cli') {
 	/* Set some configurations for CLI mode */
 	ini_set('track_errors', true);
     ini_set('html_errors', false);
-    ini_set('magic_quotes_runtime', false);
     
 } else {
 
