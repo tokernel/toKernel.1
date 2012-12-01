@@ -24,7 +24,7 @@
  * @author     toKernel development team <framework@tokernel.com>
  * @copyright  Copyright (c) 2012 toKernel
  * @license    http://www.gnu.org/copyleft/gpl.html GNU Public License
- * @version    2.1.0
+ * @version    2.1.1
  * @link       http://www.tokernel.com
  * @since      File available since Release 1.0.0
  */
@@ -822,12 +822,13 @@ class url_lib {
  */
  public function set_id_addon($id_addon) {
  	
- 	if(trim($id_addon) == '') {
+ 	if(trim($id_addon) != '') {
  		$this->url_arr['id_addon'] = $id_addon;
  		return true;
  	}
  	
  	return false;
+	
  } // end func set_id_addon
  
 /**

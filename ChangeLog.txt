@@ -209,3 +209,16 @@
 	1. Removed string - ini_set('magic_quotes_runtime', false);
 	File: tokernel.framework/tokernel.inc.php
  
+ Version 1.2.5 - 01/12/2012
+ --------------------------
+ 
+ Caching class library - cache_lib v.2.0.0
+ 
+	1. Now, it is possible to use multiple instances (as subdirectories) of cache.
+	File: tokernel.framework/lib/cache.lib.php
+
+ URL parsing library - lib_url v.2.1.1
+ 
+	1. Fixed the method set_id_addon().
+	File: tokernel.framework/lib/url.lib.php
+ 

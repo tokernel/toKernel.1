@@ -24,7 +24,7 @@
  * @author     toKernel development team <framework@tokernel.com>
  * @copyright  Copyright (c) 2012 toKernel
  * @license    http://www.gnu.org/copyleft/gpl.html GNU Public License
- * @version    1.0.0
+ * @version    2.0.0
  * @link       http://www.tokernel.com
  * @since      File available since Release 1.0.0
  */
@@ -77,35 +77,83 @@ class cache_lib {
  */
  protected $ext = '';
  
+ /**
+  * Cache directory
+  * 
+  * @access protected
+  * @var string
+  * @since 2.0.0
+  */
+ protected $cache_dir = '';
+ 
 /**
  * Class constructor
  * 
  * @access public
  * @return void
  */ 
- public function __construct() {
+ public function __construct($config = array()) {
 	
  	$this->lib = lib::instance();
     $this->app = app::instance();
     
-    /* 
-     * Get cache expiration.
-     */
-    $ce_ = $this->app->config('cache_expiration', 'CACHING');
+    /* Set cache expiration */
+	if(isset($config['cache_expiration'])) {
+		$ce_ = $config['cache_expiration'];
+	} else {
+		$ce_ = $this->app->config('cache_expiration', 'CACHING');
+	}
     
     if($this->lib->valid->digits($ce_) or $ce_ == '-1') {
     	$this->cache_expiration = $ce_;
     }
 
-    /* Get cache file extension */
-    $this->ext = $this->app->config('cache_file_extension', 'CACHING');
+    /* Set cache file extension */
+	if(isset($config['cache_file_extension'])) {
+		$this->ext = $config['cache_file_extension'];
+	} else {
+		$this->ext = $this->app->config('cache_file_extension', 'CACHING');
+	}
+    
+	/* Set cache directory */
+	$this->cache_dir = $this->app->config('cache_dir', 'CACHING');
+	
+	/* Set subdirectory */
+	if(isset($config['subdirectory'])) {
+		$this->cache_dir .= $config['subdirectory'] . TK_DS;
+		
+		/* Check if the subdirectory is not exists, create it. */
+		if(!is_dir($this->cache_dir)) {
+		
+			if(!@mkdir($this->cache_dir)) {
+				trigger_error('Cannot create cache directory: ' . $this->cache_dir);
+			}
+			
+		}
+	}
     
  } // end func __construct 
+ 
+ /**
+  * Return cloned copy of this object
+  *
+  * @access public
+  * @return object
+  * @since 2.0.0
+  */
+ public function instance($config = array()) {
+ 	
+	$obj = clone $this;
+	$obj->__construct($config);
+	
+	return $obj;
+	
+ } // End func instance
 	
 /**
  * Return cache file expiration status.
  * Expiration time defined in application configuration 
- * file tokernel.ini defined in [CACHING] section.
+ * file application.ini defined in [CACHING] section.
  * 
  * @access public
  * @param string $file_id
@@ -121,19 +169,19 @@ class cache_lib {
 		return true;
 	}
 	
-	/* -1 assume that the cache never expire */ 
-	if($minutes == '-1') {
-		return false;
-	}
-	
 	/* 
 	 * if minutes is not set, then set 
 	 * minutes from app configuration 
 	 */
-	if(!$this->lib->valid->digits($minutes)) {
+	if(is_null($minutes)) {
 		$minutes = $this->cache_expiration;
 	}
 	
+	/* -1 assume that the cache never expire */ 
+	if($minutes == '-1') {
+		return false;
+	}
+		
 	/* Set seconds */
 	$exp_sec = $minutes * 60;
 	
@@ -239,13 +287,12 @@ class cache_lib {
     
  	$del_files_count = 0;
  	
- 	$cache_dir = $this->app->config('cache_dir', 'CACHING');
- 	if(!is_writable($cache_dir)) {
+ 	if(!is_writable($this->cache_dir)) {
  		return false;
  	}
  	
  	/* create a handler for the directory */
-    $handler = opendir($cache_dir);
+    $handler = opendir($this->cache_dir);
 
     /* open directory and walk through the filenames */
     while($file = readdir($handler)) {
@@ -254,12 +301,12 @@ class cache_lib {
        * if file isn't this directory or its parent, 
        * also if it have .cache extension, then remove it 
        */
-      if($file != "." && $file != ".." && pathinfo($file, PATHINFO_EXTENSION) 
-               == $this->ext) {
+      if($file != "." && $file != ".." && pathinfo($file, PATHINFO_EXTENSION) == $this->ext) {
          
-		if(unlink($cache_dir . $file)) {
+		if(unlink($this->cache_dir . $file)) {
 			$del_files_count++;
         }
+		
       } // end if cache file
 
     } // end while
@@ -278,14 +325,14 @@ class cache_lib {
  * @param string $string
  * @return mixed string | bool
  */
- public function filename($string) {
-	if(trim($string) == '') {
-		return false; 
+ public function filename($file_id) {
+	
+	if(trim($file_id) == '') {
+		return false;
 	}
 	
- 	return $this->app->config('cache_dir', 'CACHING') . 
- 							md5($string) . '.' . $this->ext;
- 			
+ 	return $this->cache_dir . md5($file_id) . '.' . $this->ext;
+
  } // end func filename
  
 /* End of class cache_lib */ 
