@@ -222,3 +222,41 @@
 	1. Fixed the method set_id_addon().
 	File: tokernel.framework/lib/url.lib.php
  
+ Version 1.2.6 - 29/01/2013
+ --------------------------
+
+ Log class library - log_lib v.1.0.4
+
+	1. All massages in method write() will be logged as is, without cleaning new lines.
+	2. New default argument to method write() allows to pass date and application run mode before messages.
+	File: tokernel.framework/lib/log.lib.php
+
+ URL parsing library - lib_url v.2.2.0
+   
+	New method param_exists() return boolean (true) 
+	even if url parameter exists but empty.
+	File: tokernel.framework/lib/url.lib.php
+
+ Error and Exception handling - v.1.2.0
+	
+	Now displays Baktrace information on error page in development mode.
+	Files:  tokernel.framework/kernel/e.cli.class.php
+			tokernel.framework/kernel/e.core.class.php
+			tokernel.framework/kernel/e.http.class.php
+			tokernel.framework/templates/error.tpl.php
+			tokernel.framework/templates/error_404.tpl.php
+			tokernel.framework/templates/warning.tpl.php
+ 
+ Library loader class - lib v.1.0.1
+	
+	Fixed library file loading (require -> require_once).
+	File: tokernel.framework/kernel/lib.class.php
+   
+ Data filtering class library - filter_lib v.1.2.0
+	
+	New method server() returns $_SERVER vars.
+ 
+ Main application configuration file
+	
+	Renamed application/config/tokernel.ini
+	to application/config/application.ini

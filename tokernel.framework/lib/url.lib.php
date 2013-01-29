@@ -24,7 +24,7 @@
  * @author     toKernel development team <framework@tokernel.com>
  * @copyright  Copyright (c) 2012 toKernel
  * @license    http://www.gnu.org/copyleft/gpl.html GNU Public License
- * @version    2.1.1
+ * @version    2.2.0
  * @link       http://www.tokernel.com
  * @since      File available since Release 1.0.0
  */
@@ -742,6 +742,23 @@ class url_lib {
  }
 
 /**
+ * Check, is param exists. 
+ * 
+ * @access public
+ * @param string $item
+ * @return bool
+ */
+ public function param_exists($item) {
+	 
+	if(isset($this->url_arr['params'][$item])) {
+ 		return true;
+ 	} else {
+		return false;
+	}
+	
+ } // End func param_exists
+ 
+/**
  * Return parameter value by item or parameters array
  * 
  * @access public
@@ -754,9 +771,9 @@ class url_lib {
  		return $this->url_arr['params'];
  	}
  	
- 	if(isset($this->url_arr['params'][$item])) {
- 		return $this->url_arr['params'][$item];
- 	}
+ 	if($this->param_exists($item) == true) {
+		return $this->url_arr['params'][$item];
+	}
  	
  	return false;
  

@@ -25,7 +25,7 @@
  * @author     toKernel development team <framework@tokernel.com>
  * @copyright  Copyright (c) 2012 toKernel
  * @license    http://www.gnu.org/copyleft/gpl.html GNU Public License
- * @version    1.1.0
+ * @version    1.2.0
  * @link       http://www.tokernel.com
  * @since      File available since Release 1.0.0
  */
@@ -50,8 +50,8 @@ defined('TK_EXEC') or die('Restricted area.');
  * @param integer $line
  * @return void
  */
- protected static function show_error($err_code, $err_message, 
- 										$file = NULL, $line = NULL) {
+ protected static function show_error($err_code, $err_message, $file = NULL, 
+										$line = NULL, $trace = NULL) {
 
     $error_group = self::get_error_group($err_code);
     $err_type = self::get_error_type_text($err_code);
@@ -79,6 +79,9 @@ defined('TK_EXEC') or die('Restricted area.');
     		$err_show_str = self::$config['err_404_message'];
     		
     	}
+		
+		/* In the production mode, the trace will not be displayed */
+		$trace = NULL;
 
     } 
 
@@ -95,9 +98,13 @@ defined('TK_EXEC') or die('Restricted area.');
 	}
     		
     $err_tpl_file = self::get_error_template_file($error_group);
-    	
+    
+	if(is_array($trace)) {
+		$trace = array_reverse($trace);
+	}
+		
     if($err_tpl_file != false) {
-    	require($err_tpl_file);
+		require($err_tpl_file);
     } else {
     	echo TK_NL;
     	echo '<strong>';
@@ -172,33 +179,33 @@ defined('TK_EXEC') or die('Restricted area.');
  * @param integer $line
  * @return bool
  */  
- public static function error($err_code, $err_message, 
- 									$file = NULL, $line = NULL) {
+ public static function error($err_code, $err_message, $file = NULL, $line = NULL) {
 
  	$error_group = self::get_error_group($err_code);
-
     self::log($err_message, $err_code, $file, $line);
-    	
+    
+	$trace = debug_backtrace(false);
+	
     if(self::$config['show_notices'] == '1' and $error_group == 'notice') { 
-    	self::show_error($err_code, $err_message, $file, $line);
+    	self::show_error($err_code, $err_message, $file, $line, $trace);
     } 
     	 
     if(self::$config['show_warnings'] == '1' and $error_group == 'warning') { 
-    	self::show_error($err_code, $err_message, $file, $line);
+    	self::show_error($err_code, $err_message, $file, $line, $trace);
     } 
     	
     if(self::$config['show_errors'] == '1' and $error_group == 'error') {
-   		self::show_error($err_code, $err_message, $file, $line);
+   		self::show_error($err_code, $err_message, $file, $line, $trace);
     } 
     	
     if(self::$config['show_unknown_errors'] == '1' and 
     											$error_group == 'unknown') {
     												 
-    	self::show_error($err_code, $err_message, $file, $line);
+    	self::show_error($err_code, $err_message, $file, $line, $trace);
     } 
     	
    	if(self::$config['show_errors_404'] == '1' and $error_group == 'error_404') { 
-    	self::show_error($err_code, $err_message, $file, $line);
+    	self::show_error($err_code, $err_message, $file, $line, $trace);
     } 
     	
    	return true;

@@ -24,7 +24,7 @@
  * @author     toKernel development team <framework@tokernel.com>
  * @copyright  Copyright (c) 2012 toKernel
  * @license    http://www.gnu.org/copyleft/gpl.html GNU Public License
- * @version    1.0.0
+ * @version    1.0.1
  * @link       http://www.tokernel.com
  * @since      File available since Release 1.0.0
  */
@@ -153,20 +153,20 @@ class lib {
 
 	// ! case 1. lib exists only in tokernel/lib dir.
 	if(is_file($tk_lib_file) and !is_file($app_lib_file)) {
-		require($tk_lib_file);
+		require_once($tk_lib_file);
 		$class_name = $object_name . '_lib';
 	}
 	
 	// ! case 2. lib file exists only in application/lib dir.
 	if(!is_file($tk_lib_file) and is_file($app_lib_file)) {
-		require($app_lib_file);
+		require_once($app_lib_file);
 		$class_name = $object_name . '_lib';
 	}
 
 	// ! case 3. Both exists, the lib is inherited.
 	if(is_file($tk_lib_file) and is_file($app_lib_file)) {
-		require($tk_lib_file);
-		require($app_lib_file);
+		require_once($tk_lib_file);
+		require_once($app_lib_file);
 		$class_name = $object_name . '_ext_lib';
 	}
 	

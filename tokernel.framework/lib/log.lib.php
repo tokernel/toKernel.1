@@ -24,7 +24,7 @@
  * @author     toKernel development team <framework@tokernel.com>
  * @copyright  Copyright (c) 2012 toKernel
  * @license    http://www.gnu.org/copyleft/gpl.html GNU Public License
- * @version    1.0.3
+ * @version    1.0.4
  * @link       http://www.tokernel.com
  * @since      File available since Release 1.0.0
  */
@@ -141,7 +141,7 @@ class log_lib {
  * @param string $log_message
  * @return bool
  */
- public function write($log_message) {
+ public function write($log_message, $date_mode = true) {
 		
 	$log_file = $this->get_current_file();
 
@@ -151,15 +151,18 @@ class log_lib {
   	}
   	
 	$log_file = $this->log_path . $this->log_file;
-
- 	$log_message = str_replace(array("\n", "\r"), array(' ', ' '), $log_message);
-		
+	
 	$fr = fopen($log_file, "a");
-
+	
 	if($fr) {
-    		
-    	fwrite($fr, '[' . date('d-m-Y H:i:s') . ' ' . 
-								TK_RUN_MODE.'] ' . $log_message."\n");
+    	
+		if($date_mode == true) {
+			$log_message = '[' . date('d-m-Y H:i:s') . 
+							' ' . TK_RUN_MODE.'] ' .
+							$log_message;
+		}
+		
+    	fwrite($fr, $log_message . "\n");
     	fclose($fr);
     } else {
    		return false;

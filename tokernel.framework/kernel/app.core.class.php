@@ -157,7 +157,7 @@ abstract class app_core {
 
 	/* Load configuration */
 	self::$instance->config = self::$instance->lib->ini->instance(
-									TK_CUSTOM_PATH . 'config' . TK_DS . 'tokernel.ini');
+									TK_CUSTOM_PATH . 'config' . TK_DS . 'application.ini');
 
 	tk_e::log_debug('Loaded "config" object', 'app::' . __FUNCTION__);
 									

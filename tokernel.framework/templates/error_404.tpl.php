@@ -21,7 +21,6 @@ body {
 	padding:0px;
 }
 .main_div {
-	width:600px;
 	margin-top:20px;
 	border:#D4D4D4 solid 1px; 
 	background-color:#FFFFFF;
@@ -76,6 +75,42 @@ body {
 <h1><?php echo $err_type ?></h1>
 <div class="error_div">
 <p><?php echo $err_show_str; ?></p>
+<p>
+<?php 
+
+if(is_array($trace)) {
+	
+	$err_show_str = '';
+	$err_show_str .= '[Debug trace]';
+	$err_show_str .= TK_NL;
+	echo $err_show_str;
+	
+	foreach($trace as $i => $t) {
+		
+		if($t['function'] == 'trigger_error') {
+			break;
+		}
+		if(!isset($t['class'])) {
+			$t['class'] = '';
+		}
+		if(!isset($t['type'])) {
+			$t['type'] = '';
+		}
+		if(!isset($t['file'])) {
+			$t['file'] = '';
+		}
+		if(!isset($t['line'])) {
+			$t['line'] = '';
+		}
+		
+		$message = sprintf("#%d %s%s%s() called at %s:%d \n", $i,$t['class'], $t['type'],$t['function'],$t['file'],$t['line']);
+		
+		echo $message . TK_NL;
+	}
+	
+}	
+?>
+</p>
 </div>
 <p>&nbsp;</p>
 </div>

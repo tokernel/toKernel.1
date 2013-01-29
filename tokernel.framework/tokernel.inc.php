@@ -210,7 +210,7 @@ ini_set('display_errors', 1);
 
 /* Load application configuration object */
 $config = $lib->ini->instance(TK_CUSTOM_PATH . 'config' . TK_DS . 
-								'tokernel.ini', 'RUN_MODE');
+								'application.ini', 'RUN_MODE');
 
 if(!is_object($config)) {
 	trigger_error('Application configuration file is not ' . 

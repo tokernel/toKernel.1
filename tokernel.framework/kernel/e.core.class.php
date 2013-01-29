@@ -24,7 +24,7 @@
  * @author     toKernel development team <framework@tokernel.com>
  * @copyright  Copyright (c) 2012 toKernel
  * @license    http://www.gnu.org/copyleft/gpl.html GNU Public License
- * @version    1.1.0
+ * @version    1.2.0
  * @link       http://www.tokernel.com
  * @since      File available since Release 1.0.0
  */
@@ -174,11 +174,9 @@ abstract class tk_e_core extends ErrorException {
  * @return void
  */ 
  public static function exception(tk_e $e) {
-    
- 	self::log_debug('', ':=========== HALTED WITH EXCEPTION ! ===========');
+    self::log_debug('', ':=========== HALTED WITH EXCEPTION ! ===========');
  	self::log($e->getMessage(), $e->getCode(), $e->getFile(), $e->getLine());
-   	$e->show_error($e->getCode(),$e->getMessage(),$e->getFile(),$e->getLine());
-		
+   	$e->show_error($e->getCode(),$e->getMessage(),$e->getFile(),$e->getLine(), $e->getTrace());
  } // end func exception
     
 /**

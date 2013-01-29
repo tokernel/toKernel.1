@@ -222,7 +222,7 @@ class cli_lib {
  	tk_e::log_debug('Start with arguments "' . implode(' ' ,$args) . '"', 
  										__CLASS__.'->'.__FUNCTION__);
  					
- 	/* Set configuration from application config - tokernel.ini */
+ 	/* Set configuration from application config - application.ini */
  	$this->config_arr = $config_arr;
  	
  	/* 

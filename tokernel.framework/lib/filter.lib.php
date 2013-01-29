@@ -24,7 +24,7 @@
  * @author     toKernel development team <framework@tokernel.com>
  * @copyright  Copyright (c) 2012 toKernel
  * @license    http://www.gnu.org/copyleft/gpl.html GNU Public License
- * @version    1.1.5
+ * @version    1.2.0
  * @link       http://www.tokernel.com
  * @since      File available since Release 1.0.0
  */
@@ -768,6 +768,28 @@ class filter_lib {
  	}
  } // end func files
 
+/**
+ * Return data from $_SERVER global array
+ * 
+ * @access public
+ * @param string item name
+ * @param bool clean xss = false
+ * @param bool strip html tags in xss func.
+ * @return string
+ */ 
+ public function server($item, $clean_xss = false, $strip_tags = false) {
+ 	
+	if(!isset($_SERVER[$item])) {
+ 		return false;
+ 	}
+ 	
+ 	if($clean_xss == true) {
+ 	   return $this->clean_xss($_SERVER[$item], $strip_tags); 
+ 	} else {
+ 	   return $_SERVER[$item];
+ 	}
+ } // end func server  
+ 
 /* End of class filter_lib */
 }
 
