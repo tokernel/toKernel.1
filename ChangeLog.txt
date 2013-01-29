@@ -255,6 +255,7 @@
  Data filtering class library - filter_lib v.1.2.0
 	
 	New method server() returns $_SERVER vars.
+	File: tokernel.framework/lib/filter.lib.php
  
  Main application configuration file
 	

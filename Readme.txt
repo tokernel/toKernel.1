@@ -3,7 +3,7 @@
  ==================================
  
  License GNU GPL <http://www.tokernel.com/documentation/license/>
- Copyright (c) 2010-2012, toKernel development team <framework@tokernel.com>
+ Copyright (c) 2010-2013, toKernel development team <framework@tokernel.com>
  http://www.tokernel.com
 
  About project
