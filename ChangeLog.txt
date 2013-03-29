@@ -261,3 +261,17 @@
 	
 	Renamed application/config/tokernel.ini
 	to application/config/application.ini
+
+ Version 1.3.0 - 29/03/2013
+ --------------------------
+
+ Content caching class libraries - cache_lib v.3.0.0, filecache_lib v.2.0.1, memcache_lib v.1.0.0
+	
+	New 'memcached' caching method released.
+	It can be configured from application/config/application.ini section: [CACHING]
+	
+	Files:  tokernel.framework/lib/cache.lib.php
+			tokernel.framework/lib/cache/filecache.lib.php
+			tokernel.framework/lib/cache/memcache.lib.php
+			
+	System/Memcached and PHP Memcache extension required for caching with memcache.
