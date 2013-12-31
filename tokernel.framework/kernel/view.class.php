@@ -24,7 +24,7 @@
  * @author     toKernel development team <framework@tokernel.com>
  * @copyright  Copyright (c) 2013 toKernel
  * @license    http://www.gnu.org/copyleft/gpl.html GNU Public License
- * @version    1.3.0
+ * @version    1.3.1
  * @link       http://www.tokernel.com
  * @since      File available since Release 1.0.0
  */
@@ -290,6 +290,16 @@ class view {
  	
  } // end func get_value 
 
+/**
+ * Call Interpreter and echo the content.
+ * 
+ * @access public
+ * @return void
+ */   
+ public function show() {
+	echo $this->run();
+ }
+ 
 /**
  * Interprete view file and return buffer
  * 

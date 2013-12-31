@@ -479,6 +479,7 @@ class app extends app_core {
 /**
  * Return main callable addon id of application
  * 
+ * @deprecated
  * @access public
  * @return string
  */
@@ -508,6 +509,7 @@ class app extends app_core {
 /**
  * Return action of main callable addon
  * 
+ * @deprecated
  * @access public
  * @return string
  */ 
@@ -526,6 +528,7 @@ class app extends app_core {
  * Return application URL parameter by item.
  * if item is null, then return all parameters as array
  * 
+ * @deprecated
  * @access public
  * @param string $item
  * @return mixed
@@ -548,6 +551,7 @@ class app extends app_core {
 /**
  * Return application URL parameters count
  *
+ * @deprecated
  * @access public
  * @return integer
  */ 
@@ -594,6 +598,7 @@ class app extends app_core {
 /**
  * Return alias name if defined.
  * 
+ * @deprecated
  * @access public
  * @return string
  */ 

@@ -275,3 +275,105 @@
 			tokernel.framework/lib/cache/memcache.lib.php
 			
 	System/Memcached and PHP Memcache extension required for caching with memcache.
+
+ Version 1.3.1 - 31/12/2013
+ --------------------------
+
+ Class library for working with files - file_lib v.1.3.4
+	
+	1. Fixed the method 'download()'.
+	
+	File: tokernel.framework/lib/file.lib.php
+
+ Class library for data filtering - filter_lib v.1.3.0
+
+	1. Return array of _GLOBALS if item is null.
+		// Return string 
+		$name = $this->lib->filter->post('name');
+		
+		// Return cleaned _POST array
+		$post = $this->lib->filter->post();
+
+	File: tokernel.framework/lib/filter.lib.php
+
+ Class library for pagination - pagination_lib v.1.0.5
+
+	1. A little fix in run() method.
+
+	File: tokernel.framework/lib/pagination.lib.php	
+
+ Class library url  - url_lib v.2.2.1
+
+	1. A little fixes in parse_params_assoc(), url() methods.
+
+	File: tokernel.framework/lib/url.lib.php
+
+ Addon object in kernel - addon v.3.3.0
+
+	1. New configuration file in config dir - actions.ini
+
+		Action call and params count (in url) for each addon 
+		can be limited and defined in actions.ini
+
+		[view_article]
+		params_min=1
+		params_max=1
+		params=id
+
+		This section assumes that the action 'view_article' cam contain 
+		only 1 url param (params_min=1, params_max=1) and the name of 
+		parameter is 'id'.
+
+		[articles]
+		params_min=0
+		params_max=3
+		params=page|order|isfeat
+
+		This section assumes that the action 'articles' can contain 0 - 3 params.
+		And the only possible params is	'page', 'order', 'isfeat'.
+
+	2. New method in addon object
+		bool action_allowed(string action) 
+
+		Returns true if the actions.ini exists, and the action section also 
+		exists.
+
+	3. New method in addon object	
+		bool params_allowed(string action, array params)
+
+		Return true if params exists for action.
+
+	4. New method in addon object
+		bool params_count_allowed(string action, int params count)
+
+		Return true if min, max range is equal with url params count.
+	
+	If the file actions.ini not exists, all methods listed above will 
+	return true, assuming that this addon not have any call limitations.
+	
+	File: tokernel.framework/kernel/addon.class.php
+	
+ View object in kernel - view v.1.2.1
+ 
+ 	1. New method show().
+		Instead of echo $view->run(); we can use $view->show();
+ 
+	File: tokernel.framework/kernel/view.class.php
+
+ Some deprecated functions 
+
+	In kernel HTTP and CLI mode, some application functions 
+	defined as deprecated and will be removed in next version.
+
+	1. action()
+`   2. id_addon()
+	3. alias()
+	4. params()
+	5. params_count()
+
+	This functions actually defined in lib url and lib cli.
+	
+	Files:  tokernel.framework/kernel/app.cli.class.php
+			tokernel.framework/kernel/app.http.class.php
+
+	

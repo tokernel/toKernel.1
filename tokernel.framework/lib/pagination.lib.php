@@ -24,7 +24,7 @@
  * @author     toKernel development team <framework@tokernel.com>
  * @copyright  Copyright (c) 2013 toKernel
  * @license    http://www.gnu.org/copyleft/gpl.html GNU Public License
- * @version    1.0.4
+ * @version    1.0.5
  * @link       http://www.tokernel.com
  * @since      File available since Release 1.0.0
  */
@@ -133,9 +133,8 @@ class pagination_lib {
     	$offset = $total - 1;
     }
 
-    $page_count = ceil($total / $limit);   
-    
-    $cur_page = ceil(($offset + 1) / $limit);
+    $page_count = ceil($total / $limit);
+    $cur_page = $offset;
 
     if($this->config['current_class'] != '') {
     	$cur_class = 'class="'.$this->config['current_class'].'"';
@@ -241,6 +240,7 @@ class pagination_lib {
     $buffer .= $this->config['after_main'];
     
     return $buffer; 
+	
  } // end func run
  
 /**

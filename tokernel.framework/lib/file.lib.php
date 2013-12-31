@@ -24,7 +24,7 @@
  * @author     toKernel development team <framework@tokernel.com>
  * @copyright  Copyright (c) 2013 toKernel
  * @license    http://www.gnu.org/copyleft/gpl.html GNU Public License
- * @version    1.3.3
+ * @version    1.3.4
  * @link       http://www.tokernel.com
  * @since      File available since Release 1.0.0
  */
@@ -155,7 +155,7 @@ class file_lib {
 		$mime = 'application/octet-stream'; 
 	}
 	
-	if(strpos($_SERVER['HTTP_USER_AGENT'], "MSIE") !== false) {
+	if(isset($_SERVER['HTTP_USER_AGENT']) and strpos($_SERVER['HTTP_USER_AGENT'], "MSIE") !== false) {
 		
 		header('Content-Type: "'.$mime.'"');
 		header('Content-Disposition: attachment; filename="'.$filename.'"');
@@ -328,7 +328,7 @@ class file_lib {
  public function ls($dir, $type = NULL, $adv = false, $ext = NULL) {
  	
  	if(!is_dir($dir)) {
-	    return false;
+		return false;
 	}
 
 	$dir = $this->to_path($dir);
@@ -341,7 +341,7 @@ class file_lib {
 	   
 		if($file != "." and $file != "..") {
 
-			$perms = $this->perms($dir .$file);
+			$perms = $this->perms($dir . $file);
 			
 			/* check type */
 			if(!is_null($type) and $type != substr($perms, 0, 1)) {
@@ -357,12 +357,10 @@ class file_lib {
 			
 	 		$files_arr[] = $file;
 	 		
-			
 		} // end checking 
        
 	 } // end while
-	 
-	 
+	 	 
 	 /* advenced information */
 	 if($adv != true) {
 		return $files_arr;

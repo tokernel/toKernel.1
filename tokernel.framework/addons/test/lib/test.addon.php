@@ -23,7 +23,6 @@ class test_addon extends addon {
 		$view->message = 'Welcome!';
 		echo $view->run();
 		
-		return true;
 	}
 	
 	/**

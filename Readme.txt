@@ -79,6 +79,7 @@
 
  David Ayvazyan     <tokernel@gmail.com>    Founder, Developer
  Arshak Khazaryan   <khazaryan@gmail.com>   Library developer
+ Alexander Aslanyan	<md6hash@gmail.com>		Documentation editor, translator
  Razmik Davoyan     <razmik@davoyan.name>   Library developer
  Patrick Isbendjian <pi@pisbtech.com>       Documentation editor, library developer
  Karen Grigoryan    <bridge-time@yandex.ru> Source code comments editor

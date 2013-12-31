@@ -1,7 +1,7 @@
 <?php
 /**
  * toKernel- Universal PHP Framework.
- * Class library for data filtering
+ * Data filtering class library.
  * 
  * This file is part of toKernel.
  *
@@ -24,7 +24,7 @@
  * @author     toKernel development team <framework@tokernel.com>
  * @copyright  Copyright (c) 2013 toKernel
  * @license    http://www.gnu.org/copyleft/gpl.html GNU Public License
- * @version    1.2.0
+ * @version    1.3.0
  * @link       http://www.tokernel.com
  * @since      File available since Release 1.0.0
  */
@@ -35,16 +35,14 @@ defined('TK_EXEC') or die('Restricted area.');
 /**
  * filter_lib class
  * 
- * Filter global input data.  
- * Validates for many data types.
+ * Data filtering class library.
  *  
- * @author David Ayvazyan <tokernel@gmail.com>
+ * @author David A. <tokernel@gmail.com>
  */ 
 class filter_lib {
 
 /**
- * Library object for working with 
- * libraries in this class
+ * lib object to access all libraries
  * 
  * @var object
  * @access private
@@ -52,8 +50,7 @@ class filter_lib {
  private $lib;
  
 /**
- * This globals will be removed, because they 
- * are deprecated and we not use them.
+ * Deprecated globals, will removed.
  * 
  * @access private
  * @var array
@@ -68,8 +65,7 @@ class filter_lib {
  );
 
 /**
- * Expressions which will be replaced 
- * from any data in clean_xss function.
+ * Removable expressions.
  * 
  * @access private
  * @var array
@@ -88,8 +84,7 @@ class filter_lib {
  );
 
 /**
- * Patterns which will be removed 
- * from any data in clean_xss function.
+ * Removable patterns.
  * 
  * @access private
  * @var array
@@ -102,8 +97,7 @@ class filter_lib {
  );
 
 /**
- * Invisible chars which will be removed
- * from any data in clean_xss function.
+ * Removable invisible chars.
  * 
  * @access private
  * @var array
@@ -137,13 +131,12 @@ class filter_lib {
 /**
  * Clean globals.
  * 
- * Unset deprecated globals
- * Clean globals such as 	$_GET, $_POST, 
- * 							$_COOKIE, $_FILES, $_REQUEST
+ * 1. Unset deprecated globals
+ * 2. Clean globals and include to $clean_globals array.
  * 
  * @access public
  * @param bool not unset $_GET array.
- * @param bool clean all globals by clean_xss function
+ * @param bool clean all globals by clean_xss method
  * @return void 
  */
  public function clean_globals($xss_clean = false) {
@@ -159,7 +152,7 @@ class filter_lib {
 						'Request aborted.', E_USER_ERROR);
 		exit(1);
 	}
-
+	
  	/* 
  	 * Remove globals which exist in removable_globals, 
  	 * otherwise do clean by received arguments.
@@ -173,28 +166,36 @@ class filter_lib {
 	/* 
 	 * Unset $_GET.   
 	 */
-	$_GET = array();
-	
+	$GLOBALS['_GET'] = array();
+
 	/* Clean some globals */ 
-	$_SERVER	= $this->clean_data($_SERVER);
-	$_POST 		= $this->clean_data($_POST);
-	$_REQUEST	= $this->clean_data($_REQUEST);
-	$_COOKIE 	= $this->clean_data($_COOKIE);
-	$_FILES 	= $this->clean_data($_FILES);
-	if(isset($_SESSION)) {
-		$_SESSION 	= $this->clean_data($_SESSION);
+	$GLOBALS['_SERVER']	 = $this->clean_data($GLOBALS['_SERVER']);
+	$GLOBALS['_POST']	 = $this->clean_data($GLOBALS['_POST']);
+	$GLOBALS['_REQUEST'] = $this->clean_data($GLOBALS['_REQUEST']);
+	$GLOBALS['_COOKIE']	 = $this->clean_data($GLOBALS['_COOKIE']);
+	$GLOBALS['_FILES']   = $this->clean_data($GLOBALS['_FILES']);
+	
+	if(isset($GLOBALS['_SESSION'])) {
+		$GLOBALS['_SESSION'] = $this->clean_data($GLOBALS['_SESSION']);
+	} else {
+		$GLOBALS['_SESSION'] = array();
 	}
 	
-	/* Clean xss also */
+	if(isset($GLOBALS['argv'])) {
+		$GLOBALS['argv'] = $this->clean_data($GLOBALS['argv']);
+	} else {
+		$GLOBALS['argv'] = array();
+	}
+	
+	/* Clean for xss */
 	if($xss_clean == true) {
-		$_SERVER	= $this->clean_xss($_SERVER, false);
-		$_POST 		= $this->clean_xss($_POST, false);
-		$_REQUEST	= $this->clean_xss($_REQUEST, false);
-		$_COOKIE 	= $this->clean_xss($_COOKIE, false);
-		$_FILES 	= $this->clean_xss($_FILES, false);
-		if(isset($_SESSION)) {
-			$_SESSION 	= $this->clean_xss($_SESSION, false);
-		}
+		$GLOBALS['_SERVER']	 = $this->clean_xss($GLOBALS['_SERVER'], false);
+		$GLOBALS['_POST'] 	 = $this->clean_xss($GLOBALS['_POST'], false);
+		$GLOBALS['_REQUEST'] = $this->clean_xss($GLOBALS['_REQUEST'], false);
+		$GLOBALS['_COOKIE']  = $this->clean_xss($GLOBALS['_COOKIE'], false);
+		$GLOBALS['_FILES'] 	 = $this->clean_xss($GLOBALS['_FILES'], false);
+		$GLOBALS['_SESSION'] = $this->clean_xss($GLOBALS['_SESSION'], false);
+		$GLOBALS['argv']     = $this->clean_xss($GLOBALS['argv'], false);
 	}
 	
 	self::$globals_cleaned = true;
@@ -202,7 +203,7 @@ class filter_lib {
  } // end func clean_globals
 
 /**
- * Clean url for specialy this framework.
+ * Clean url.
  * 
  * @access public
  * @param string $http_get_var
@@ -216,43 +217,28 @@ class filter_lib {
 		$_SERVER['HTTP_HOST'] = strtolower($_SERVER['HTTP_HOST']);
 		
 		if(!$this->lib->valid->http_host($_SERVER['HTTP_HOST'])) {
-			trigger_error('Incorrect HTTP_HOST `'.$_SERVER['HTTP_HOST'].'`!', 
-							E_USER_ERROR);
+			trigger_error('Invalid HTTP_HOST `'.$_SERVER['HTTP_HOST'].'`!', E_USER_ERROR);
 		}
 		
 	} else {
 		$_SERVER['HTTP_HOST'] = '';
 	}
 	
- 	/* Return false, if htaccess file content is invalid */
- 	/*
-	if(substr($_SERVER['QUERY_STRING'], 0, strlen($http_get_var)) 
- 															!= $http_get_var) {
- 																
-	   trigger_error('The variable ' . $http_get_var . ' in .htaccess ' .
-	              	 'file not initialized (' . __CLASS__ . '::' . 
-	   				 __FUNCTION__ . ')', E_USER_ERROR);
-	}
-	*/
-	
  	/* Clean some globals before using */
 	
-	$_SERVER['REQUEST_URI'] = $this->clean_data($_SERVER['REQUEST_URI']);
-	$_SERVER['REQUEST_URI'] = $this->clean_xss($_SERVER['REQUEST_URI'], true);
-	$_SERVER['QUERY_STRING']= $this->clean_data($_SERVER['QUERY_STRING']);
-	$_SERVER['QUERY_STRING']= $this->clean_xss($_SERVER['QUERY_STRING'], true);
+	$_SERVER['REQUEST_URI']  = $this->clean_data($_SERVER['REQUEST_URI']);
+	$_SERVER['REQUEST_URI']  = $this->clean_xss($_SERVER['REQUEST_URI'], true);
+	$_SERVER['QUERY_STRING'] = $this->clean_data($_SERVER['QUERY_STRING']);
+	$_SERVER['QUERY_STRING'] = $this->clean_xss($_SERVER['QUERY_STRING'], true);
 	
 	if(isset($_SERVER['REDIRECT_URL'])) {
-		$_SERVER['REDIRECT_URL']=$this->clean_data($_SERVER['REDIRECT_URL']);
-		$_SERVER['REDIRECT_URL']=$this->clean_xss($_SERVER['REDIRECT_URL'], true);
+		$_SERVER['REDIRECT_URL'] = $this->clean_data($_SERVER['REDIRECT_URL']);
+		$_SERVER['REDIRECT_URL'] = $this->clean_xss($_SERVER['REDIRECT_URL'], true);
 	}
 
 	if(isset($_SERVER['REDIRECT_QUERY_STRING'])) {
-		$_SERVER['REDIRECT_QUERY_STRING'] = $this->clean_data(
-									$_SERVER['REDIRECT_QUERY_STRING']);
-									
-		$_SERVER['REDIRECT_QUERY_STRING'] = $this->clean_xss(
-									$_SERVER['REDIRECT_QUERY_STRING'], true);
+		$_SERVER['REDIRECT_QUERY_STRING'] = $this->clean_data($_SERVER['REDIRECT_QUERY_STRING']);
+		$_SERVER['REDIRECT_QUERY_STRING'] = $this->clean_xss($_SERVER['REDIRECT_QUERY_STRING'], true);
 	}
 	
 	if(isset($_SERVER['argv'][0])) {
@@ -261,8 +247,8 @@ class filter_lib {
 	}
 	
 	if(isset($_REQUEST[$http_get_var])) {
-		$_REQUEST[$http_get_var]=$this->clean_data($_REQUEST[$http_get_var]);
-		$_REQUEST[$http_get_var]=$this->clean_xss($_REQUEST[$http_get_var], true);
+		$_REQUEST[$http_get_var] = $this->clean_data($_REQUEST[$http_get_var]);
+		$_REQUEST[$http_get_var] = $this->clean_xss($_REQUEST[$http_get_var], true);
 	}
 	
 	/* Get query string source for parsing */
@@ -271,18 +257,17 @@ class filter_lib {
  } // end cunt clean_url
  
 /**
- * Clean data with some options.
- * if xss_clean defined as true this function
- * will call clean_xss function.
+ * Clean data.
+ * if xss_clean is true this function will call clean_xss function.
  * 
  * @access public
  * @param mixed data to clean
  * @return mixed
  */
  public function clean_data($data) {
- 	/* 
- 	 * Call this function recursively
- 	 * if $data argument is array.
+ 	
+	/* 
+ 	 * Call this function recursively if $data argument is array.
  	 */
  	if(is_array($data)) {
 		$tmp_arr = array();
@@ -310,12 +295,12 @@ class filter_lib {
 		
 		return $data;
 	} // end if is_string
+	
 } // end func clean_data
 
 /**
  * Clean data for Cross Site Scripting Hacks.
- * If second argument $clean tags is false, 
- * then will not remove any html tags.
+ * Do not remove any html tags if second argument $clean_tags is false.
  *  
  * @access public
  * @param mixed data to clean
@@ -325,8 +310,7 @@ class filter_lib {
  function clean_xss($data, $clean_tags = false) {
  	
  	/* 
- 	 * Call this function recursively
- 	 * if $data argument is array.
+ 	 * Call this function recursively if $data argument is array.
  	 */
  	if(is_array($data)) {
 		$tmp_arr = array();
@@ -368,17 +352,13 @@ class filter_lib {
 			/* Strip any html tag */
 			$data = $this->strip_tags($data);
 		
-			/* Covert < and > to and */
-			//$data = str_replace(array('<', '>'), array('&lt;', '&gt;'), $data);
-		
 		} else { 
 	
 			/* Remove any attribute starting with "on*" or "xmlns" */
 			$data = $this->strip_attributes($data);
 	
 			/* 
-	 	 	 * Remove some elements which we definitively don't 
-	 	 	 * want in something like user comments.
+	 	 	 * Remove elements which in something like user comments.
 	 	  	 */
 			do {
     			$old_data = $data;
@@ -399,7 +379,8 @@ class filter_lib {
 		} // end if clean tags
 	
 		return $data;
- 	} // end if is_tring(data) 	
+ 	} // end if is_tring(data)
+	
  } // end func clean_xss
 
 /**
@@ -417,8 +398,7 @@ class filter_lib {
  } // end func clean_source
 
 /**
- * Return cleaned text with new lines
- * for each application run mode
+ * Return cleaned text with new lines for each application run mode.
  * 
  * @access public
  * @param string
@@ -434,19 +414,13 @@ class filter_lib {
  				$data); 
  	} else {
  		return nl2br($data);
- 		/*
- 		return str_replace(
- 				array("\n", "\n\r", "\r\n", "\r"), 
- 				"<br />", 
- 				$data);
- 		*/		 
  	}
  	
  } // end func clean_nl
   
 /**
  * Clean string as a-z, A-Z, 0-9.
- * pass chars defined in $allowed_chars array.
+ * Allow chars defined in $allowed_chars array.
  * 
  * @access public
  * @param mixed data to clean
@@ -466,6 +440,7 @@ class filter_lib {
 	}
 	
 	return preg_replace("#[^a-z0-9A-Z".$chars_str."]#", '', $data);
+	
 } // end func strip_chars
 
 /**
@@ -493,8 +468,7 @@ class filter_lib {
  
 /**
  * Strip image tags.
- * If $keep_src is true, then keep 
- * image source string.
+ * Allow image source if $keep_src is true.
  * 
  * @access public
  * @param string data to strip
@@ -508,6 +482,7 @@ class filter_lib {
 	}
 	
 	return preg_replace('#<img\s.*?(?:src\s*=\s*["\']?([^"\'<>\s]*)["\']?[^>]*)?>#is', $src_str, $data);
+	
  } // end func strip_image_tags
 
 /**
@@ -549,12 +524,6 @@ class filter_lib {
 /**
  * Strip any script definition.
  * 
- * We detected the issue in libraries of some frameworks, 
- * where the single script definition <script> not stripped 
- * by function similar to this. So in this case, users can 
- * not corrupt html content writing <script>. It also will 
- * be stripped in this function.
- * 
  * @access public
  * @param string data to strip
  * @return string
@@ -567,15 +536,13 @@ class filter_lib {
 	$data = preg_replace('@<\?php[^>]*.*?\?>@si', '', $data);
 	$data = preg_replace('@<\?[^>]*.*?\?>@si', '', $data);
 	
-	//$data = str_replace(array('<?php', '<?'), '', $data);
-	
 	return $data;
+	
  } // end func strip_scripts
 
 /**
  * Strip comments.
- * If second argument is true, then 
- * will delete non html comments
+ * Delete non html comments also if second argument is true.
  * 
  * <!-- ... -->
  * /*  * /
@@ -585,6 +552,7 @@ class filter_lib {
  * @return string
  */
  public function strip_comments($data, $non_html = true) {
+	
 	/* remove html comments */
 	$data = preg_replace('@<![\s\S]*?--[ \t\n\r]*>@', '', $data);
 	
@@ -594,6 +562,7 @@ class filter_lib {
 	}
 	
 	return $data;
+	
  } // end func strip_comments
 
 /**
@@ -615,8 +584,10 @@ class filter_lib {
  * @return string
  */
  public function strip_whitespaces($data) {
+
 	$data = preg_replace('/[\n\r\t]+/', '', $data);
 	return preg_replace('/\s{2,}/', ' ', $data);
+	
  } // end func strip_whitespaces
  
 /**
@@ -672,26 +643,38 @@ class filter_lib {
  } // end func decode_html_entities
 
 /**
- * Return data from $_POST global array
+ * Get, clean global vars
  * 
- * @access public
- * @param string item name
+ * @access protected
+ * @param global index string
+ * @param mixed item name = NULL
  * @param bool clean xss = false
  * @param bool strip html tags in xss func.
- * @return string
+ * @return mixed
  */ 
- public function post($item, $encode_html_entities = true, $clean_xss = false, $strip_tags = false) {
- 	
- 	if(!isset($_POST[$item])) {
+ protected function get_globals($global_index, $item = NULL, $encode_html_entities = true, $clean_xss = false, $strip_tags = false) {
+	
+	if(!isset($GLOBALS[$global_index])) {
+		trigger_error($global_index . ' not defined.', E_USER_WARNING);
+	}
+	
+	// Item not exists
+	if(!is_null($item) and !isset($GLOBALS[$global_index][$item])) {
  		return false;
  	}
- 	
- 	$data = $_POST[$item];
- 	
+	
+	if(is_null($item)) {
+		// Will return array
+		$data = $GLOBALS[$global_index];
+	} else {
+		// Will return item from array
+	  	$data = $GLOBALS[$global_index][$item];
+ 	}
+	
  	if($clean_xss == true) {
- 	   $data = $this->clean_xss($data, $strip_tags); 
+		$data = $this->clean_xss($data, $strip_tags); 
  	} elseif ($strip_tags == true) {
-		$data = strip_tags($data); 
+		$data = strip_tags($data);
  	}
  	
  	if($encode_html_entities == true) {
@@ -699,96 +682,106 @@ class filter_lib {
  	}
  	
  	return $data;
- 	
+		 
+ } // End func get_globals
+ 
+/**
+ * Return cleaned _POST array or array item
+ * 
+ * @access public
+ * @param mixed item name = NULL
+ * @param bool encode html entities = true
+ * @param bool clean xss = false
+ * @param bool strip html tags in xss func
+ * @return mixed
+ */ 
+ public function post($item = NULL, $encode_html_entities = true, $clean_xss = false, $strip_tags = false) {
+	return $this->get_globals('_POST', $item, $encode_html_entities, $clean_xss, $strip_tags);
  } // end func post 
 
 /**
- * Return data from $_REQUEST global array
+ * Return cleaned _REQUEST array or array item
  * 
  * @access public
- * @param string item name
+ * @param mixed item name = NULL
+ * @param bool encode html entities = true
  * @param bool clean xss = false
- * @param bool strip html tags in xss func.
- * @return string
+ * @param bool strip html tags in xss func
+ * @return mixed
  */ 
- public function request($item, $clean_xss = false, $strip_tags = false) {
- 	
-	if(!isset($_REQUEST[$item])) {
- 		return false;
- 	}
- 	
- 	if($clean_xss == true) {
- 	   return $this->clean_xss($_REQUEST[$item], $strip_tags); 
- 	} else {
- 	   return $_REQUEST[$item];
- 	}
+ public function request($item = NULL, $encode_html_entities = true, $clean_xss = false, $strip_tags = false) {
+ 	return $this->get_globals('_REQUEST', $item, $encode_html_entities, $clean_xss, $strip_tags);
  } // end func request
  
 /**
- * Return data from $_COOKIE global array
+ * Return cleaned _COOKIE array or array item
  * 
  * @access public
- * @param string item name
+ * @param mixed item name = NULL
+ * @param bool encode html entities = true
  * @param bool clean xss = false
- * @param bool strip html tags in xss func.
- * @return string
+ * @param bool strip html tags in xss func
+ * @return mixed
  */ 
- public function cookie($item, $clean_xss = false, $strip_tags = false) {
- 	
-	if(!isset($_COOKIE[$item])) {
- 		return false;
- 	}
- 	
- 	if($clean_xss == true) {
- 	   return $this->clean_xss($_COOKIE[$item], $strip_tags); 
- 	} else {
- 	   return $_COOKIE[$item];
- 	}
+ public function cookie($item = NULL, $encode_html_entities = true, $clean_xss = false, $strip_tags = false) {
+ 	return $this->get_globals('_COOKIE', $item, $encode_html_entities, $clean_xss, $strip_tags);
  } // end func cookie
 
  /**
- * Return data from $_FILES global array
+ * Return cleaned _FILES array or array item
  * 
  * @access public
- * @param string item name
+ * @param mixed item name = NULL
+ * @param bool encode html entities = true
  * @param bool clean xss = false
- * @param bool strip html tags in xss func.
- * @return string
+ * @param bool strip html tags in xss func
+ * @return mixed
  */ 
- public function files($item, $clean_xss = false, $strip_tags = false) {
- 	
-	if(!isset($_FILES[$item])) {
- 		return false;
- 	}
- 	
- 	if($clean_xss == true) {
- 	   return $this->clean_xss($_FILES[$item], $strip_tags); 
- 	} else {
- 	   return $_FILES[$item];
- 	}
+ public function files($item = NULL, $encode_html_entities = true, $clean_xss = false, $strip_tags = false) {
+ 	return $this->get_globals('_FILES', $item, $encode_html_entities, $clean_xss, $strip_tags);
  } // end func files
 
 /**
- * Return data from $_SERVER global array
+ * Return cleaned _SERVER array or array item
  * 
  * @access public
- * @param string item name
+ * @param mixed item name = NULL
+ * @param bool encode html entities = true
  * @param bool clean xss = false
- * @param bool strip html tags in xss func.
- * @return string
+ * @param bool strip html tags in xss func
+ * @return mixed
  */ 
- public function server($item, $clean_xss = false, $strip_tags = false) {
- 	
-	if(!isset($_SERVER[$item])) {
- 		return false;
- 	}
- 	
- 	if($clean_xss == true) {
- 	   return $this->clean_xss($_SERVER[$item], $strip_tags); 
- 	} else {
- 	   return $_SERVER[$item];
- 	}
- } // end func server  
+ public function server($item = NULL, $encode_html_entities = true, $clean_xss = false, $strip_tags = false) {
+ 	return $this->get_globals('_SERVER', $item, $encode_html_entities, $clean_xss, $strip_tags);
+ } // end func server
+ 
+/**
+ * Return cleaned _SESSION array or array item
+ * 
+ * @access public
+ * @param mixed item name = NULL
+ * @param bool encode html entities = true
+ * @param bool clean xss = false
+ * @param bool strip html tags in xss func
+ * @return mixed
+ */ 
+ public function session($item = NULL, $encode_html_entities = true, $clean_xss = false, $strip_tags = false) {
+ 	return $this->get_globals('_SESSION', $item, $encode_html_entities, $clean_xss, $strip_tags);
+ } // end func server
+ 
+/**
+ * Return cleaned argv array or array item
+ * 
+ * @access public
+ * @param mixed item name = NULL
+ * @param bool encode html entities = true
+ * @param bool clean xss = false
+ * @param bool strip html tags in xss func
+ * @return mixed
+ */ 
+ public function argv($item = NULL, $encode_html_entities = true, $clean_xss = false, $strip_tags = false) {
+ 	return $this->get_globals('argv', $item, $encode_html_entities, $clean_xss, $strip_tags);
+ } // end func server 
  
 /* End of class filter_lib */
 }

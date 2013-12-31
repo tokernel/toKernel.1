@@ -65,7 +65,7 @@ RewriteEngine On
 #           RewriteBase /~your_username/mysite/
 #
 # configured with option 2
-RewriteBase /tokernel
+RewriteBase /toKernel.1
 
 # Rewrite conditions configuration
 RewriteCond %{REQUEST_FILENAME} !-f

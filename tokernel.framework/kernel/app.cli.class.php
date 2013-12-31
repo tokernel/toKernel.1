@@ -163,6 +163,7 @@ class app extends app_core {
 /**
  * Return id of called addon from cli library
  * 
+ * @deprecated
  * @access public
  * @return string
  */ 
@@ -180,6 +181,7 @@ public function id_addon() {
 /**
  * Return called action for addon from cli library
  * 
+ * @deprecated
  * @access public
  * @return string
  */
@@ -198,6 +200,7 @@ public function action() {
  * Return command line argument by item from cli library.
  * If item is null, then return array of arguments.
  * 
+ * @deprecated
  * @access public
  * @param item $item
  * @return mixed
@@ -219,6 +222,7 @@ public function params($item = NULL) {
 /**
  * Return count of command line arguments
  * 
+ * @deprecated
  * @access public
  * @return integer
  */
@@ -229,6 +233,7 @@ public function params_count() {
 /**
  * Return alias from cli library
  * 
+ * @deprecated
  * @access public
  * @return string
  */
@@ -354,7 +359,7 @@ public function alias() {
  } // end func set_language
 
 /**
- * This method dfined in app.http.class.php
+ * This method defined in app.http.class.php
  * 
  * @access public
  * @param string $mode frontend | backend

@@ -24,7 +24,7 @@
  * @author     toKernel development team <framework@tokernel.com>
  * @copyright  Copyright (c) 2013 toKernel
  * @license    http://www.gnu.org/copyleft/gpl.html GNU Public License
- * @version    2.2.0
+ * @version    2.2.1
  * @link       http://www.tokernel.com
  * @since      File available since Release 1.0.0
  */
@@ -552,12 +552,16 @@ class url_lib {
 		/* Clean key name */
 		$arr[$i] = $this->lib->filter->strip_chars($arr[$i], array('-', '_', '.', ' '));
 		
+		$param_val = '';
+		
 		if(isset($arr[$i+1])) {
-			$ret_arr[$arr[$i]] = $arr[$i+1];
-		} else {
-			$ret_arr[$arr[$i]] = '';
+			$param_val = $arr[$i+1];
 		}
-
+		
+		if($arr[$i] != '') {
+			$ret_arr[$arr[$i]] = $param_val;
+		}
+		
 	} // end for
 
 	return $ret_arr;
@@ -629,7 +633,9 @@ class url_lib {
  	
  	if(count($params_arr) > 0) {
  		foreach($params_arr as $param => $value) {
- 			$url .= $param . '/' . $value . '/';
+ 			if($value != '') {
+				$url .= $param . '/' . $value . '/';
+			}	
  		}
  	}
  	

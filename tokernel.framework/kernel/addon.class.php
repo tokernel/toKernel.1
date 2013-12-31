@@ -1,8 +1,7 @@
 <?php
 /**
  * toKernel - Universal PHP Framework.
- * Parent addon class for addons. All addon classes 
- * must to be inherited this, for correct functionality.
+ * Parent addon class for addons.
  * 
  * This file is part of toKernel.
  *
@@ -25,7 +24,7 @@
  * @author     toKernel development team <framework@tokernel.com>
  * @copyright  Copyright (c) 2013 toKernel
  * @license    http://www.gnu.org/copyleft/gpl.html GNU Public License
- * @version    3.2.0
+ * @version    3.3.0
  * @link       http://www.tokernel.com
  * @since      File available since Release 1.0.0
  * 
@@ -38,7 +37,7 @@ defined('TK_EXEC') or die('Restricted area.');
 /**
  * addon class
  *  
- * @author David Ayvazyan <tokernel@gmail.com>
+ * @author David A. <tokernel@gmail.com>
  */
 abstract class addon {
 
@@ -76,6 +75,14 @@ abstract class addon {
  */ 
  protected $config;
  
+/**
+ * Addon allowed actions and params
+ * 
+ * @access protected
+ * @var object 
+ */ 
+ protected $actions;
+		 
 /**
  * Addon log instance
  * 
@@ -124,7 +131,7 @@ abstract class addon {
 	
  	$this->params = $params;
 	$this->config = $config;
-	
+		
 	/* Define addon id */
  	$tmp_id = get_class($this);
  	
@@ -135,7 +142,7 @@ abstract class addon {
  	}
  	
  	/* Define loaded path */
- 	$app_addon_lib = TK_CUSTOM_PATH . 'addons' . TK_DS .  
+ 	$app_addon_lib = TK_CUSTOM_PATH . 'addons' . TK_DS . 
 	                                  $this->id . TK_DS . 'lib' . TK_DS .  
 	                                  $this->id . '.addon.php';
 	if(is_file($app_addon_lib)) {
@@ -157,7 +164,23 @@ abstract class addon {
      					),
      					'Addon: '. $this->id,
 						true);
-						
+	
+	/* Addon actions/params configuration file */
+	$addon_custom_actions_file = TK_CUSTOM_PATH . 'addons' . TK_DS . $this->id . 
+						  		TK_DS . 'config' . TK_DS . 'actions.ini';  
+	
+	$addon_tk_actions_file = TK_PATH . 'addons' . TK_DS . $this->id . 
+						  	TK_DS . 'config' . TK_DS . 'actions.ini';
+	
+	// Load if exists
+	if(is_file($addon_custom_actions_file)) {
+		$this->actions = $this->lib->ini->instance($addon_custom_actions_file, NULL, false);
+	} elseif(is_file($addon_tk_actions_file)) {
+		$this->actions = $this->lib->ini->instance($addon_tk_actions_file, NULL, false);
+	} else {
+		$this->actions = NULL;
+	}
+	
  } // end constructor
 
 /**
@@ -645,7 +668,99 @@ abstract class addon {
  	
  	return true;
  }
-  
+ 
+/**
+ * Check params count (min/max) if action in actions.ini exists
+ * 
+ * @access public
+ * @param string $action
+ * @param int $params_count
+ * @return bool
+ * @since 3.3.0
+ */
+ public function params_count_allowed($action, $params_count) {
+	 
+	 if(!is_object($this->actions)) {
+		 return true;
+	 }
+	 
+	 $action_section = $this->actions->section_get($action);
+	 
+	 if(isset($action_section['params_min'])) {
+		 if($params_count < $action_section['params_min']) {
+			 return false;
+		 }
+	 }
+	 
+	 if(isset($action_section['params_max'])) {
+		 if($params_count > $action_section['params_max']) {
+			 return false;
+		 }
+	 }
+	 	 
+	 return true;
+	 
+ } // End func params_count_allowed
+ 
+/**
+ * Check params if action in actions.ini exists
+ * 
+ * @access public
+ * @param string $action
+ * @param int $params_count
+ * @return bool
+ * @since 3.3.0
+ */
+ public function params_allowed($action, $params_arr) {
+	 
+	 if(!is_object($this->actions)) {
+		 return true;
+	 }
+	 
+	 $action_section = $this->actions->section_get($action);
+	 
+	 if(!isset($action_section['params'])) {
+		 return true;
+	 }
+	
+	 if($action_section['params'] == '') {
+		 return true;
+	 }
+	 
+	 $allowed_params = explode('|', $action_section['params']);
+		 
+	 foreach($params_arr as $param) {
+		 if(!in_array($param, $allowed_params)) {
+			 return false;
+		 }
+	 }
+
+	 return true;
+	 
+ } // End func params_allowed
+ 
+/**
+ * Check action if exists in actions.ini
+ * 
+ * @access public
+ * @param string $action
+ * @return bool
+ * @since 3.3.0
+ */
+ public function action_allowed($action) {
+	 
+	 if(!is_object($this->actions)) {
+		 return true;
+	 }
+	 
+	 if(!$this->actions->section_exists($action)) {
+		 return false;
+	 }
+	 
+	 return true;
+	 
+ } // End func action_allowed
+ 
 /**
  * Exception for not creating function 
  * 'action_' in any addon class
