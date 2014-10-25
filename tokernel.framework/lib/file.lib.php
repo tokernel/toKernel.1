@@ -24,7 +24,7 @@
  * @author     toKernel development team <framework@tokernel.com>
  * @copyright  Copyright (c) 2013 toKernel
  * @license    http://www.gnu.org/copyleft/gpl.html GNU Public License
- * @version    1.3.4
+ * @version    1.3.5
  * @link       http://www.tokernel.com
  * @since      File available since Release 1.0.0
  */
@@ -94,7 +94,7 @@ class file_lib {
     
     /* Strip chars expect -, _, . */
 	$file_name = $this->lib->filter->strip_chars($file_name, 
-													array('-', '_', '.'));
+													array('-', '_', '.', ' '));
 
 	if($this->ext($file_name) == '' or $this->strip_ext($file_name) == '') {
 		$file_name = $this->uname() . "." . $this->ext($file_name);
@@ -484,8 +484,14 @@ class file_lib {
  
  	$s = array('bytes', 'kb', 'MB', 'GB', 'TB', 'PB');
     $e = floor(log($bytes) / log(1024));
- 
-    $size = sprintf('%.2f '.$s[$e], ($bytes / pow(1024, floor($e))));
+	
+	$pw_ = pow(1024, floor($e));
+	
+	if($pw_ > 0) {
+		$size = sprintf('%.2f '.$s[$e], ($bytes / $pw_));
+	} else {
+		$size = 0 . ' bytes';
+	}	
  
     return $size;
 

@@ -216,7 +216,7 @@ class template_lib {
  public function file_path($template = NULL) {
 	
  	if(is_null($template)) {
-		$template = $this->app->action();
+		$template = $this->lib->url->action();
 	}
 	
 	$template_file = $template . '.tpl.php';
@@ -301,9 +301,9 @@ class template_lib {
 			if($tmp_addon_data_arr['id_addon'] == '__THIS__') {
 		     	
 				tk_e::log_debug('Appending (main) addon result of __THIS__ ' . 
-		    					$this->app->id_addon() . '->' . 
-		    					$this->app->action(). '('.implode(', ', 
-		    					$this->app->params()).') ' . 
+		    					$this->lib->url->id_addon() . '->' .
+		    					$this->lib->url->action(). '('.implode(', ',
+		    					$this->lib->url->params()).') ' .
 		    					$tmp_addon_data_arr['action'] . '.',
 		    					get_class($this) . '->' . __FUNCTION__);	
 								
@@ -357,7 +357,7 @@ class template_lib {
 } // end func interpret
  
 /**
- * Run addon->method by widget defination and return buffer of result.
+ * Run addon->method by widget definition and return buffer of result.
  * 
  * @access public
  * @param array $tmp_addon_data_arr
@@ -393,7 +393,10 @@ class template_lib {
 	    trigger_error('Addon `'.$tmp_addon_data_arr['id_addon'].'` ' . 
 	    			  'is not an object to call in ' . __CLASS__ . 
 	    			  '->' . __FUNCTION__.'() !', E_USER_WARNING);
-
+	/*
+	 * 
+	 * Commented this part, because of possible _call cases.
+	 * 
 	} elseif(!method_exists($addon, $tmp_addon_data_arr['action'])) {
 
 		tk_e::log_debug('Method `' . $tmp_addon_data_arr['id_addon'] . 
@@ -405,7 +408,7 @@ class template_lib {
 					  '->' . $tmp_addon_data_arr['action'].'()` ' . 
 					  'not exists to call in '.__CLASS__ . '->' . 
 				  	  __FUNCTION__.'() !', E_USER_WARNING);
-							
+	*/						
 	} else {
 			
 		ob_start();

@@ -24,7 +24,7 @@
  * @author     toKernel development team <framework@tokernel.com>
  * @copyright  Copyright (c) 2013 toKernel
  * @license    http://www.gnu.org/copyleft/gpl.html GNU Public License
- * @version    1.2.0
+ * @version    1.3.0
  * @link       http://www.tokernel.com
  * @since      File available since Release 1.0.0
  */
@@ -344,6 +344,44 @@ class valid_lib {
  	
 } // End func required
  
+/**
+ * Check is valid url
+ * 
+ * @access public
+ * @param string $data
+ * @return boolean 
+ * @since 1.3.0
+ */
+ public function url($data) {
+	
+	if(!preg_match("/\b(?:(?:https?|ftp):\/\/|www\.)[-a-z0-9+&@#\/%?=~_|!:,.;]*[-a-z0-9+&@#\/%=~_|]/i",$data)) {
+		return false;
+	}
+	
+	return true;
+	
+ } // Endfunc url
+ 
+/**
+ * Check valid ISO date
+ * 
+ * @access public
+ * @param string $data
+ * @return bool
+ * @since 1.3.0
+ */ 
+ function date_iso($data) {
+	 
+	$time = strtotime($data);
+  
+	if(date('Y-m-d', $time) == $data) {
+		return true;
+	} else {
+		return false;
+	}
+	 
+ } // End func date_iso
+
 /* End class valid_lib */
 }
 

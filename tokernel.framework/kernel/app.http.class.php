@@ -25,7 +25,7 @@
  * @author     toKernel development team <framework@tokernel.com>
  * @copyright  Copyright (c) 2013 toKernel
  * @license    http://www.gnu.org/copyleft/gpl.html GNU Public License
- * @version    1.2.5
+ * @version    1.3.0
  * @link       http://www.tokernel.com
  * @since      File available since Release 1.0.0
  */
@@ -477,24 +477,6 @@ class app extends app_core {
  } // end func request_method 
 
 /**
- * Return main callable addon id of application
- * 
- * @deprecated
- * @access public
- * @return string
- */
- public function id_addon() {
-	
-	if(!isset(self::$instance)) {
- 		trigger_error('Application instance is empty ('.__CLASS__.')', 
-	              E_USER_ERROR );
- 	}
-	
-	return $this->lib->url->id_addon();
-
- } // end func id_addon
-
-/**
  * Is Ajax request
  * 
  * @access public
@@ -506,59 +488,6 @@ class app extends app_core {
 					$_SERVER['HTTP_X_REQUESTED_WITH']=="XMLHttpRequest");
  } 
  
-/**
- * Return action of main callable addon
- * 
- * @deprecated
- * @access public
- * @return string
- */ 
- public function action() {
-	
-	if(!isset(self::$instance)) {
- 		trigger_error('Application instance is empty ('.__CLASS__.')', 
-	              E_USER_ERROR );
- 	}
-	
-	return $this->lib->url->action();
-
- } // end func ection
-  
-/**
- * Return application URL parameter by item.
- * if item is null, then return all parameters as array
- * 
- * @deprecated
- * @access public
- * @param string $item
- * @return mixed
- */
- public function params($item = NULL) {
-	
-	if(!isset(self::$instance)) {
- 		trigger_error('Application instance is empty ('.__CLASS__.')', 
-	              E_USER_ERROR );
- 	}
-	
-	if(is_null($item)) {
-		return $this->lib->url->params();
-	}
-	
-	return $this->lib->url->params($item);
-	
- } // end func params
-
-/**
- * Return application URL parameters count
- *
- * @deprecated
- * @access public
- * @return integer
- */ 
- public function params_count() {
-	return $this->lib->url->params_count();
- }
-  
 /**
  * Return template of main addon.
  * 
@@ -594,24 +523,6 @@ class app extends app_core {
 	$this->template = $template;
 	
  } // end func set_template
-
-/**
- * Return alias name if defined.
- * 
- * @deprecated
- * @access public
- * @return string
- */ 
- public function alias() {
-	
-	if(!isset(self::$instance)) {
- 		trigger_error('Application instance is empty ('.__CLASS__.')', 
-	              E_USER_ERROR );
- 	}
-	
-	return $this->lib->url->alias();
-
- } // end func alias
   
 /**
  * Return language value by item
@@ -748,32 +659,49 @@ class app extends app_core {
  * Return application theme name by run mode.
  * 
  * @access public
+ * @param mixed
  * @return string
  */
- public function theme_name() {
- 	return $this->config->item_get($this->get_mode.'.theme', 'HTTP');
+ public function theme_name($mode = NULL) {
+	 
+	if(is_null($mode)) {
+		$mode = $this->get_mode;
+	} 
+	 
+ 	return $this->config->item_get($mode.'.theme', 'HTTP');
  } // end func theme
 
 /**
  * Return application theme path.
  * 
  * @access public
+ * @param mixed
  * @return string
  */
- public function theme_path() {
- 	return TK_CUSTOM_PATH . 'themes' . TK_DS . $this->get_mode() . TK_DS . 
- 			$this->config->item_get($this->get_mode().'.theme', 'HTTP');
+ public function theme_path($mode = NULL) {
+	 
+	if(is_null($mode)) {
+	 	$mode = $this->get_mode();
+	}
+	 
+ 	return TK_CUSTOM_PATH . 'themes' . TK_DS . $mode . TK_DS . 
+ 			$this->config->item_get($mode.'.theme', 'HTTP') . TK_DS;
+
  } // end func theme
  
 /**
  * Return theme url
  * 
  * @access public
+ * @param mixed
  * @return string
  */ 
- public function theme_url() {
+ public function theme_url($mode = NULL) {
  	
-	 $mode = $this->get_mode();
+	 if(is_null($mode)) {
+	 	 $mode = $this->get_mode();
+	 }
+	 
 	 $url = '';
 	 
 	 if(TK_CUSTOM_DIR != '') {

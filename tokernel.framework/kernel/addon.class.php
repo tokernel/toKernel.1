@@ -24,7 +24,7 @@
  * @author     toKernel development team <framework@tokernel.com>
  * @copyright  Copyright (c) 2013 toKernel
  * @license    http://www.gnu.org/copyleft/gpl.html GNU Public License
- * @version    3.3.0
+ * @version    3.3.3
  * @link       http://www.tokernel.com
  * @since      File available since Release 1.0.0
  * 
@@ -225,7 +225,7 @@ abstract class addon {
  * @since 2.0.0
  */
  final public function load_module($id_module, $params = array(), $clone = false) {
-
+	 
 	if(trim($id_module) == '') {
 		trigger_error('Called load_module with empty id_module!', E_USER_ERROR);
 		return false;
@@ -238,9 +238,11 @@ abstract class addon {
     	return false;
 	}
 	
+	$module_index = $this->id . '_' . $id_module;
+	
  	/* Return module object, if it is already laoaded */
-	if(array_key_exists($id_module, self::$loaded_modules) and $clone == false) {
-		return self::$loaded_modules[$id_module];
+	if(array_key_exists($module_index, self::$loaded_modules) and $clone == false) {
+		return self::$loaded_modules[$module_index];
 	}
 	
 	/* Set module filename for application custom dir. */
@@ -262,14 +264,14 @@ abstract class addon {
 	if(is_file($tk_mod_file) and !is_file($app_mod_file)) {
 		require_once($tk_mod_file);
 		$loaded_from_custom = false;
-		$module_class = $id_module . '_module';
+		$module_class = $module_index . '_module';
 	}
 	
 	// case 2. module exists only in application custom dir
 	if(!is_file($tk_mod_file) and is_file($app_mod_file)) {
 		require_once($app_mod_file);
 		$loaded_from_custom = true;
-		$module_class = $id_module . '_module';
+		$module_class = $module_index . '_module';
 	}
 	   
 	// case 3. both exists. inheriting.
@@ -277,7 +279,7 @@ abstract class addon {
 		require_once($tk_mod_file);
 		require_once($app_mod_file);
 		$loaded_from_custom = true;
-		$module_class = $id_module . '_ext_module';
+		$module_class = $module_index . '_ext_module';
 	}
 	
     /* Return false, if module class not exists */
@@ -290,11 +292,11 @@ abstract class addon {
     /* Load new addon object into loaded addons array */
     $module = new $module_class($params, $this->id, 
 										$this->config, 
-    									$this->log,	$this->language, $id_module);
+    									$this->log,	$this->language, $module_index);
     									
     /* Module loaded as singlton and will be appended to loaded modules array */
     if($clone == false) {
-		self::$loaded_modules[$id_module] = $module; 
+		self::$loaded_modules[$module_index] = $module; 
     } 
     
     if(is_array($params)) {
@@ -305,10 +307,10 @@ abstract class addon {
     
     if(!$loaded_from_custom) {
     
-    	tk_e::log_debug('"'.$id_module.'" from framework path with params - "' . 
+    	tk_e::log_debug('"'.$module_index.'" from framework path with params - "' . 
     					$params_ .'"', get_class($this) . '->' . __FUNCTION__);
     } else {
-    	tk_e::log_debug('"'.$id_module.'" from application path with params - "' . 
+    	tk_e::log_debug('"'.$module_index.'" from application path with params - "' . 
     					$params_ .'"', get_class($this) . '->' . __FUNCTION__);
     }				
     
@@ -331,11 +333,11 @@ abstract class addon {
  final public function load_template($template = NULL) {
 	
  	/* 
- 	 * Set template as app->action() 
+ 	 * Set template equal to action name in url.
  	 * if it is null. 
  	 */
  	if(is_null($template)) {
- 		$template = $this->app->action();
+ 		$template = $this->lib->url->action();
  	}
  	
  	$template_file = $this->lib->template->file_path($template);

@@ -274,17 +274,15 @@ public static function show_debug_info() {
 		$output_from_cache = 'No';
 	}
 		
-	if($app->id_addon() != '') { 
-		$addon_action_info = $app->id_addon().'::'.$app->action();
+	if($lib->url->id_addon() != '') {
+		$addon_action_info = $lib->url->id_addon().'::'.$lib->url->action();
 	} else {
 		$addon_action_info = '';
 	}
-	
-	$app_params_count = $app->params_count();
-	
+
 	$app_params = '';
 	
-	foreach($app->params() as $p_k => $p_v) {
+	foreach($lib->url->params() as $p_k => $p_v) {
 		$app_params .= $p_k . '=' . $p_v . TK_NL;
 	}
 	

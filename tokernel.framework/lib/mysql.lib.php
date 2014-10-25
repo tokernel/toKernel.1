@@ -24,7 +24,7 @@
  * @author     toKernel development team <framework@tokernel.com>
  * @copyright  Copyright (c) 2013 toKernel
  * @license    http://www.gnu.org/copyleft/gpl.html GNU Public License
- * @version    1.3.3
+ * @version    2.0.0
  * @link       http://www.tokernel.com
  * @since      File available since Release 1.0.0
  * @todo       Change the count() method functionality.
@@ -186,7 +186,7 @@ class mysql_lib {
  		$this->lib->benchmark->start($uid);
  	}
  	
- 	if(!function_exists('mysql_connect' )) {
+ 	if(!function_exists('mysqli_connect' )) {
  		trigger_error("The MySQL adapter `mysql` is not available.", E_USER_ERROR);
  		return false;
     }
@@ -200,20 +200,24 @@ class mysql_lib {
 		$this->conn_ini['host'] .= ':' . $this->conn_ini['port'];
 	}
 		
- 	$this->conn_res = @mysql_connect($this->conn_ini['host'], 
+ 	$this->conn_res = @mysqli_connect($this->conn_ini['host'], 
  									$this->conn_ini['username'], 
  									$this->conn_ini['password']);
 
 	if(!$this->conn_res) {
-        $this->err_message = mysql_error();
+        $this->err_message = mysqli_error();
         trigger_error($this->err_message, E_USER_ERROR);
         return false;
     }
     
-    if(!mysql_select_db($this->conn_ini['database'], $this->conn_res)) {
-        $this->err_message = mysql_error();
+    if(!mysqli_select_db($this->conn_res, $this->conn_ini['database'])) {
+        $this->err_message = mysqli_error();
         trigger_error($this->err_message, E_USER_ERROR);
         return false;
+    }
+
+    if(isset($this->conn_ini['charset']) and $this->conn_ini['charset']!= '') {
+    	mysqli_set_charset($this->conn_res, $this->conn_ini['charset']);
     }
     
     if($benchmark) {
@@ -245,7 +249,7 @@ class mysql_lib {
  */ 
  public function reconnect($benchmark = false) {
 	
- 	if($this->conn_res and mysql_ping($this->conn_res) === true) {
+ 	if($this->conn_res and mysqli_ping($this->conn_res) === true) {
  		return true;
  	}
  		
@@ -271,7 +275,7 @@ class mysql_lib {
  public function disconnect($benchmark = false) {
 	
  	if($this->conn_res) {
-       mysql_close($this->conn_res);
+       mysqli_close($this->conn_res);
     }
 	
     if($benchmark) {
@@ -319,15 +323,15 @@ class mysql_lib {
 		return false;
 	}
 	
-	$result = mysql_query($query, $this->conn_res);
+	$result = mysqli_query($this->conn_res, $query);
 
     if(!$result) {
-       $this->err_message = mysql_error($this->conn_res);
+       $this->err_message = mysqli_error($this->conn_res);
     }
 	
     if($benchmark) {
 		$this->lib->benchmark->set($uid, 
-					"Affected_rows", mysql_affected_rows($this->conn_res));
+					"Affected_rows", mysqli_affected_rows($this->conn_res));
 		$this->lib->benchmark->set($uid, 
 					"Query", $this->lib->filter->clean_nl($query));
 		$this->lib->benchmark->set($uid, 
@@ -362,22 +366,22 @@ class mysql_lib {
 		return false;
 	}
 
-    @$result = mysql_query($query, $this->conn_res);
+    @$result = mysqli_query($this->conn_res, $query);
     
 	if($result) {
-        $data = mysql_fetch_array($result, MYSQL_NUM);
+        $data = mysqli_fetch_array($result, MYSQL_NUM);
         $data = $data[0];
         
-		@mysql_free_result($result);
+		@mysqli_free_result($result);
 		
     } else {
-        $this->err_message = mysql_error($this->conn_res);
+        $this->err_message = mysqli_error($this->conn_res);
         $data = false;
     } // end if result.
 
     if($benchmark) {
 		$this->lib->benchmark->set($uid, 
-					"Affected_rows", mysql_affected_rows($this->conn_res));
+					"Affected_rows", mysqli_affected_rows($this->conn_res));
 		$this->lib->benchmark->set($uid, 
 					"Result", htmlspecialchars($data));
 		$this->lib->benchmark->set($uid, 
@@ -410,22 +414,22 @@ class mysql_lib {
 	$ret_arr = false;
 	
  	if(!$this->reconnect($benchmark)) {
-		$this->err_message = mysql_error($this->conn_res);
+		$this->err_message = mysqli_error($this->conn_res);
 		return false;
 	}
  
-    @$result = mysql_query($query, $this->conn_res);
+    @$result = mysqli_query($this->conn_res, $query);
  
     if(!$result) {
-		$this->err_message = mysql_error($this->conn_res);
+		$this->err_message = mysqli_error($this->conn_res);
     } else {
-		$ret_arr = mysql_fetch_row($result);
-		mysql_free_result($result);
+		$ret_arr = mysqli_fetch_row($result);
+		mysqli_free_result($result);
 	}
     
     if($benchmark) {
 		$this->lib->benchmark->set($uid, 
-					"Affected_rows", mysql_affected_rows($this->conn_res));
+					"Affected_rows", mysqli_affected_rows($this->conn_res));
 		
 		if(is_array($ret_arr)) {
 			$this->lib->benchmark->set($uid, 
@@ -465,22 +469,22 @@ class mysql_lib {
 	$ret_arr = false;
 	
  	if(!$this->reconnect($benchmark)) {
-		$this->err_message = mysql_error($this->conn_res);
+		$this->err_message = mysqli_error($this->conn_res);
 		return false;
 	}
 
-    @$result = mysql_query($query, $this->conn_res);
+    @$result = mysqli_query($this->conn_res, $query);
  
     if(!$result) {
-		$this->err_message = mysql_error($this->conn_res);
+		$this->err_message = mysqli_error($this->conn_res);
 	} else {
-		$ret_arr = mysql_fetch_assoc($result);
-	    mysql_free_result($result);
+		$ret_arr = mysqli_fetch_assoc($result);
+	    mysqli_free_result($result);
 	}
 
     if($benchmark) {
 		$this->lib->benchmark->set($uid, "Affected_rows", 
-										mysql_affected_rows($this->conn_res));
+										mysqli_affected_rows($this->conn_res));
 		
 		if(is_array($ret_arr)) {
 			$this->lib->benchmark->set($uid, "Count", count($ret_arr));
@@ -519,27 +523,27 @@ class mysql_lib {
 	$ret_arr = false;
 	
 	if(!$this->reconnect($benchmark)) {
-		$this->err_message = mysql_error($this->conn_res);
+		$this->err_message = mysqli_error($this->conn_res);
 		return false;
 	}
 
-	@$result = mysql_query($query, $this->conn_res);
+	@$result = mysqli_query($this->conn_res, $query);
  
 	if(!$result) {
-		$this->err_message = mysql_error($this->conn_res);
+		$this->err_message = mysqli_error($this->conn_res);
 	} else {
 		$ret_arr = array();
 		
-		while($row = mysql_fetch_assoc($result)) {
+		while($row = mysqli_fetch_assoc($result)) {
 			$ret_arr[] = $row;
 		}
 		
-		mysql_free_result($result);
+		mysqli_free_result($result);
 	}
 	
 	if($benchmark) {
 		$this->lib->benchmark->set($uid, "Affected_rows", 
-										mysql_affected_rows($this->conn_res));
+										mysqli_affected_rows($this->conn_res));
 		
 		if(is_array($ret_arr)) {
 			$this->lib->benchmark->set($uid, "Records", count($ret_arr));
@@ -575,23 +579,23 @@ class mysql_lib {
 	}
 	
  	if(!$this->reconnect($benchmark)) {
-		$this->err_message = mysql_error($this->conn_res);
+		$this->err_message = mysqli_error($this->conn_res);
 		return false;
 	}
  
-    @$result = mysql_query($query, $this->conn_res);
+    @$result = mysqli_query($this->conn_res, $query);
  
     if(!$result) {
-		$this->err_message = mysql_error($this->conn_res);
+		$this->err_message = mysqli_error($this->conn_res);
 		return false;
     }
 
-    $ret_obj = mysql_fetch_object($result);
-    mysql_free_result($result);
+    $ret_obj = mysqli_fetch_object($result);
+    mysqli_free_result($result);
     
     if($benchmark) {
 		$this->lib->benchmark->set($uid, 
-					"Affected_rows", mysql_affected_rows($this->conn_res));
+					"Affected_rows", mysqli_affected_rows($this->conn_res));
 		
 		if(is_object($ret_obj)) {
 			$is = 'Yes';
@@ -630,28 +634,28 @@ class mysql_lib {
 	}
 	
  	if(!$this->reconnect($benchmark)) {
-		$this->err_message = mysql_error($this->conn_res);
+		$this->err_message = mysqli_error($this->conn_res);
 		return false;
 	}
  
-    @$result = mysql_query($query, $this->conn_res);
+    @$result = mysqli_query($this->conn_res, $query);
  
     if(!$result) {
-       $this->err_message = mysql_error($this->conn_res);
+       $this->err_message = mysqli_error($this->conn_res);
 	   return false;
     }
 
 	$ret_arr = array();
 	
-	while($obj = mysql_fetch_object($result)) {
+	while($obj = mysqli_fetch_object($result)) {
 		$ret_arr[] = $obj;
 	}
 	
-    mysql_free_result($result);
+    mysqli_free_result($result);
     
     if($benchmark) {
 		$this->lib->benchmark->set($uid, 
-					"Affected_rows", mysql_affected_rows($this->conn_res));
+					"Affected_rows", mysqli_affected_rows($this->conn_res));
 		
 		$this->lib->benchmark->set($uid, 
 					"Query", $this->lib->filter->clean_nl($query));
@@ -737,10 +741,10 @@ class mysql_lib {
 		return false;
 	}
  
-    @$ret_arr = mysql_fetch_assoc($result);
+    @$ret_arr = mysqli_fetch_assoc($result);
     
     if(!$ret_arr) {
-    	$this->err_message = mysql_error($this->conn_res);
+    	$this->err_message = mysqli_error($this->conn_res);
     }
 
     if($benchmark) {
@@ -784,10 +788,10 @@ class mysql_lib {
 		return false;
 	}
  
-    @$ret_obj = mysql_fetch_object($result);
+    @$ret_obj = mysqli_fetch_object($result);
     
     if(!$ret_obj) {
-    	$this->err_message = mysql_error($this->conn_res);
+    	$this->err_message = mysqli_error($this->conn_res);
     }
 
     if($benchmark) {
@@ -824,10 +828,10 @@ class mysql_lib {
 		return false;
 	}
  
-    @$ret_arr = mysql_fetch_row($result);
+    @$ret_arr = mysqli_fetch_row($result);
     
     if(!$ret_arr) {
-    	$this->err_message = mysql_error($this->conn_res);
+    	$this->err_message = mysqli_error($this->conn_res);
     }
     
     if($benchmark) {
@@ -852,6 +856,48 @@ class mysql_lib {
  } // end row
   
 /**
+ * Return Fields count from result resource
+ *
+ * @access public
+ * @param resource $result
+ * @param bool $benchmark
+ * @return integer
+ * @since 1.4.0
+ */
+ public function num_fields($result, $benchmark = false) {
+
+ 	if($benchmark) {
+		$uid = __CLASS__.'::'.__FUNCTION__ . $this->uid(); 
+		$this->lib->benchmark->start($uid);
+	}
+	
+	if(!$this->reconnect($benchmark) or !is_resource($result)) {
+		return false;
+	}
+	
+	@$number = mysqli_num_fields($result);
+    
+	if(!$number) {
+		$this->err_message = mysqli_error($this->conn_res);
+		$number = 0;
+    }
+
+    if($benchmark) {
+		$this->lib->benchmark->set($uid, 
+					"Result resource", $result);
+		$this->lib->benchmark->set($uid, 
+					"Number or fields", $number);
+		$this->lib->benchmark->set($uid, 
+					"Error", $this->err_message);
+		$this->lib->benchmark->end($uid);
+		$this->lib->benchmark->elapsed($uid);
+    }
+    
+    return $number;
+    
+ } // End func num_fields
+ 
+/**
  * Return Rows count from result resource
  *
  * @access public
@@ -870,10 +916,10 @@ class mysql_lib {
 		return false;
 	}
 	
-	@$number = mysql_num_rows($result);
+	@$number = mysqli_num_rows($result);
     
 	if(!$number) {
-		$this->err_message = mysql_error($this->conn_res);
+		$this->err_message = mysqli_error($this->conn_res);
 		$number = 0;
     }
 
@@ -902,10 +948,10 @@ class mysql_lib {
  public function escape($string) {	
  	
  	if($this->reconnect()) {
-		return mysql_real_escape_string($string, $this->conn_res);
+		return mysqli_real_escape_string($this->conn_res, $string);
 	}
 	
-	return mysql_escape_string($string);
+	return mysqli_escape_string($string);
 	
  } // end func escape
  
@@ -937,7 +983,7 @@ class mysql_lib {
 		$this->lib->benchmark->elapsed($uid);
     }
  
-	return mysql_free_result($result);
+	return mysqli_free_result($result);
 	
  } // end object  
 
@@ -959,7 +1005,7 @@ class mysql_lib {
 		return false;
 	}
 	
-	$id = mysql_insert_id($this->conn_res);
+	$id = mysqli_insert_id($this->conn_res);
 	
 	if($benchmark) {
 		$this->lib->benchmark->set($uid, 
@@ -986,7 +1032,7 @@ class mysql_lib {
 		return false;
 	}
 	
-	return mysql_affected_rows($this->conn_res);
+	return mysqli_affected_rows($this->conn_res);
 	
  } // end func affected_rows 
 
@@ -1001,7 +1047,7 @@ class mysql_lib {
 	if($benchmark) {
 		$uid = __CLASS__.'::'.__FUNCTION__ . $this->uid();
 		$this->lib->benchmark->set($uid, 
-					"MySQL Error", mysql_error($this->conn_res));
+					"MySQL Error", mysqli_error($this->conn_res));
 		$this->lib->benchmark->set($uid, 
 					'$this->error', $this->err_message);
     }

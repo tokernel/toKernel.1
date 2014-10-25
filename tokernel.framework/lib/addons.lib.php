@@ -25,7 +25,7 @@
  * @author     toKernel development team <framework@tokernel.com>
  * @copyright  Copyright (c) 2013 toKernel
  * @license    http://www.gnu.org/copyleft/gpl.html GNU Public License
- * @version    1.0.4
+ * @version    1.0.5
  * @link       http://www.tokernel.com
  * @since      File available since Release 1.0.0
  */
@@ -289,6 +289,8 @@ class addons_lib {
 
  	$addons = array_merge($tk_addons, $app_addons);
  	
+	sort($addons);
+	
  	return $addons;
  } 
  

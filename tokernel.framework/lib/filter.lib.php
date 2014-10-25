@@ -1,6 +1,6 @@
 <?php
 /**
- * toKernel- Universal PHP Framework.
+ * toKernel - Universal PHP Framework.
  * Data filtering class library.
  * 
  * This file is part of toKernel.
@@ -24,7 +24,7 @@
  * @author     toKernel development team <framework@tokernel.com>
  * @copyright  Copyright (c) 2013 toKernel
  * @license    http://www.gnu.org/copyleft/gpl.html GNU Public License
- * @version    1.3.0
+ * @version    1.4.0
  * @link       http://www.tokernel.com
  * @since      File available since Release 1.0.0
  */
@@ -418,6 +418,58 @@ class filter_lib {
  	
  } // end func clean_nl
   
+/**
+ * Clean any string to preperly url
+ * 
+ * @access public
+ * @param string $data
+ * @param mixed (array | null)
+ * @return string
+ * @since 1.4.0
+ */
+ public function clean_url_string($data) {
+	 
+	 $allowed_chars = array('.', '-', '_');
+	 $allowed_lets = range('a', 'z');
+	 $allowed_nums = array('0','1','2','3','4','5','6','7','8','9');
+	 	 
+	 $allowed_all = array_merge($allowed_chars, $allowed_lets, $allowed_nums);
+	 
+	 $max = 254;
+	 $new = '';
+	 	 
+	 $data = str_replace(array("\r\n", "\r", "\n"), '', $data);
+	 $data = strtolower($data);
+	 $data = trim($data);
+	 
+	 $len = strlen($data);
+	 
+	 for($i = 0; $i < $len; $i++) {
+		
+		 $l = substr($data, $i, 1);
+		 
+		 if($l == ' ') {
+			 $l = '-';
+		 }
+		 		 
+		 if(in_array($l, $allowed_all, true)) {
+			 $new .= $l;
+		 } 
+		 
+	 } // End for
+	 
+	 $new = str_replace('---', '-', $new);
+	 $new = str_replace('--', '-', $new);
+	 
+	 $new = substr($new, 0, $max);
+	 
+	 $new = trim($new);
+	 $new = trim($new, '-');
+	 
+	 return $new;
+	 
+ } // End func clean_url_string
+ 
 /**
  * Clean string as a-z, A-Z, 0-9.
  * Allow chars defined in $allowed_chars array.

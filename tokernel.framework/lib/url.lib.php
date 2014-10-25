@@ -24,7 +24,7 @@
  * @author     toKernel development team <framework@tokernel.com>
  * @copyright  Copyright (c) 2013 toKernel
  * @license    http://www.gnu.org/copyleft/gpl.html GNU Public License
- * @version    2.2.1
+ * @version    2.3.0
  * @link       http://www.tokernel.com
  * @since      File available since Release 1.0.0
  */
@@ -87,6 +87,8 @@ class url_lib {
 			'template' => '',
 			'mode' => TK_FRONTEND,
 			'backend_dir' => '',
+			'parse_mode' => '',
+			'parts' => array()
 	);
 
 	self::$initialized = false;
@@ -139,7 +141,10 @@ class url_lib {
  			break; 
  		case 'params_count':
  			return count($this->url_arr['params']); 
- 			break;	
+ 			break;
+		case 'parts':
+			return $this->url_arr['parts'];
+			break;
  		case 'template':
  			return $this->url_arr['template']; 
  			break;	
@@ -152,6 +157,10 @@ class url_lib {
  		case 'http_get_var':
  			return $this->url_arr['http_get_var']; 
  			break;
+		case 'parse_mode':
+			return $this->url_arr['parse_mode'];
+			break;
+		
  	}  // end switch
  	
  	if(isset($this->url_arr['params'][$item])) {
@@ -184,6 +193,8 @@ class url_lib {
  	tk_e::log_debug('Start with query string - "' . $_SERVER['QUERY_STRING'].'"' 
  								, __CLASS__ . '->' . __FUNCTION__);
  	
+	$this->url_arr['parse_mode'] = $config_arr['http_params_mode'];
+	
  	$this->url_arr['http_get_var'] = $config_arr['http_get_var'];
  								
  	/* Get base url by default if not specified */
@@ -310,7 +321,9 @@ class url_lib {
 	/* Set id_addon if defined in query string, else set from config */
 	if(isset($query_string_arr[0]) and $query_string_arr[0] != '' and 
 		$this->url_arr['id_addon'] == '') {
-
+		
+		$this->url_arr['parts'][] = $query_string_arr[0];
+		
 		$this->url_arr['id_addon'] = $query_string_arr[0];
 		array_shift($query_string_arr);
 	
@@ -331,7 +344,9 @@ class url_lib {
 	/* Set action if defined in query string, else, set from config */
 	if(isset($query_string_arr[0]) and $query_string_arr[0] != '' and 
 		$this->url_arr['action'] == '') {
-			 	
+		
+		$this->url_arr['parts'][] = $query_string_arr[0];
+		
 		$this->url_arr['action'] = $query_string_arr[0];
 		$this->url_arr['template'] = $this->url_arr['id_addon'] . 
 									 '.' . $this->url_arr['action'];
@@ -376,6 +391,13 @@ class url_lib {
 			$url_params_arr = $this->parse_params_assoc($query_string_arr); 	
 		} else {
 			$url_params_arr = $query_string_arr;
+			
+			foreach($query_string_arr as $part) {
+				if($part != '') {
+					$this->url_arr['parts'][] = $part;
+				}	
+			}
+			
 		}
 		
 		/* Set optional parameters from url */ 
@@ -559,6 +581,10 @@ class url_lib {
 		}
 		
 		if($arr[$i] != '') {
+			
+			$this->url_arr['parts'][] = $arr[$i];
+			$this->url_arr['parts'][] = $param_val;
+			
 			$ret_arr[$arr[$i]] = $param_val;
 		}
 		
@@ -625,7 +651,7 @@ class url_lib {
  	/* remove parameters that will be removed */
  	if(is_array($params_remove)) {
  		foreach($params_remove as $param) {
- 			if(isset($params_arr[$param])) {
+ 			if(isset($params_arr[$param]) and !isset($pass_params[$param])) {
  				unset($params_arr[$param]);
  			}
  		}
@@ -634,7 +660,11 @@ class url_lib {
  	if(count($params_arr) > 0) {
  		foreach($params_arr as $param => $value) {
  			if($value != '') {
-				$url .= $param . '/' . $value . '/';
+				if($this->url_arr['parse_mode'] == 'assoc') {
+					$url .= $param . '/' . $value . '/';
+				} else {
+					$url .= $value . '/';
+				}	
 			}	
  		}
  	}
@@ -763,6 +793,39 @@ class url_lib {
 	}
 	
  } // End func param_exists
+
+/**
+ * Return exploded parts from url
+ * 
+ * @access public
+ * @param int $index
+ * @return mixed
+ * @since version 2.3.0
+ */ 
+ public function parts($index = NULL) {
+	 
+	if(is_null($index)) {
+		return $this->url_arr['parts'];
+	}
+	 
+	if(isset($this->url_arr['parts'][$index])) {
+		return $this->url_arr['parts'][$index];
+	}
+ 	
+ 	return false;
+	 
+ } // End func parts
+ 
+ /**
+ * Return count of url parts
+ * 
+ * @access public
+ * @return integer
+ * @since version 2.3.0
+ */ 
+ public function parts_count() {
+ 	return count($this->url_arr['parts']);
+ } 
  
 /**
  * Return parameter value by item or parameters array
@@ -853,6 +916,24 @@ class url_lib {
  	return false;
 	
  } // end func set_id_addon
+ 
+/**
+ * Set action
+ * 
+ * @access public
+ * @param string $action
+ * @return bool
+ */
+ public function set_action($action) {
+ 	
+ 	if(trim($action) != '') {
+ 		$this->url_arr['action'] = $action;
+ 		return true;
+ 	}
+ 	
+ 	return false;
+	
+ } // end func set_action
  
 /**
  * Set application mode

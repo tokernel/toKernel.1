@@ -25,7 +25,7 @@
  * @author     toKernel development team <framework@tokernel.com>
  * @copyright  Copyright (c) 2013 toKernel
  * @license    http://www.gnu.org/copyleft/gpl.html GNU Public License
- * @version    2.3.3
+ * @version    2.3.4
  * @link       http://www.tokernel.com
  * @since      File available since Release 1.0.0
  * 
@@ -185,13 +185,18 @@ class module {
  */
  final public function load_view($file, $params = array()) {
 
+	$view_dir = $this->id;
+	
+	/* Remove addon name from class name */
+	$view_dir = substr($view_dir, (strlen($this->id_addon) + 1), 100);
+	
  	/* Parrent view class included in tokernel.inc.php */
  	$app_view_file = TK_CUSTOM_PATH . 'addons' . TK_DS . $this->id_addon . 
- 					 TK_DS . 'modules' . TK_DS . $this->id . TK_DS .
+ 					 TK_DS . 'modules' . TK_DS . $view_dir . TK_DS .
 					 'views' . TK_DS . $file . '.view.php';
-	
+
 	$tk_view_file = TK_PATH . 'addons' . TK_DS . $this->id_addon . 
- 					 TK_DS . 'modules' . TK_DS . $this->id . TK_DS .
+ 					 TK_DS . 'modules' . TK_DS . $view_dir . TK_DS .
 					 'views' . TK_DS . $file . '.view.php';
 
 	/* 

@@ -24,7 +24,7 @@
  * @author     toKernel development team <framework@tokernel.com>
  * @copyright  Copyright (c) 2013 toKernel
  * @license    http://www.gnu.org/copyleft/gpl.html GNU Public License
- * @version    1.1.3
+ * @version    1.2.0
  * @link       http://www.tokernel.com
  * @since      File available since Release 1.0.0
  * @todo	   Create functions - sync, compare.
@@ -58,7 +58,7 @@ class ini_lib {
  protected $ini_arr;
 
 /**
- * Loaded fiel name
+ * Loaded file name
  * 
  * @access protected
  * @var string
@@ -837,6 +837,27 @@ class ini_lib {
 	}
  } // end func is_end_of_file
 
+/**
+ * Return true if current file is writeable
+ * 
+ * @access public
+ * @return bool
+ * @since 1.2.0 
+ */ 
+ public function file_is_writable() {
+	 
+	 if($this->file == '') {
+		 return false;
+	 }
+	 
+	 if(!is_writable($this->file)) {
+		 return false;
+	 }
+	 
+	 return true;
+	 
+ } // End func file_is_writable
+ 
 /**
  * clean array, remove comments.
  * 

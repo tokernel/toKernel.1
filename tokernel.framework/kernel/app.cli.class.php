@@ -25,7 +25,7 @@
  * @author     toKernel development team <framework@tokernel.com>
  * @copyright  Copyright (c) 2013 toKernel
  * @license    http://www.gnu.org/copyleft/gpl.html GNU Public License
- * @version    1.1.1
+ * @version    1.2.0
  * @link       http://www.tokernel.com
  * @since      File available since Release 1.0.0
  */
@@ -159,94 +159,6 @@ class app extends app_core {
 	
 	return true;
  } // end func run
-
-/**
- * Return id of called addon from cli library
- * 
- * @deprecated
- * @access public
- * @return string
- */ 
-public function id_addon() {
-	
-	if(!isset(self::$instance)) {
- 		trigger_error('Application instance is empty ('.__CLASS__.')', 
-	              E_USER_ERROR );
- 	}
-	
-	return $this->lib->cli->id_addon();
-
-} // end func id_addon
-
-/**
- * Return called action for addon from cli library
- * 
- * @deprecated
- * @access public
- * @return string
- */
-public function action() {
-	
-	if(!isset(self::$instance)) {
- 		trigger_error('Application instance is empty ('.__CLASS__.')', 
-	              E_USER_ERROR );
- 	}
-	
-	return $this->lib->cli->action();
-
-} // end func action
-
-/**
- * Return command line argument by item from cli library.
- * If item is null, then return array of arguments.
- * 
- * @deprecated
- * @access public
- * @param item $item
- * @return mixed
- */
-public function params($item = NULL) {
-	
-	if(!isset(self::$instance)) {
- 		trigger_error('Application instance is empty ('.__CLASS__.')', 
-	              E_USER_ERROR );
- 	}
-	
-	if(is_null($item)) {
-		return $this->lib->cli->params();
-	}
-	
-	return $this->lib->cli->params($item);
-} // end func params
-
-/**
- * Return count of command line arguments
- * 
- * @deprecated
- * @access public
- * @return integer
- */
-public function params_count() {
-	return $this->lib->cli->params_count();
-}
-
-/**
- * Return alias from cli library
- * 
- * @deprecated
- * @access public
- * @return string
- */
-public function alias() {
-	
-	if(!isset(self::$instance)) {
- 		trigger_error('Application instance is empty ('.__CLASS__.')', 
-	              E_USER_ERROR );
- 	}
-	
-	return $this->lib->cli->alias();
-
-} // end func alias
 
 /**
  * Return language value by item

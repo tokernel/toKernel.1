@@ -40,6 +40,9 @@ define('TK_APP_PATH', dirname(__FILE__) . DIRECTORY_SEPARATOR);
  */
 define('TK_CUSTOM_DIR', 'application');
 
+/* Change current directory path to app path */
+chdir(TK_APP_PATH);
+
 /* Include framework loader */
 require("tokernel.framework/tokernel.inc.php");
 

@@ -376,4 +376,109 @@
 	Files:  tokernel.framework/kernel/app.cli.class.php
 			tokernel.framework/kernel/app.http.class.php
 
-	
+
+ Version 1.4.0 - 22/10/2014
+ --------------------------
+
+ Database library and connection options.
+
+ In the databases file, it is now new option to set
+ charset for each database connection group:
+
+	connection_charset=utf8
+
+ 	File: /application/config/databases.ini
+
+ Addons class in kernel. Version 3.3.3
+
+	New logic of modules class creation.
+    	class name should be
+     		class {addon_id}_{module_id}_module extends module {}
+    	instead of
+     		class {module_id}_module extends module {}
+
+    	So each time it is possible to create modules with same name for different addons.
+    	The modules usage is same as before.
+
+ 	File: /tokernel.framework/kernel/addons.class.php
+
+ Removed deprecated functions from HTTP and CLI classes from kernel.
+
+ 	HTTP class Version 1.3.0
+ 	CLI class Version 1.2.0
+
+ 	Files: /tokernel.framework/kernel/app.cli.class.php
+ 		   /tokernel.framework/kernel/app.http.class.php
+
+	All libraries uses cli or url to get action, id_addon, params, instead of app.
+
+ Module class in kernel. Version 2.3.4
+
+	Fixed view file loading
+
+	File: /tokernel.framework/kernel/module.class.php
+
+ Addons library. Version 1.0.5
+
+ 	Little fix. Sorting addons list before return in function all()
+
+ 	File: /tokernel.framework/lib/addons.lib.php
+
+ Cache library. Version 3.1.0
+
+ 	New method stats(). Get cache statistics.
+
+ 	Files: /tokernel.framework/lib/cache.lib.php
+ 		   /tokernel.framework/lib/cache/filecache.lib.php Version 2.1.0
+ 		   /tokernel.framework/lib/cache/memcache.lib.php Version 1.1.0
+
+ File library. Version 1.3.5
+
+	Fixed methods upload(), format_size()
+
+	File: /tokernel.framework/lib/file.lib.php
+
+ Filter library. Version 1.4.0
+
+ 	New method clean_url_string(). Clean any string to preperly url
+
+ 	File: /tokernel.framework/lib/filter.lib.php
+
+ New Form validation library. Version 1.0.0
+
+ 	This Library uses applicatoin languages.
+
+	File: /tokernel.framework/lib/form_validation.lib.php
+
+ INI library. Version 1.2.0
+
+ 	New method file_is_writable().
+
+ 	File: /tokernel.framework/lib/ini.lib.php
+
+ LOG Library. Version 1.1.0
+
+ 	New method file_remove()
+
+ 	File: /tokernel.framework/lib/log.lib.php
+
+ URL library. Version 2.3.0
+
+ 	1. New method parts(). return array of exploded url parts.
+ 	2. New method set_action(). Set action to lib with overriding defined action.
+
+ 	File: /tokernel.framework/lib/url.lib.php
+
+ Valid library. Version 1.3.0
+
+ 	1. New method url(). Check if valid url.
+ 	2. New method date_iso(). Check if valid date with iso standards.
+
+ 	File: /tokernel.framework/lib/valid.lib.php
+
+ MySQL Library. Version 2.0.0
+
+ 	1. Uses mysqli extension.
+ 	2. New Method num_fields().
+
+ 	File: /tokernel.framework/lib/mysql.lib.php

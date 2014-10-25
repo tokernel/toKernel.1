@@ -214,7 +214,8 @@ public static function shutdown() {
  * @return void
  */
 public static function show_debug_info() {
-	$app = app::instance();
+
+    $app = app::instance();
 	$lib = lib::instance();
 	
 	if(!defined('TK_END_RUN')) {
@@ -228,17 +229,15 @@ public static function show_debug_info() {
 	
 	$app_mode = self::$config['app_mode'];
 	
-	if($app->id_addon() != '') { 
-		$addon_action_info = $app->id_addon().'::'.$app->action();
+	if($lib->cli->id_addon() != '') {
+		$addon_action_info = $lib->cli->id_addon().'::'.$lib->cli->action();
 	} else {
 		$addon_action_info = '';
 	}
-	
-	$app_params_count = $app->params_count();
-	
+
 	$app_params = '';
 	
-	foreach($app->params() as $p_k => $p_v) {
+	foreach($lib->cli->params() as $p_k => $p_v) {
 		$app_params .= $p_k . '=' . $p_v . TK_NL;
 	}
 	

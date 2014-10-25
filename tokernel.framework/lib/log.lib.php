@@ -24,7 +24,7 @@
  * @author     toKernel development team <framework@tokernel.com>
  * @copyright  Copyright (c) 2013 toKernel
  * @license    http://www.gnu.org/copyleft/gpl.html GNU Public License
- * @version    1.0.4
+ * @version    1.1.0
  * @link       http://www.tokernel.com
  * @since      File available since Release 1.0.0
  */
@@ -214,6 +214,27 @@ class log_lib {
 	
  } // end func files_list
 
+/**
+ * Remove log file (log | gz)
+ * $file argument must be set without path.
+ * 
+ * @access public
+ * @param string $file
+ * @return bool
+ * @since 1.1.0
+ */ 
+ public function file_remove($file) {
+	
+	 $file_path = $this->log_path . $file;
+	 
+	 if(!is_file($file_path)) {
+		 trigger_error('File `'.$file.'` not found!', E_USER_WARNING);
+	 }
+	 
+	 return unlink($file_path);
+	 	 
+ } // End func  
+ 
 /**
  * Delete log files
  * 

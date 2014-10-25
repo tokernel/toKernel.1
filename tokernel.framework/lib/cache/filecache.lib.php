@@ -24,7 +24,7 @@
  * @author     toKernel development team <framework@tokernel.com>
  * @copyright  Copyright (c) 2013 toKernel
  * @license    http://www.gnu.org/copyleft/gpl.html GNU Public License
- * @version    2.0.1
+ * @version    2.1.0
  * @link       http://www.tokernel.com
  * @since      File available since Release 1.0.0
  */
@@ -334,6 +334,51 @@ class filecache_lib {
  	return $this->cache_dir . md5($file_id) . '.' . $this->ext;
 
  } // end func filename
+ 
+/**
+ * Get cache files statistics 
+ * 
+ * @access public
+ * @return array
+ * @since 2.1.0
+ */ 
+ public function stats() {
+	 
+	$files_count = 0;
+ 	$total_size = 0;
+	
+ 	if(!is_writable($this->cache_dir)) {
+ 		return false;
+ 	}
+ 	
+ 	/* create a handler for the directory */
+    $handler = opendir($this->cache_dir);
+
+    /* open directory and walk through the filenames */
+    while($file = readdir($handler)) {
+
+      /*
+       * if file isn't this directory or its parent, 
+       * also if it have .cache extension, then count it 
+       */
+      if($file != "." && $file != ".." && pathinfo($file, PATHINFO_EXTENSION) == $this->ext) {
+         
+		  $files_count++;
+		  $total_size += filesize($this->cache_dir . $file);
+		
+      } // end if cache file
+
+    } // end while
+
+    // tidy up: close the handler
+    closedir($handler);
+
+	return array(
+		'files_count' => $files_count,
+		'bytes' => $total_size
+	);
+	 
+ } // End func stats
  
 /* End of class cache_lib */ 
 }

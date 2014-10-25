@@ -25,7 +25,7 @@
  * @author     toKernel development team <framework@tokernel.com>
  * @copyright  Copyright (c) 2013 toKernel
  * @license    http://www.gnu.org/copyleft/gpl.html GNU Public License
- * @version    1.0.0
+ * @version    1.1.0
  * @link       http://www.tokernel.com
  * @since      File available since Release 1.3.0
  */
@@ -250,6 +250,17 @@ class memcache_lib {
  	return $this->memcache->flush();
  	 	
  } // end func clean_all
+ 
+/**
+ * Get cache statistics 
+ * 
+ * @access public
+ * @return array
+ * @since 1.1.0
+ */ 
+ public function stats() {
+	 return $this->memcache->getStats();
+ } // End func stats
  
 /* End of class cache_lib */ 
 }
