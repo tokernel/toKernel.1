@@ -446,7 +446,7 @@
 
  New Form validation library. Version 1.0.0
 
- 	This Library uses applicatoin languages.
+ 	This Library uses application languages.
 
 	File: /tokernel.framework/lib/form_validation.lib.php
 
