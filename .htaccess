@@ -21,9 +21,9 @@
 # @package    toKernel
 # @subpackage main
 # @author     toKernel development team <framework@tokernel.com>
-# @copyright  Copyright (c) 2013 toKernel
+# @copyright  Copyright (c) 2015 toKernel
 # @license    http://www.gnu.org/copyleft/gpl.html GNU Public License
-# @version    1.0.1
+# @version    1.0.2
 # @link       http://www.tokernel.com
 # @since      File available since Release 1.0.0
 #
@@ -72,48 +72,16 @@ RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^(.*)$ index.php?tokernel_params=$1 [QSA,L]
 
-# Disallow access to files with *.ini extension.
-# WARNING!: All configuration and language files have *.ini extension.
-<FilesMatch "\.ini$">
-    Order Allow,Deny
-    Deny from all
+# Disallow direct access to framework/application core php files.
+<FilesMatch "\.(class|lib|hook|tpl|addon|module|view).php$">
+	Order Allow,Deny
+	Deny from all
 </FilesMatch>
 
-# Disallow access to files with *.log extension.
-# WARNING!: All log files have *.log extension.
-<FilesMatch "\.log$">
-    Order Allow,Deny
-    Deny from all
-</FilesMatch>
-
-# Disallow access to files with *.view.php extension.
-<FilesMatch "\.view.php$">
-    Order Allow,Deny
-    Deny from all
-</FilesMatch>
-
-# Disallow access to files with *.tpl.php extension.
-<FilesMatch "\.tpl.php$">
-    Order Allow,Deny
-    Deny from all
-</FilesMatch>
-
-# Disallow access to files with *.lib.php extension.
-<FilesMatch "\.lib.php$">
-    Order Allow,Deny
-    Deny from all
-</FilesMatch>
-
-# Disallow access to files with *.class.php extension.
-<FilesMatch "\.class.php$">
-    Order Allow,Deny
-    Deny from all
-</FilesMatch>
-
-# Disallow access to files with *.hook.php extension.
-<FilesMatch "\.hook.php$">
-    Order Allow,Deny
-    Deny from all
+# Disallow access to framework/application misc files.
+<FilesMatch "\.(cache|ini|log|lg)$">
+	Order Allow,Deny
+   	Deny from all
 </FilesMatch>
 
 # End of file
