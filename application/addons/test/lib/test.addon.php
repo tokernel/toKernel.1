@@ -9,7 +9,7 @@ class test_addon extends addon {
 	public function __construct($params, $config) {
 		parent::__construct($params, $config);
 	}
-	
+
 	/**
 	 * Default action which will be called if action not specified in url 
 	 * www.example.com/test
@@ -89,61 +89,6 @@ class test_addon extends addon {
 		
 		return true;
 	}
-	
-	public function action_download() {
-	
-		$this->lib->file->download(TK_CUSTOM_PATH . 'uploads' . TK_DS . 'toKernel.v.1.0.0.pdf');
-		return true;
-		
-	}
-	
-	/* Show picture with photo lib */
-	public function action_photo() {
-		
-		$pic = $this->lib->url->params('pic');
-		
-		$w = $this->lib->url->params('w');
-		$h = $this->lib->url->params('h');
-		$q = $this->lib->url->params('q');
-		$c = $this->lib->url->params('c');
-		$o = $this->lib->url->params('o');
-		
-		$crop = explode(':', $c);
-		
-		if(!isset($crop[1]) or !isset($crop[0])) {
-			trigger_error("Illegal crop ratio");
-			return;
-		}
-		
-		if(intval($crop[1] == 0) or intval($crop[0]) == 0) {
-			trigger_error("Illegal crop ratio");
-			return;
-		}
-		
-		$crop_ratio = intval($crop[0]) / intval($crop[1]);
-  
-		$pic_source = TK_CUSTOM_PATH . 'tmp' . TK_DS . $pic;
-  
-		if(!file_exists($pic_source)) {
-			return false;
-		}
-		
-		$p_instance = $this->lib->photo->instance();
-				
-		$p_instance->render(
-				array(
-					'source' => $pic_source,
-					'quality' => $q,
-					'width' => $w,
-					'height' => $h,
-					'crop_ratio' => $crop_ratio,
-					'offset' => $o,
-		      )
-		);
-				
-		return true;
-		
-	} // End func action_photo
-	
+			
 } // end class
 ?>
