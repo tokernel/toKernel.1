@@ -2,22 +2,24 @@
  toKernel - Universal PHP Framework
  ==================================
  
- License GNU GPL <http://www.tokernel.com/documentation/license/>
- Copyright (c) 2010-2013, toKernel development team <framework@tokernel.com>
+ License GNU GPL <https://www.gnu.org/licenses/gpl.html>
+ Copyright (c) 2010-2015, toKernel development team <framework@tokernel.com>
  http://www.tokernel.com
 
  About project
  -------------
  
- toKernel is a fully Object-Oriented extensible framework written in PHP.
  
+ Fully Object-Oriented extensible framework to make website or CMS development simple and flexible.
+
+ toKernel is a fully Object-Oriented extensible framework written in PHP.
  By design, the framework's kernel is monolithic which brings a lot 
  of advantages. It is NOT a loader for a mere collection of classes.
  The versatility of this framework allows you to create web
  applications, command line applications and run the same application
  in either mode including interactive mode.
 
- http://www.tokernel.com/documentation/about/
+ http://www.tokernel.com/documentation/project-overview/about-project
  
  Why toKernel?
  -------------
@@ -58,11 +60,11 @@
  Documenation
  ------------
  
- Table of content - http://www.tokernel.com/documentation/
- System requirements - http://www.tokernel.com/documentation/requirements/
- Change log - http://www.tokernel.com/documentation/changelog/
- Setup guide - http://www.tokernel.com/documentation/setup_guide/
- FAQ - http://www.tokernel.com/documentation/faq/
+ Table of content - http://www.tokernel.com/documentation
+ System requirements - http://www.tokernel.com/documentation/project-overview/system-requirements
+ Change log - http://www.tokernel.com/documentation/changelog
+ Setup guide - http://www.tokernel.com/documentation/getting-started/setup-guide
+ FAQ - http://www.tokernel.com/documentation/faq
  
  Download
  -------- 

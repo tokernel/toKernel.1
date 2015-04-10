@@ -482,3 +482,81 @@
  	2. New Method num_fields().
 
  	File: /tokernel.framework/lib/mysql.lib.php
+
+ Version 1.5.0 - 12/04/2015
+ --------------------------
+ 
+ New Shopping cart library
+ 
+	1. Ability to work as e-commerce shopping cart	with a lot of advantages.
+	
+	File: /tokernel.framework/lib/shopping_cart.lib.php
+	
+ New Array library
+
+	1. Process an array with useful functions.
+	2. Check and find items in array.
+	
+	File: /tokernel.framework/lib/array.lib.php
+ 
+ URL library. Version 2.4.0
+
+	1. New function clean_query_string_arr() to parse and fix query string array.
+	
+	File: /tokernel.framework/lib/url.lib.php
+	
+ Pagination library. Version 1.0.6
+
+	1. Fixed link creation string.
+	
+	File: /tokernel.framework/lib/pagination.lib.php
+	
+ MySQL library. Version 2.0.1
+ 
+	1. Fixed the error function usage.
+	
+	File: /tokernel.framework/lib/mysql.lib.php
+ 
+ Filter library. Version 1.4.1
+ 
+	1. Changed the function clean_data() to use array library.
+	
+	File: /tokernel.framework/lib/filter.lib.php
+	
+ Data library. Version 1.4.1
+	
+	1. Moved function function is_assoc(), function array_key_rename(), array_key_pos() to new array library.
+	
+	File: /tokernel.framework/lib/data.lib.php
+	
+ Commant Line Interface (CLI) library. Version 1.0.6
+  
+	1. Display current year in function output_usage().
+	
+	File: /tokernel.framework/lib/cli.lib.php
+	
+ Alias library. Version 1.2.0
+
+	1. New function get_all(). Returns all existing aliases.
+	
+	File: /tokernel.framework/lib/alias.lib.php
+	
+ Addons library. Version 1.0.6
+
+	1. Fixed function all().
+	
+	File: /tokernel.framework/lib/addons.lib.php
+	
+ Addon class in kernel. Version 3.4.0
+ 
+	1. Fixed log object loading in __constructor().
+	2. New function get_modules() returns all existing modules of loaded addon.
+	
+	File: /tokernel.framework/kernel/addon.class.php
+ 
+ Changed application access level
+	
+	1. Added new file types to deny list
+	2. Changed deny list to be short.
+	
+	File: /.htaccess
