@@ -22,7 +22,7 @@
  * @package    toKernel
  * @subpackage library
  * @author     toKernel development team <framework@tokernel.com>
- * @copyright  Copyright (c) 2013 toKernel
+ * @copyright  Copyright (c) 2015 toKernel
  * @license    http://www.gnu.org/copyleft/gpl.html GNU Public License
  * @version    1.3.5
  * @link       http://www.tokernel.com
@@ -77,8 +77,8 @@ class file_lib {
 	$target_path = $this->to_path($target_path);
 	
 	/* Check temp file */
-	if(trim($file_el_name) == '' or !isset($_FILES[$file_el_name])) { 
-		return false; 
+	if(trim($file_el_name) == '' or !isset($_FILES[$file_el_name])) {
+        return false;
 	}
 	
 	$file_tmp_name = $_FILES[$file_el_name]['tmp_name'];

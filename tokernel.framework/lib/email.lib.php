@@ -22,7 +22,7 @@
  * @package    toKernel
  * @subpackage library
  * @author     toKernel development team <framework@tokernel.com>
- * @copyright  Copyright (c) 2013 toKernel
+ * @copyright  Copyright (c) 2015 toKernel
  * @license    http://www.gnu.org/copyleft/gpl.html GNU Public License
  * @version    1.2.5
  * @link       http://www.tokernel.com
@@ -212,12 +212,12 @@ class email_lib {
 	public function to($to) {
 		
 		if (!is_array($this->config)) {
-			$this->config['error']=true;			
+			$this->config['error'] = true;
 			$this->set_message('Error : Email not configured');
 			return false;
 		}
 		
-		if ($this->config['error'] == true) {
+		if (isset($this->config['error']) and $this->config['error'] == true) {
 			return false;
 		}
 		
