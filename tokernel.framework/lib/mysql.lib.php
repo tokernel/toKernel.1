@@ -22,9 +22,9 @@
  * @package    toKernel
  * @subpackage library
  * @author     toKernel development team <framework@tokernel.com>
- * @copyright  Copyright (c) 2013 toKernel
+ * @copyright  Copyright (c) 2015 toKernel
  * @license    http://www.gnu.org/copyleft/gpl.html GNU Public License
- * @version    2.0.0
+ * @version    2.0.1
  * @link       http://www.tokernel.com
  * @since      File available since Release 1.0.0
  * @todo       Change the count() method functionality.
@@ -205,13 +205,13 @@ class mysql_lib {
  									$this->conn_ini['password']);
 
 	if(!$this->conn_res) {
-        $this->err_message = mysqli_error();
+        $this->err_message = mysqli_error($this->conn_res);
         trigger_error($this->err_message, E_USER_ERROR);
         return false;
     }
     
     if(!mysqli_select_db($this->conn_res, $this->conn_ini['database'])) {
-        $this->err_message = mysqli_error();
+        $this->err_message = mysqli_error($this->conn_res);
         trigger_error($this->err_message, E_USER_ERROR);
         return false;
     }
