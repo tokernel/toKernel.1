@@ -22,9 +22,9 @@
  * @package    toKernel
  * @subpackage library
  * @author     toKernel development team <framework@tokernel.com>
- * @copyright  Copyright (c) 2013 toKernel
+ * @copyright  Copyright (c) 2015 toKernel
  * @license    http://www.gnu.org/copyleft/gpl.html GNU Public License
- * @version    1.4.0
+ * @version    1.4.1
  * @link       http://www.tokernel.com
  * @since      File available since Release 1.0.0
  */
@@ -39,71 +39,6 @@ defined('TK_EXEC') or die('Restricted area.');
  */
 class data_lib {
 
-/**
- * Check, is associative array
- * 
- * @access public
- * @param array
- * @return bool
- */	
- public function is_assoc($arr) {
- 	return array_keys($arr) !== range(0, count($arr) - 1);
- } // end func is_assoc
-
-/**
- * Rename key in array
- * 
- * @access public
- * @param string $ext_key
- * @param string $new_key
- * @param array $arr
- * @return array | bool
- */ 
- public function array_key_rename($ext_key, $new_key, $arr) {
-
-	if(!is_array($arr)) {
-		return false;
-	}
-	
-	$new_arr = array();
-
-	foreach($arr as $key => $value) {
-		if($key == $ext_key and is_string($key)) {
-			$key = $new_key;
-		}
-
-		$new_arr[$key] = $value;
-	} // end foreach
-
-	return $new_arr;
- } // end func array_key_rename 
-
-/**
- * Return position in array by key
- *
- * @access public
- * @param mixed $needle
- * @param array $array
- * @return int | bool
- * @since 1.3.0
- */
- function array_key_pos($needle, $array) {
-	
-	if(!is_array($array) or is_null($needle)) {
-		return false;
-	}
-	
-	$tmp = array_keys($array);
-	$index = array_search($needle, $tmp);
-	
-	if($index !== false) {
-		return $index + 1;
-	} else {
-		return false;
-	}
-	
- } // end func array_key_pos
- 
 /**
  * Create random generated password
  * 
