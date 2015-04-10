@@ -22,9 +22,9 @@
  * @package    toKernel
  * @subpackage library
  * @author     toKernel development team <framework@tokernel.com>
- * @copyright  Copyright (c) 2013 toKernel
+ * @copyright  Copyright (c) 2015 toKernel
  * @license    http://www.gnu.org/copyleft/gpl.html GNU Public License
- * @version    1.0.5
+ * @version    1.0.6
  * @link       http://www.tokernel.com
  * @since      File available since Release 1.0.0
  */
@@ -510,7 +510,7 @@ class cli_lib {
  	
  	$message .= TK_NL." -";
  	$message .= TK_NL." | toKernel - Universal PHP Framework v".TK_VERSION;
-	$message .= TK_NL." | Copyright (c) 2013 toKernel <framework@tokernel.com>";
+	$message .= TK_NL." | Copyright (c) " . date('Y') . " toKernel <framework@tokernel.com>";
 	$message .= TK_NL." | "; 
 	$message .= TK_NL." | Running in " . php_uname();
 	$message .= TK_NL." - ";
