@@ -23,9 +23,9 @@
  * @package    toKernel
  * @subpackage library
  * @author     toKernel development team <framework@tokernel.com>
- * @copyright  Copyright (c) 2013 toKernel
+ * @copyright  Copyright (c) 2015 toKernel
  * @license    http://www.gnu.org/copyleft/gpl.html GNU Public License
- * @version    1.0.5
+ * @version    1.0.6
  * @link       http://www.tokernel.com
  * @since      File available since Release 1.0.0
  */
@@ -279,18 +279,26 @@ class addons_lib {
  } // end func exist
 
  public function all($tk_only = false) {
- 	$tk_addons = $this->lib->file->ls(TK_PATH . 'addons', 'd');
+
+	 $tk_addons = $this->lib->file->ls(TK_PATH . 'addons', 'd');
  	
  	if($tk_only == true) {
+
+	    if(!empty($tk_addons)) {
+		    sort($tk_addons);
+	    }
+
  		return $tk_addons; 
  	}
  	
  	$app_addons = $this->lib->file->ls(TK_CUSTOM_PATH . 'addons', 'd');
 
  	$addons = array_merge($tk_addons, $app_addons);
- 	
-	sort($addons);
-	
+
+	if(!empty($addons)) {
+		sort($addons);
+	}
+
  	return $addons;
  } 
  
