@@ -22,9 +22,9 @@
  * @package    toKernel
  * @subpackage library
  * @author     toKernel development team <framework@tokernel.com>
- * @copyright  Copyright (c) 2013 toKernel
+ * @copyright  Copyright (c) 2015 toKernel
  * @license    http://www.gnu.org/copyleft/gpl.html GNU Public License
- * @version    1.0.5
+ * @version    1.0.6
  * @link       http://www.tokernel.com
  * @since      File available since Release 1.0.0
  */
@@ -256,8 +256,7 @@ class pagination_lib {
  		
  		$func = str_replace('{link}', $link, $this->config['js_function']);
  		
- 		return '<a href="javascript:" ' . $class . ' onClick="' . $func . 
- 				'"; return false;">' 
+ 		return '<a href="javascript:" ' . $class . ' onClick="' . $func .'">'
  				. $show.'</a> ';
  	} else {
  		return '<a href="' . $link . '" ' . $class . '>' . $show . '</a> '; 
