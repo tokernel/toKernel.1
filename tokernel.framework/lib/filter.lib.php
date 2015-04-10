@@ -22,9 +22,9 @@
  * @package    toKernel
  * @subpackage library
  * @author     toKernel development team <framework@tokernel.com>
- * @copyright  Copyright (c) 2013 toKernel
+ * @copyright  Copyright (c) 2015 toKernel
  * @license    http://www.gnu.org/copyleft/gpl.html GNU Public License
- * @version    1.4.0
+ * @version    1.4.1
  * @link       http://www.tokernel.com
  * @since      File available since Release 1.0.0
  */
@@ -273,7 +273,7 @@ class filter_lib {
 		$tmp_arr = array();
 		
 		/* Clean keys also, if array is associative */
-		if($this->lib->data->is_assoc($data)) {
+		if($this->lib->array->is_assoc($data)) {
 			foreach($data as $key => $value) {
 				/* Clean key. pass only a-z, A-Z, 0-9, -, _, . chars */
 				$key = $this->strip_chars($key, array('-', '_', '.'));
@@ -419,7 +419,7 @@ class filter_lib {
  } // end func clean_nl
   
 /**
- * Clean any string to preperly url
+ * Clean any string to valid url
  * 
  * @access public
  * @param string $data
