@@ -22,9 +22,9 @@
  * @package    toKernel
  * @subpackage library
  * @author     toKernel development team <framework@tokernel.com>
- * @copyright  Copyright (c) 2013 toKernel
+ * @copyright  Copyright (c) 2015 toKernel
  * @license    http://www.gnu.org/copyleft/gpl.html GNU Public License
- * @version    2.3.0
+ * @version    2.4.0
  * @link       http://www.tokernel.com
  * @since      File available since Release 1.0.0
  */
@@ -218,7 +218,10 @@ class url_lib {
 									$this->url_arr['query_string'];
  	 
 	$query_string_arr = explode('/', $this->url_arr['query_string']);
-	
+
+    // Clean array
+    $query_string_arr = $this->clean_query_string_arr($query_string_arr);
+
  	/* 
 	 * Check, if backend_dir item defined in configuration file and 
 	 * $query_string_arr[0] == backend_dir, then set this item as backend 
@@ -297,7 +300,7 @@ class url_lib {
 		}
 		
 	}
-	
+
 	if($this->url_arr['language_prefix'] == '') {
 		$this->url_arr['language_prefix'] = 'en';
 	}
@@ -307,7 +310,10 @@ class url_lib {
 	} else {
 		$this->url_arr['language_parsing'] = false;
 	}
-	
+
+    /* Set URL Parts */
+    $this->url_arr['parts'] = $query_string_arr;
+
  	/* Check and set aliasing if exists */
 	if(isset($query_string_arr[0]) and $query_string_arr[0] != '') { 
 		
@@ -322,7 +328,7 @@ class url_lib {
 	if(isset($query_string_arr[0]) and $query_string_arr[0] != '' and 
 		$this->url_arr['id_addon'] == '') {
 		
-		$this->url_arr['parts'][] = $query_string_arr[0];
+		//$this->url_arr['parts'][] = $query_string_arr[0];
 		
 		$this->url_arr['id_addon'] = $query_string_arr[0];
 		array_shift($query_string_arr);
@@ -345,7 +351,7 @@ class url_lib {
 	if(isset($query_string_arr[0]) and $query_string_arr[0] != '' and 
 		$this->url_arr['action'] == '') {
 		
-		$this->url_arr['parts'][] = $query_string_arr[0];
+		//$this->url_arr['parts'][] = $query_string_arr[0];
 		
 		$this->url_arr['action'] = $query_string_arr[0];
 		$this->url_arr['template'] = $this->url_arr['id_addon'] . 
@@ -378,7 +384,7 @@ class url_lib {
 	}
 	
 	/* make params  array if not empty */
-	if(count($query_string_arr) > 0 and $query_string_arr[0] != '') {
+	if(!empty($query_string_arr)) {
 
 		tk_e::log_debug('Detected params - "' . 
 						implode('/', $query_string_arr) . '" '
@@ -391,32 +397,22 @@ class url_lib {
 			$url_params_arr = $this->parse_params_assoc($query_string_arr); 	
 		} else {
 			$url_params_arr = $query_string_arr;
-			
-			foreach($query_string_arr as $part) {
-				if($part != '') {
-					$this->url_arr['parts'][] = $part;
-				}	
-			}
-			
 		}
 		
 		/* Set optional parameters from url */ 
-		if(count($this->url_arr['params']) > 0) {
+		if(!empty($this->url_arr['params'])) {
 	    	/* 
 	    	 * Merge parameters from aliasing and url params.
 	     	 * NOTE: The identical parameters will be replaced by 
 	     	 * aliasing on url params, because aliasing is so main.  
 	     	 */
-			$this->url_arr['params'] = array_merge($url_params_arr, 
-													$this->url_arr['params']
-													);
+			$this->url_arr['params'] = array_merge($url_params_arr, $this->url_arr['params']);
 		} else {
 			$this->url_arr['params'] = $url_params_arr;
 		}
 						
 	} else { 
-		tk_e::log_debug('Params not detected ' 
-						, __CLASS__ . '->' . __FUNCTION__);
+		tk_e::log_debug('Params not detected.', __CLASS__ . '->' . __FUNCTION__);
 						
 	} // end params count
 
@@ -538,9 +534,7 @@ class url_lib {
 		$this->url_arr['params'] = explode('/', $aliasing_arr['params']);
 
 		if($http_params_mode == 'assoc') {
-			$this->url_arr['params'] = $this->parse_params_assoc(
-													$this->url_arr['params']
-													);
+			$this->url_arr['params'] = $this->parse_params_assoc($this->url_arr['params']);
 		}
 		
 	} else {
@@ -569,11 +563,9 @@ class url_lib {
  protected function parse_params_assoc($arr) {
 	
  	$ret_arr = array();
-	
- 	for($i = 0; $i < count($arr); $i+=2) {
-		/* Clean key name */
-		$arr[$i] = $this->lib->filter->strip_chars($arr[$i], array('-', '_', '.', ' '));
-		
+
+ 	for($i = 0; $i < count($arr); $i += 2) {
+
 		$param_val = '';
 		
 		if(isset($arr[$i+1])) {
@@ -951,6 +943,40 @@ class url_lib {
  		
  	$this->url_arr['mode'] = $mode;
  }
+
+/**
+ * Clean Query string array
+ *
+ * @access private
+ * @param array $query_string_arr
+ * @return array
+ * @since 2.4.0
+ */
+ private function clean_query_string_arr($query_string_arr) {
+
+     if(empty($query_string_arr)) {
+         return array();
+     }
+
+     $new = array();
+
+     foreach($query_string_arr as $item) {
+
+         if(trim($item) != '') {
+
+             $item = $this->lib->filter->strip_chars(
+                 $item,
+                 array('-', '_', '.', ' ')
+             );
+
+             $new[] = $item;
+         }
+
+     }
+
+     return $new;
+
+ } // End func query_string_arr
  
 /* End of class cli_lib */
 }
