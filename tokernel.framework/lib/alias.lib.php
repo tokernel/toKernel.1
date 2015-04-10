@@ -23,9 +23,9 @@
  * @package    toKernel
  * @subpackage library
  * @author     toKernel development team <framework@tokernel.com>
- * @copyright  Copyright (c) 2013 toKernel
+ * @copyright  Copyright (c) 2015 toKernel
  * @license    http://www.gnu.org/copyleft/gpl.html GNU Public License
- * @version    1.1.0
+ * @version    1.2.0
  * @link       http://www.tokernel.com
  * @since      File available since Release 1.0.0
  * @todo       Create functions - set([ also this function will update existing])
@@ -116,7 +116,18 @@ class alias_lib {
  		
  } // end func exists
 
-/* End of class alias_lib */ 
+/**
+  * Get all aliases array
+  *
+  * @access public
+  * @return array
+  * @since 1.2.0
+  */
+ public function get_all() {
+    return $this->aliases->sections();
+ } // end func get_all
+
+/* End of class alias_lib */
 }
 
 /* End of file */
