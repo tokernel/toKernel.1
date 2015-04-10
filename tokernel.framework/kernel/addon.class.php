@@ -22,9 +22,9 @@
  * @package    toKernel
  * @subpackage kernel
  * @author     toKernel development team <framework@tokernel.com>
- * @copyright  Copyright (c) 2013 toKernel
+ * @copyright  Copyright (c) 2015 toKernel
  * @license    http://www.gnu.org/copyleft/gpl.html GNU Public License
- * @version    3.3.3
+ * @version    3.4.0
  * @link       http://www.tokernel.com
  * @since      File available since Release 1.0.0
  * 
@@ -150,8 +150,9 @@ abstract class addon {
 	} else {
 		$this->loaded_from_app_path = false;
 	}
- 	
- 	$this->log = $this->lib->log->instance('addon_' . $this->id . '.log');
+
+    $log_ext = $this->app->config('log_file_extension', 'ERROR_HANDLING');
+ 	$this->log = $this->lib->log->instance('addon_' . $this->id . '.' . $log_ext);
  	
 	$this->language = $this->lib->language->instance(
 						$this->app->language(), 
@@ -642,8 +643,7 @@ abstract class addon {
  * @since 2.2.0
  */ 
  public function is_backend() {
- 	if($this->app->config('backend_dir', 
- 							'HTTP')	!= $this->lib->url->backend_dir()) {
+ 	if($this->app->config('backend_dir', 'HTTP') != $this->lib->url->backend_dir()) {
 		return false;
 	} else {
 		return true;
@@ -762,8 +762,35 @@ abstract class addon {
 	 return true;
 	 
  } // End func action_allowed
- 
+
 /**
+ * Get addon modules
+ *
+ * @access public
+ * @return array
+ * @since 3.4.0
+ */
+ public function get_modules() {
+
+     $path = $this->path() . 'modules' . TK_DS;
+     $files = $this->lib->file->ls($path, '-', false, 'php');
+     $modules = array();
+
+     if(empty($files)) {
+         return $modules;
+     }
+
+     foreach($files as $file) {
+         if(substr($file, -11) == '.module.php') {
+             $modules[] = substr($file, 0, -11);
+         }
+     }
+
+     return $modules;
+
+ } // End func get_modules
+
+    /**
  * Exception for not creating function 
  * 'action_' in any addon class
  * 
