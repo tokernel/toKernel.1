@@ -24,7 +24,7 @@
  * @author     toKernel development team <framework@tokernel.com>
  * @copyright  Copyright (c) 2015 toKernel
  * @license    http://www.gnu.org/copyleft/gpl.html GNU Public License
- * @version    2.0.1
+ * @version    2.0.2
  * @link       http://www.tokernel.com
  * @since      File available since Release 1.0.0
  * @todo       Change the count() method functionality.
@@ -245,6 +245,7 @@ class mysql_lib {
  * If connection not established, try to connect.
  * 
  * @access public
+ * @param bool $benchmark = false
  * @return bool
  */ 
  public function reconnect($benchmark = false) {
@@ -943,16 +944,17 @@ class mysql_lib {
  * 
  * @access public
  * @param mixed $string
- * @return string
+ * @return mixed string | bool
  */ 
- public function escape($string) {	
- 	
- 	if($this->reconnect()) {
-		return mysqli_real_escape_string($this->conn_res, $string);
-	}
-	
-	return mysqli_escape_string($string);
-	
+ public function escape($string) {
+
+ 	if(!$this->reconnect()) {
+	    $this->err_message = mysqli_error($this->conn_res);
+	    return false;
+	} else {
+	    return mysqli_real_escape_string($this->conn_res, $string);
+    }
+
  } // end func escape
  
 /**

@@ -560,3 +560,46 @@
 	2. Changed deny list to be short.
 	
 	File: /.htaccess
+
+ Version 1.5.1 - 06/03/2016
+ --------------------------
+
+ HTML Library Version 1.2.0
+
+	1. Function attach_file() validates file formats for only js or css files.
+	2. Is able to print files for only attached javascript file
+	3. Is able to print files for only attached css file
+
+	File: /tokernel.framework/lib/html.lib.php
+
+ MySQL Library Version 2.0.2
+
+ 	1. Small bugs fixed.
+
+	File: /tokernel.framework/lib/mysql.lib.php
+
+ Date Library Version 1.3.0
+
+ 	1. New method to_timestamp()
+ 	 	Convert any type of date to Unix timestamp.
+
+ 	2. New method is_intersects()
+ 	 	Check if a range of dates intersects to each other.
+
+ 	3. New method has_weekend()
+ 	 	Check if a range of date has weekends in.
+
+ 	File: /tokernel.framework/lib/date.lib.php
+
+ Session Library Version 1.2.0
+
+ 	1. Configurable Session save path in application configuration file.
+		[SESSION]
+		session_save_path = 
+		
+		Empty value assume, that the session path will not be configured.
+
+	1.1 Removed '.../application/session/' directory.
+
+ 	2. New function set_section() 
+		Set array as session value

@@ -111,7 +111,7 @@ class photo_lib {
  					  ' in file `' . $ini_file . '` !', E_USER_ERROR);
  	}
 
- 	self::$default_opts = $lib_config->section_get('DEFAULT_CONFIG');
+ 	self::$default_opts = $lib_config->get_section('DEFAULT_CONFIG');
 	
 	/* Set cache dir path */
 	$this->cache_dir = TK_CUSTOM_PATH . self::$default_opts['cache_dir'] . TK_DS;
