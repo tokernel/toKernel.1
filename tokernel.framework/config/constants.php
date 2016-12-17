@@ -18,11 +18,11 @@
  * You should have received a copy of the GNU General Public License
  * along with toKernel. If not, see <http://www.gnu.org/licenses/>.
  *
- * @category   framework
- * @package    toKernel
- * @subpackage config
+ * @category   configuration
+ * @package    framework
+ * @subpackage configuration
  * @author     toKernel development team <framework@tokernel.com>
- * @copyright  Copyright (c) 2015 toKernel
+ * @copyright  Copyright (c) 2016 toKernel
  * @license    http://www.gnu.org/copyleft/gpl.html GNU Public License
  * @version    1.0.0
  * @link       http://www.tokernel.com
@@ -32,7 +32,7 @@
 /* Restrict direct access to this file */
 defined('TK_EXEC') or die('Restricted area.');
 
-/* Required PHP Verison for toKernel */
+/* Required PHP Version for toKernel */
 define('TK_PHP_VERSION_REQUIRED', '5.2.4');
 
 /* Project short name */
@@ -42,7 +42,6 @@ define('TK_SHORT_NAME', 'toKernel');
 define('TK_DESCRIPTION', 'Universal PHP Framework');
 
 /* Project version */
-define('TK_VERSION', '1.5.1');
 
 /* Short name for DIRECTORY_SEPARATOR */
 define('TK_DS', DIRECTORY_SEPARATOR);

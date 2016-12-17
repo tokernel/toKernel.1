@@ -18,11 +18,11 @@
  * You should have received a copy of the GNU General Public License
  * along with toKernel. If not, see <http://www.gnu.org/licenses/>.
  *
- * @category   framework
- * @package    toKernel
+ * @category   kernel
+ * @package    framework
  * @subpackage kernel
  * @author     toKernel development team <framework@tokernel.com>
- * @copyright  Copyright (c) 2015 toKernel
+ * @copyright  Copyright (c) 2016 toKernel
  * @license    http://www.gnu.org/copyleft/gpl.html GNU Public License
  * @version    1.1.1
  * @link       http://www.tokernel.com
@@ -134,6 +134,7 @@ abstract class app_core {
  * @final
  * @static 
  * @access public
+ * @param array $argv = NULL
  * @return object
  */ 
  final public static function instance($argv = NULL) {
@@ -364,6 +365,7 @@ abstract class app_core {
  * 
  * @access public
  * @param string $item
+ * @param string $section = NULL
  * @return mixed
  */
  public function config($item, $section = NULL) {

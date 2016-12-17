@@ -18,13 +18,13 @@
  * You should have received a copy of the GNU General Public License
  * along with toKernel. If not, see <http://www.gnu.org/licenses/>.
  *
- * @category   framework
- * @package    toKernel
+ * @category   library
+ * @package    framework
  * @subpackage library
  * @author     toKernel development team <framework@tokernel.com>
- * @copyright  Copyright (c) 2015 toKernel
+ * @copyright  Copyright (c) 2016 toKernel
  * @license    http://www.gnu.org/copyleft/gpl.html GNU Public License
- * @version    1.2.0
+ * @version    1.3.0
  * @link       http://www.tokernel.com
  * @since      File available since Release 1.0.0
  */
@@ -44,46 +44,54 @@ class html_lib {
 	 * libraries in this class
 	 *
 	 * @var object
-	 * @access private
+	 * @access protected
 	 */
-	private $lib;
+	protected $lib;
 
 	/**
 	 * Document title
 	 *
-	 * @access private
+	 * @access protected
 	 * @var string $title
 	 */
-	private $title;
+    protected $title;
 
 	/**
 	 * Document meta content
 	 *
-	 * @access private
+	 * @access protected
 	 * @var array $meta
 	 */
-	private $meta = array(
+    protected $meta = array(
 		'keywords' => '',
 		'description' => '',
 	);
 
-	/**
+    /**
+     * Document head tags
+     *
+     * @access protected
+     * @var array $head_tags
+     */
+    protected $head_tags = array();
+
+    /**
 	 * Javascript files list
 	 * attached to html document
 	 *
-	 * @access private
+	 * @access protected
 	 * @var array $attached_js
 	 */
-	private $attached_js = array();
+    protected $attached_js = array();
 
 	/**
 	 * CSS files list
 	 * attached to html document
 	 *
-	 * @access private
+	 * @access protected
 	 * @var array $attached_js
 	 */
-	private $attached_css = array();
+    protected $attached_css = array();
 
 	/**
 	 * Class constructor
@@ -280,6 +288,18 @@ class html_lib {
 		$this->meta[$item] = str_replace('"', "'", $value);
 	}
 
+    /**
+     * Set head tag into html document <head>.
+     *
+     * @access public
+     * @param string $head_tag
+     * @return void
+     * @since 1.3.0
+     */
+    public function set_head_tag($head_tag) {
+        $this->head_tags[] = $head_tag;
+    } // End func
+
 	/**
 	 * Get meta content from html document.
 	 *
@@ -320,17 +340,40 @@ class html_lib {
 
 		} else {
 
-			foreach($this->meta as $name => $content) {
-				if($content != '') {
-					echo '<meta name="' . $item . '" content="' . $this->meta[$item] . '" />' . "\n";
-				}
-			} // end foreach
+            // Print meta data content
+            if(!empty($this->meta)) {
+
+			    foreach($this->meta as $name => $content) {
+				    if($content != '') {
+					    echo '<meta name="' . $name . '" content="' . $content . '" />' . "\n";
+				    }
+			    } // end foreach
+            }
 
 		} // end if item
 
 	} // end of func print meta
 
-	/**
+    /**
+     * Print <head> tags
+     *
+     * @access public
+     * @return void
+     * @since 1.3.0
+     */
+    public function print_head_tags() {
+
+        // Print meta tags
+        if(!empty($this->head_tags)) {
+
+            foreach($this->head_tags as $head_tag) {
+                echo $head_tag . "\n";
+            } // end foreach
+        }
+
+    } // End func print_head_tags
+
+    /**
 	 * Return meta keywords from string
 	 *
 	 * @access public

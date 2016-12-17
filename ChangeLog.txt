@@ -603,3 +603,80 @@
 
  	2. New function set_section() 
 		Set array as session value
+
+ Version 1.6.0 - 17/12/2016
+ --------------------------	
+
+ Application configuration
+
+	1. Item "cli_php_bin" in section [CLI] removed from application configuration file, due to the some servers firewall issues.
+	
+	File: /application/config/application.ini
+	
+ Addons Library Version 1.1.0
+
+    1. New method module_exists($id_addon, $id_module)
+        Return module file path if module exists
+
+    File: tokernel.framework/lib/addons.lib.php
+ 
+ Cache library Version 2.1.1
+
+    1. File caching: if caching is disabled, than content will not be written to cache.
+        Method: write_content()
+
+    File: tokernel.framework/lib/cache/filecache.lib.php
+
+ CSS/Javascript file content compression library Version 1.1.4
+
+    1. Compress file content
+        - Remove Comments.
+        - Remove new lines and extra white spaces.
+
+    2. Combine a bunch of files tp one.
+
+    3. Load remote file to compress or combine.
+
+    File: tokernel.framework/lib/compress.lib.php
+
+ File processing library Version 1.4.0
+
+    1. New Method to parse formatted size to bytes
+        formatted_size_to_bytes($size)
+        i.e. 1kb -> 1024
+
+    2. New method to get actual Max file upload size calculated from PHP configuration
+        file_upload_max_size()
+
+ HTML library Version 1.3.0
+
+    1. New method to set tags to <head>
+        set_head_tag($head_tag)
+
+    2. New method to print head tags
+        print_head_tags()
+
+ Image library Version 2.0.0
+
+    This is new generation of image processing library.
+    All methods and functionality requirements comes from developers recommendations and experience.
+
+ INI Configuration files processor library Version 1.3.0
+
+    1. New method to get first items in ini file which wasn't defined in Section.
+        items_first_get()
+
+    2. New method to define if the given line is section name formatted i.e. [section_name]
+        is_section($line)
+
+ MySQL database library Version 2.0.4
+
+    1. Setting the encoding to UTF-8 in Configuration function.
+        This functionality can be changed in future to get encoding value from configuration.
+        $this->query("SET NAMES 'utf8'");
+
+ URL library Version 2.5.0
+
+    1. New method is_https() return true if the url protocol is HTTP://
+
+ In this release a lot of Code comments has bin corrected.

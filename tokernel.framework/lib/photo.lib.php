@@ -18,11 +18,11 @@
  * You should have received a copy of the GNU General Public License
  * along with toKernel. If not, see <http://www.gnu.org/licenses/>.
  *
- * @category   framework
- * @package    toKernel
+ * @category   library
+ * @package    framework
  * @subpackage library
  * @author     toKernel development team <framework@tokernel.com>
- * @copyright  Copyright (c) 2015 toKernel
+ * @copyright  Copyright (c) 2016 toKernel
  * @license    http://www.gnu.org/copyleft/gpl.html GNU Public License
  * @version    1.0.1
  * @link       http://www.tokernel.com
@@ -144,6 +144,7 @@ class photo_lib {
  * Return clone of this object
  * 
  * @access public
+ * @param mixed $config = array()
  * @return object 
  */
  public function instance($config = NULL) {
@@ -160,7 +161,7 @@ class photo_lib {
  * Set configuration parameters
  * 
  * @access private
- * @param array $options
+ * @param array $config
  * @return bool
  */ 
  private function configure($config) {
@@ -173,12 +174,12 @@ class photo_lib {
  	
  } // end func configure
 
- /**
- /* Render a photo using the requested settings
- /*
- /* @access public
- /* @param array $request
- /* @return handle to the rendered photo
+/**
+ * Render a photo using the requested settings
+ *
+ * @access public
+ * @param array $request
+ * @return mixed
  */
  public function render($request) {
  	
@@ -241,12 +242,12 @@ class photo_lib {
 	
  } // End func render
 
- /**
- /* Render a photo using the requested settings
- /*
- /* @access public
- /* @param array $request
- /* @return handle to the rendered photo
+/**
+ * Render a photo using the requested settings
+ *
+ * @access public
+ * @param array $request
+ * @return mixed
  */
  public function validate_request($request) {
 
@@ -362,6 +363,7 @@ class photo_lib {
  * 
  * @access protected
  * @param string $img
+ * @param string $origin
  * @return bool
  */
  protected function serve_image($img, $origin) {

@@ -18,11 +18,11 @@
  * You should have received a copy of the GNU General Public License
  * along with toKernel. If not, see <http://www.gnu.org/licenses/>.
  *
- * @category   framework
- * @package    toKernel
+ * @category   library
+ * @package    framework
  * @subpackage library
  * @author     toKernel development team <framework@tokernel.com>
- * @copyright  Copyright (c) 2015 toKernel
+ * @copyright  Copyright (c) 2016 toKernel
  * @license    http://www.gnu.org/copyleft/gpl.html GNU Public License
  * @version    1.1.0
  * @link       http://www.tokernel.com
@@ -139,6 +139,7 @@ class log_lib {
  * 
  * @access public
  * @param string $log_message
+ * @param mixed $date_mode
  * @return bool
  */
  public function write($log_message, $date_mode = true) {

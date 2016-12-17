@@ -1,8 +1,11 @@
 <?php 
-/*
+/**
  * toKernel - Universal PHP Framework.
  * Debug information box for http mode.
- * 
+ *
+ * @category   templates
+ * @package    framework
+ *
  * Note: All variables in this file defined in tk_e::show_debug_info() method.
  * file - tokernel/path/kernel/error.http.class.php
  * 

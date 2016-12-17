@@ -18,11 +18,11 @@
  * You should have received a copy of the GNU General Public License
  * along with toKernel. If not, see <http://www.gnu.org/licenses/>.
  *
- * @category   framework
- * @package    toKernel
+ * @category   library
+ * @package    framework
  * @subpackage library
  * @author     toKernel development team <framework@tokernel.com>
- * @copyright  Copyright (c) 2015 toKernel
+ * @copyright  Copyright (c) 2016 toKernel
  * @license    http://www.gnu.org/copyleft/gpl.html GNU Public License
  * @version    3.1.0
  * @link       http://www.tokernel.com
@@ -60,27 +60,29 @@ class cache_lib {
  * Class constructor
  * 
  * @access public
+ * @param mixed $config
  * @return void
  */ 
  public function __construct($config = array()) {
 	
  	$this->app = app::instance();
     $this->cache = $this->load($config);
-	
+
  } // end func __construct 
  
  /**
   * Return cloned copy of this object
   *
   * @access public
+  * @param mixed $config
   * @return object
   * @since 2.0.0
   */
  public function instance($config = array()) {
- 	
+
 	$obj = $this->load($config);
 	return $obj->instance($config);
-		
+
  } // End func instance
 	
 /**
@@ -91,7 +93,7 @@ class cache_lib {
  * @return void 
  */
  protected function load($config) {
-	 
+
 	/* Load cache library */
 	if(isset($config['cache_lib'])) {
 		$cache_lib = $config['cache_lib'];

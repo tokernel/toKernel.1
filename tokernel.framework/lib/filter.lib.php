@@ -18,11 +18,11 @@
  * You should have received a copy of the GNU General Public License
  * along with toKernel. If not, see <http://www.gnu.org/licenses/>.
  *
- * @category   framework
- * @package    toKernel
+ * @category   library
+ * @package    framework
  * @subpackage library
  * @author     toKernel development team <framework@tokernel.com>
- * @copyright  Copyright (c) 2015 toKernel
+ * @copyright  Copyright (c) 2016 toKernel
  * @license    http://www.gnu.org/copyleft/gpl.html GNU Public License
  * @version    1.4.1
  * @link       http://www.tokernel.com
@@ -511,7 +511,8 @@ class filter_lib {
  * By default will convert to empty string.
  * 
  * @access public
- * @param string string to convert
+ * @param string $data
+ * @param mixed $char
  * @return string
  */
  public function strip_tabs($data, $char = '') {
@@ -523,7 +524,8 @@ class filter_lib {
  * Allow image source if $keep_src is true.
  * 
  * @access public
- * @param string data to strip
+ * @param string $data
+ * @param mixed $keep_src
  * @return string
  */
  public function strip_image_tags($data, $keep_src = false) {
@@ -600,7 +602,8 @@ class filter_lib {
  * /*  * /
  * 
  * @access public
- * @param string data to strip
+ * @param string $data
+ * @param mixed $non_html
  * @return string
  */
  public function strip_comments($data, $non_html = true) {
@@ -646,7 +649,8 @@ class filter_lib {
  * Encode html entity by application encoding.
  * 
  * @access public
- * @param mixed array | string data to encode
+ * @param mixed array | string $data
+ * @param mixed $encoding
  * @return string
  */ 
  public function encode_html_entities($data, $encoding = NULL) {
@@ -672,7 +676,8 @@ class filter_lib {
  * Decode html entity by application encoding.
  * 
  * @access public
- * @param mixed array | string data to decode
+ * @param mixed array | string $data
+ * @param mixed $encoding
  * @return string
  */
  public function decode_html_entities($data, $encoding = NULL) {
@@ -698,10 +703,11 @@ class filter_lib {
  * Get, clean global vars
  * 
  * @access protected
- * @param global index string
- * @param mixed item name = NULL
- * @param bool clean xss = false
- * @param bool strip html tags in xss func.
+ * @param string $global_index
+ * @param mixed $item = NULL
+ * @param bool $encode_html_entities = true
+ * @param bool $clean_xss = false
+ * @param bool $strip_tags = false
  * @return mixed
  */ 
  protected function get_globals($global_index, $item = NULL, $encode_html_entities = true, $clean_xss = false, $strip_tags = false) {

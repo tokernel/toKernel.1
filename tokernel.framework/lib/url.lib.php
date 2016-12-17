@@ -18,13 +18,13 @@
  * You should have received a copy of the GNU General Public License
  * along with toKernel. If not, see <http://www.gnu.org/licenses/>.
  *
- * @category   framework
- * @package    toKernel
+ * @category   library
+ * @package    framework
  * @subpackage library
  * @author     toKernel development team <framework@tokernel.com>
- * @copyright  Copyright (c) 2015 toKernel
+ * @copyright  Copyright (c) 2016 toKernel
  * @license    http://www.gnu.org/copyleft/gpl.html GNU Public License
- * @version    2.4.0
+ * @version    2.5.0
  * @link       http://www.tokernel.com
  * @since      File available since Release 1.0.0
  */
@@ -977,6 +977,23 @@ class url_lib {
      return $new;
 
  } // End func query_string_arr
+
+/**
+ * Return true if the request protocol is https
+ *
+ * @access public
+ * @return bool
+ * @since version 2.5.0
+ */
+ public function is_https() {
+
+	if(isset($_SERVER['HTTPS']) and $_SERVER['HTTPS'] != 'off') {
+		return true;
+	} else {
+		return false;
+	}
+
+ } // End func is_https
  
 /* End of class cli_lib */
 }

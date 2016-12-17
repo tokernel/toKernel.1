@@ -18,11 +18,11 @@
  * You should have received a copy of the GNU General Public License
  * along with toKernel. If not, see <http://www.gnu.org/licenses/>.
  *
- * @category   framework
- * @package    toKernel
+ * @category   library
+ * @package    framework
  * @subpackage library
  * @author     toKernel development team <framework@tokernel.com>
- * @copyright  Copyright (c) 2015 toKernel
+ * @copyright  Copyright (c) 2016 toKernel
  * @license    http://www.gnu.org/copyleft/gpl.html GNU Public License
  * @version    1.2.5
  * @link       http://www.tokernel.com
@@ -40,8 +40,14 @@ defined('TK_EXEC') or die('Restricted area.');
  * @author Arshak Ghazaryan <khazaryan@gmail.com>
  */
 class email_lib {
-  
-  public $config = array();
+
+ /**
+  * Email functionality configuration
+  *
+  * @access public
+  * @var array
+  */
+ public $config = array();
 
 /**
  * Class constructor
@@ -69,10 +75,10 @@ class email_lib {
   * The configuration can be passed an array of config values
   *
   * @access	public
-  * @params	array
+  * @param	mixed $config
   * @return	void
   */
-  public function configure($config=array()) {
+  public function configure($config = array()) {
 	
 	// Sending protocol (phpmail,sendmail or smtp). By default protocol is phpmail
   	if (!isset($config['protocol'])) {

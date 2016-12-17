@@ -19,11 +19,11 @@
  * You should have received a copy of the GNU General Public License
  * along with toKernel. If not, see <http://www.gnu.org/licenses/>.
  *
- * @category   framework
- * @package    toKernel
+ * @category   kernel
+ * @package    framework
  * @subpackage kernel
  * @author     toKernel development team <framework@tokernel.com>
- * @copyright  Copyright (c) 2015 toKernel
+ * @copyright  Copyright (c) 2016 toKernel
  * @license    http://www.gnu.org/copyleft/gpl.html GNU Public License
  * @version    1.2.0
  * @link       http://www.tokernel.com
@@ -48,6 +48,7 @@ defined('TK_EXEC') or die('Restricted area.');
  * @param string $err_message
  * @param string $file
  * @param integer $line
+ * @param mixed $trace
  * @return void
  */
  protected static function show_error($err_code, $err_message, $file = NULL, 

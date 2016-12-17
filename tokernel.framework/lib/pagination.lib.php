@@ -18,11 +18,11 @@
  * You should have received a copy of the GNU General Public License
  * along with toKernel. If not, see <http://www.gnu.org/licenses/>.
  *
- * @category   framework
- * @package    toKernel
+ * @category   library
+ * @package    framework
  * @subpackage library
  * @author     toKernel development team <framework@tokernel.com>
- * @copyright  Copyright (c) 2015 toKernel
+ * @copyright  Copyright (c) 2016 toKernel
  * @license    http://www.gnu.org/copyleft/gpl.html GNU Public License
  * @version    1.0.6
  * @link       http://www.tokernel.com
@@ -247,11 +247,13 @@ class pagination_lib {
  * Create link simple or javascript
  * 
  * @access protected
- * @param link
+ * @param string $link
+ * @param string $class
+ * @param string $show
  * @return string
  */ 
  protected function to_link($link, $class, $show) {
- 	
+
 	if($this->config['js_function'] != '') {
  		
  		$func = str_replace('{link}', $link, $this->config['js_function']);

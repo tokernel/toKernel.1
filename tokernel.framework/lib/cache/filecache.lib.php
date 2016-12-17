@@ -18,13 +18,13 @@
  * You should have received a copy of the GNU General Public License
  * along with toKernel. If not, see <http://www.gnu.org/licenses/>.
  *
- * @category   framework
- * @package    toKernel
+ * @category   library
+ * @package    framework
  * @subpackage library
  * @author     toKernel development team <framework@tokernel.com>
- * @copyright  Copyright (c) 2015 toKernel
+ * @copyright  Copyright (c) 2016 toKernel
  * @license    http://www.gnu.org/copyleft/gpl.html GNU Public License
- * @version    2.1.0
+ * @version    2.1.1
  * @link       http://www.tokernel.com
  * @since      File available since Release 1.0.0
  */
@@ -90,10 +90,11 @@ class filecache_lib {
  * Class constructor
  * 
  * @access public
+ * @param mixed $config
  * @return void
  */ 
  public function __construct($config = array()) {
-	
+
  	$this->lib = lib::instance();
     $this->app = app::instance();
     
@@ -138,6 +139,7 @@ class filecache_lib {
   * Return cloned copy of this object
   *
   * @access public
+  * @param mixed $config
   * @return object
   * @since 2.0.0
   */
@@ -145,7 +147,7 @@ class filecache_lib {
  	
 	$obj = clone $this;
 	$obj->__construct($config);
-	
+
 	return $obj;
 	
  } // End func instance
@@ -236,6 +238,11 @@ class filecache_lib {
  * @return bool
  */ 
  public function write_content($file_id, $buffer, $minutes = NULL) {
+
+    /* If cache disabled, than return false */
+    if($this->cache_expiration == 0) {
+        return false;
+    }
 
  	/* Try to put content if cache expired */
 	if($this->expired($file_id, $minutes)) {

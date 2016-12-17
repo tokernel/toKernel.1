@@ -19,13 +19,13 @@
  * You should have received a copy of the GNU General Public License
  * along with toKernel. If not, see <http://www.gnu.org/licenses/>.
  *
- * @category   framework
- * @package    toKernel
+ * @category   library
+ * @package    framework
  * @subpackage library
  * @author     toKernel development team <framework@tokernel.com>
- * @copyright  Copyright (c) 2015 toKernel
+ * @copyright  Copyright (c) 2016 toKernel
  * @license    http://www.gnu.org/copyleft/gpl.html GNU Public License
- * @version    1.0.6
+ * @version    1.1.0
  * @link       http://www.tokernel.com
  * @since      File available since Release 1.0.0
  */
@@ -235,6 +235,47 @@ class addons_lib {
  } // end of func loaded
 
 /**
+ * Return module file path if module exists
+ *
+ * @access public
+ * @param string $id_addon
+ * @param string $id_module
+ * @return mixed string | bool
+ */
+ public function module_exists($id_addon, $id_module) {
+
+     if(trim($id_addon) == '') {
+         trigger_error('Addon name is empty.', E_USER_WARNING);
+     }
+
+     if(trim($id_module) == '') {
+         trigger_error('Module name is empty.', E_USER_WARNING);
+     }
+
+     /* Set module filename for application dir. */
+     $app_mod_file = TK_CUSTOM_PATH . 'addons' . TK_DS . $id_addon .
+         TK_DS . 'modules' . TK_DS . $id_module.'.module.php';
+
+     /* Set module filename for framework dir. */
+     $tk_mod_file = TK_PATH . 'addons' . TK_DS . $id_addon . TK_DS .
+         'modules' . TK_DS . $id_module.'.module.php';
+
+     /* Module file not exists in any of path. */
+     if(!is_file($tk_mod_file) and !is_file($app_mod_file)) {
+         return false;
+     }
+
+     /* Module exists in app */
+     if(is_file($app_mod_file)) {
+         return $app_mod_file;
+         /* Module exists in framework */
+     } else {
+         return $tk_mod_file;
+     }
+
+ } // Endfunc module_exists
+
+/**
  * Return is addon exists.
  * This function will check addon main library and directory name.
  * Call this function with defined $custom_only as true to check 
@@ -246,7 +287,8 @@ class addons_lib {
  * @return bool
  */
  public function exist($id_addon, $custom_only = false) {
- 	if(trim($id_addon) == '') {
+
+    if(trim($id_addon) == '') {
  		return false;
  	}
  	
@@ -278,6 +320,13 @@ class addons_lib {
 
  } // end func exist
 
+/**
+ * Return All Addons list
+ *
+ * @access public
+ * @param bool $tk_only
+ * @return array
+ */
  public function all($tk_only = false) {
 
 	 $tk_addons = $this->lib->file->ls(TK_PATH . 'addons', 'd');

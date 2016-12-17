@@ -18,13 +18,13 @@
  * You should have received a copy of the GNU General Public License
  * along with toKernel. If not, see <http://www.gnu.org/licenses/>.
  *
- * @category   framework
- * @package    toKernel
+ * @category   library
+ * @package    framework
  * @subpackage library
  * @author     toKernel development team <framework@tokernel.com>
- * @copyright  Copyright (c) 2015 toKernel
+ * @copyright  Copyright (c) 2016 toKernel
  * @license    http://www.gnu.org/copyleft/gpl.html GNU Public License
- * @version    2.0.2
+ * @version    2.0.4
  * @link       http://www.tokernel.com
  * @since      File available since Release 1.0.0
  * @todo       Change the count() method functionality.
@@ -153,12 +153,21 @@ class mysql_lib {
  	} 
  	
  	$this->conn_ini = $conn_ini;
- 	
+
+    // Set UTF 8
+    // This is a old way
+    //$this->query("SET character_set_results = 'utf8', character_set_client = 'utf8', character_set_connection = 'utf8', character_set_database = 'utf8', character_set_server = 'utf8'");
+
+    // The new way
+    $this->query("SET NAMES 'utf8'");
+
  	return true;
  	
  } // end func configure
  
 /**
+ * Return configuration value by item name
+ *
  * @access public
  * @param string $item
  * @return mixed string | bool
@@ -370,7 +379,7 @@ class mysql_lib {
     @$result = mysqli_query($this->conn_res, $query);
     
 	if($result) {
-        $data = mysqli_fetch_array($result, MYSQL_NUM);
+        $data = mysqli_fetch_array($result, MYSQLI_NUM);
         $data = $data[0];
         
 		@mysqli_free_result($result);
@@ -1042,6 +1051,7 @@ class mysql_lib {
  * Return last error
  * 
  * @access public
+ * @param mixed $benchmark = false
  * @return string
  */ 
  public function error($benchmark = false) {

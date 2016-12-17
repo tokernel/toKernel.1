@@ -19,11 +19,11 @@
  * You should have received a copy of the GNU General Public License
  * along with toKernel. If not, see <http://www.gnu.org/licenses/>.
  *
- * @category   framework
- * @package    toKernel
+ * @category   kernel
+ * @package    framework
  * @subpackage kernel
  * @author     toKernel development team <framework@tokernel.com>
- * @copyright  Copyright (c) 2015 toKernel
+ * @copyright  Copyright (c) 2016 toKernel
  * @license    http://www.gnu.org/copyleft/gpl.html GNU Public License
  * @version    2.3.4
  * @link       http://www.tokernel.com
@@ -111,28 +111,39 @@ class module {
  * Class Constructor
  * 
  * @access public
+ * @param mixed $params = NULL
+ * @param string $id_addon
+ * @param object $config
+ * @param object $log
+ * @param object $language
  * @return void
  */
- public function __construct($params = NULL, $id_addon, ini_lib $config, 
- 							 log_lib $log, language_lib $language) {
- 							
- 	$this->id_addon = $id_addon; 
-		
-    $this->config = $config;
-	$this->log = $log;
-        
-    $this->lib = lib::instance();
+ public function __construct($params = NULL, $id_addon, ini_lib $config, log_lib $log, language_lib $language) {
+
+	// Define main objects
+	$this->lib = lib::instance();
 	$this->app = app::instance();
+
+	// Define Addon ID
+ 	$this->id_addon = $id_addon; 
+
+	// Define Addon configuration object
+    $this->config = $config;
+
+	// Define Addon log object
+	$this->log = $log;
 
 	/* Define module id */
 	$tmp_id = get_class($this);
-	
+
+	// Define module id related to stage, if extended
  	if(substr($tmp_id, -11) == '_ext_module') {
  		$this->id = substr($tmp_id, 0, -11);
  	} else {
  		$this->id = substr($tmp_id, 0, -7);
  	}
  	
+	// Initialize language
 	$this->language = $this->lib->language->instance(
 						$this->app->language(), 
 						array(
@@ -154,7 +165,8 @@ class module {
 						true);
 						
 	self::$initialized = true;
- }
+
+ } // End class constructor
 
 /**
  * Load module by parent addon object
@@ -163,7 +175,7 @@ class module {
  * @access public
  * @param string $id_module
  * @param array $params
- * @return object loaded module
+ * @return object
  */
  final public function load_module($id_module, $params = array()) {
  	$parrent_addon = $this->id_addon;
@@ -179,8 +191,8 @@ class module {
  * @final
  * @access public
  * @param string $file
- * @param array $parameters = array()
- * @return mixed string | false
+ * @param array $params = array()
+ * @return mixed
  * @since 2.1.0
  */
  final public function load_view($file, $params = array()) {
@@ -190,7 +202,7 @@ class module {
 	/* Remove addon name from class name */
 	$view_dir = substr($view_dir, (strlen($this->id_addon) + 1), 100);
 	
- 	/* Parrent view class included in tokernel.inc.php */
+ 	/* Parent view class included in tokernel.inc.php */
  	$app_view_file = TK_CUSTOM_PATH . 'addons' . TK_DS . $this->id_addon . 
  					 TK_DS . 'modules' . TK_DS . $view_dir . TK_DS .
 					 'views' . TK_DS . $file . '.view.php';
@@ -239,8 +251,7 @@ class module {
     }
     
 	/* Return view object */
-	return new view($file_to_load, $this->id, $this->config, 
-					$this->log,	$this->language, $params);
+	return new view($file_to_load, $this->id, $this->config, $this->log, $this->language, $params);
 	
  } // end func load_view
 
@@ -255,16 +266,14 @@ class module {
  */
  public function check_backend() {
  	
- 	if($this->app->config('backend_dir', 'HTTP') 
- 										!= $this->lib->url->backend_dir()) {
- 		
- 		$this->app->error_404('Cannot call method of class `' . 
- 								get_class($this) . '` by this url.');
+ 	if($this->app->config('backend_dir', 'HTTP') != $this->lib->url->backend_dir()) {
+ 		$this->app->error_404('Cannot call method of class `' .	get_class($this) . '` by this url.');
  		return false;
  	}
  	
  	return true;
- }
+
+ } // End func check_backend
  
 /**
  * Return addon configuration values
@@ -272,7 +281,7 @@ class module {
  * @final
  * @access public
  * @param string $item
- * @param string $section
+ * @param string $section = NULL
  * @return mixed
  */
  final public function config($item, $section = NULL) {

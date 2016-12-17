@@ -18,11 +18,11 @@
  * You should have received a copy of the GNU General Public License
  * along with toKernel. If not, see <http://www.gnu.org/licenses/>.
  *
- * @category    framework
- * @package     toKernel
- * @subpackage  library
+ * @category   library
+ * @package    framework
+ * @subpackage library
  * @author      toKernel development team <framework@tokernel.com>
- * @copyright   Copyright (c) 2015 toKernel
+ * @copyright   Copyright (c) 2016 toKernel
  * @license     http://www.gnu.org/copyleft/gpl.html GNU Public License
  * @version     1.3.0
  * @link        http://www.tokernel.com
@@ -168,8 +168,8 @@ class date_lib {
 	/**
 	 * Convert Date to timestamp
 	 *
-	 * 2015-09-22 - 1442865600
-	 * 22/09/2015 - 1442865600
+	 * 2016-09-22 - 1442865600
+	 * 22/09/2016 - 1442865600
 	 * 1442865600 - 1442865600
 	 *
 	 * @access public

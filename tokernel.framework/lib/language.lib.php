@@ -18,11 +18,11 @@
  * You should have received a copy of the GNU General Public License
  * along with toKernel. If not, see <http://www.gnu.org/licenses/>.
  *
- * @category   framework
- * @package    toKernel
+ * @category   library
+ * @package    framework
  * @subpackage library
  * @author     toKernel development team <framework@tokernel.com>
- * @copyright  Copyright (c) 2015 toKernel
+ * @copyright  Copyright (c) 2016 toKernel
  * @license    http://www.gnu.org/copyleft/gpl.html GNU Public License
  * @version    2.0.0
  * @link       http://www.tokernel.com
@@ -137,8 +137,9 @@ class language_lib {
  *
  * @access public
  * @param string $prefix
+ * @param string $language_paths
  * @param string $owner_id
- * @param bool $search_for_en_
+ * @param mixed $search_for_en_ = false
  * @return mixed object | bool
  */
  public function instance($prefix, $language_paths, $owner_id, $search_for_en_ = false) {

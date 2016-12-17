@@ -1,8 +1,11 @@
 <?php 
-/*
+/**
  * toKernel - Universal PHP Framework.
  * Error 404 template file.
- * 
+ *
+ * @category   templates
+ * @package    framework
+ *
  * Note: All variables in this file defined in tk_e::show_error() method.
  * file - tokernel/path/kernel/error.http.class.php
  * 
