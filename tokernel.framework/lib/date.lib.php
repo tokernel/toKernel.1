@@ -21,13 +21,12 @@
  * @category   library
  * @package    framework
  * @subpackage library
- * @author      toKernel development team <framework@tokernel.com>
- * @copyright   Copyright (c) 2016 toKernel
- * @license     http://www.gnu.org/copyleft/gpl.html GNU Public License
- * @version     1.3.0
- * @link        http://www.tokernel.com
- * @since       File available since Release 1.0.0
- * @todo        Refactor function diff()
+ * @author     toKernel development team <framework@tokernel.com>
+ * @copyright  Copyright (c) 2017 toKernel
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU Public License
+ * @version    2.0.0
+ * @link       http://www.tokernel.com
+ * @since      File available since Release 1.0.0
  */
 
 /* Restrict direct access to this file */
@@ -35,275 +34,260 @@ defined('TK_EXEC') or die('Restricted area.');
 
 /**
  * Date class library.
+ * This library uses DateTime and DateInterval classes
  *
- * @author David A. <tokernel@gmail.com>
+ * @author David A.   <tokernel@gmail.com>
+ * @author Karapet S. <join04@yahoo.com>
  */
 class date_lib {
 
-	/**
-	 * Return time elapsed from one date to another
-	 * if $tp == 's' return time in seconds
-	 * if $tp == 'm' return time in minutes
-	 * if $tp == 'h' return time in hours
-	 * if $tp == 'd' return time in days
-	 * if $tp == 'w' return time in weeks
-	 * if $tp == 'M' return time in months
-	 * if $tp == 'Y' return time in years
-	 *
-	 * @access public
-	 * @param string $date1
-	 * @param string $date2
-	 * @param string $tp = 's'
-	 * @return int | false
-	 */
-	public function diff($date1, $date2, $tp = 's') {
+    /**
+     * Return time elapsed from one date to another
+     * if $tp == 's' return time in seconds
+     * if $tp == 'm' return time in minutes
+     * if $tp == 'i' return time in minutes
+     * if $tp == 'h' return time in hours
+     * if $tp == 'd' return time in days
+     * if $tp == 'w' return time in weeks
+     * if $tp == 'M' return time in months
+     * if $tp == 'Y' return time in years
+     *
+     * @access public
+     * @param string $date1
+     * @param string $date2
+     * @param string $tp = 's'
+     * @return int | false
+     */
+    public function diff($date1, $date2, $tp = 's') {
+        $date1 = date_create($date1);
+        $date2 = date_create($date2);
 
-		$date1 = $this->to_timestamp($date1);
-		$date2 = $this->to_timestamp($date2);
+        // Invalid date
+        if(!$date1 || !$date2){
+            return false;
+        }
 
-		$diff = $date2 - $date1;
+        $interval = date_diff($date1, $date2);
 
-		if($diff < 0) {
-			return false;
-		}
+        if(!$interval) {
+            return false;
+        }
 
-		switch($tp) {
+        $diff = 0;
+        switch($tp){
+            case 'Y':
+                $diff = $interval->y;
+                break;
+            case 'M':
+                $diff = $interval->m;
+                break;
+            case 'w':
+                $diff = floor($interval->days / 7);
+                break;
+            case 'd':
+                $diff = $interval->days;
+                break;
+            case 'h':
+                $diff = ($interval->days * 24) + $interval->h;
+                break;
+            case 'm':
+            case 'i':
+                $diff = ($interval->days * 24 * 60) + ($interval->h * 60) + $interval->i;
+                break;
+            case 's':
+                $diff = ($interval->days * 24 * 60 * 60) + ($interval->h * 60 * 60) + ($interval->i * 60) + $interval->s;
+                break;
+            default:
+                trigger_error("Unknown format '$tp'.", E_USER_WARNING);
+                return false;
+        }
 
-			case 's':
-				break;
-			case 'm':
-				$diff = floor($diff/60);
-				break;
-			case 'h':
-				$diff = floor($diff/3600);
-				break;
-			case 'd':
-				$diff = floor($diff/86400);
-				break;
-			case 'w':
-				$diff = floor($diff/604800);
-				break;
-			case 'M':
+        // Difference is negative
+        if($interval->invert == 1) {
+            return -$diff;
+        }
 
-				$df = date('n', $date2) - date('n', $date1);
+        return $diff;
 
-				if(date('j', $date2) < date('j', $date1)) {
-					$df--;
-				} elseif(date('j', $date2) == date('j', $date1)) {
+    } // end of func diff
 
-					if(date('G', $date2) < date('G', $date1)) {
-						$df--;
-					} elseif(date('G', $date2) == date('G', $date1)) {
+    /**
+     * Checks if date has passed
+     *
+     * @access public
+     * @param string $date1
+     * @param string $date2 = null
+     * @return bool
+     */
+    public function is_passed($date1, $date2 = null) {
 
-						if(date('i', $date2) < date('i', $date1)) {
-							$df--;
-						} elseif(date('i', $date2) == date('i', $date1)) {
+    	$date1 = date_create($date1);
 
-							if(date('s', $date2) < date('s', $date1)) {
-								$df--;
-							}
-						}
-					}
-				}
+        if(is_null($date2)) {
+            $date2 = date_create();
+        } else {
+            $date2 = date_create($date2);
+        }
 
-				$diff = max((date('Y', $date2) - date('Y', $date1)), 0)*12 + $df;
+        // Invalid date
+        if(!$date1 || !$date2) {
+            return false;
+        }
 
-				break;
+        if($date1 > $date2) {
+            return true;
+        }
 
-			case 'y':
-				$vis_count = 0;
+        return false;
 
-				for($i = date('Y', $date1) + 1; $i < date('Y', $date2); $i++) {
+    } // end of func is_passed
 
-					if(($i%4) == 0) {
-						$vis_count++;
-					}
+    /**
+     * Convert Date to UNIX timestamp
+     *
+     * 2015-09-22 - 1442865600
+     * 22/09/2015 - 1442865600
+     * 1442865600 - 1442865600
+     *
+     * @access public
+     * @param string|int $date
+     * @return mixed int | bool
+     */
+    public function to_timestamp($date) {
 
-				}
+    	if(is_int($date)) {
+            return $date;
+        }
 
-				$diff = floor( $diff / (31536000 +
-						min( (strtotime('29.02.'.date('Y', $date1))/$date1),
-							(1 - min((date('Y', $date1)%4), 1))
-						) +
-						min( ($date2/strtotime('29.02.'.date('Y', $date2))),
-							(1 - min((date('Y', $date2)%4), 1)) , $diff
-						) +
-						$vis_count) );
+        $date = date_create($date);
 
-				break;
-			default:
-				return false;
-		}
+        // Invalid date
+        if(!$date) {
+            return false;
+        }
 
-		return $diff;
+        return date_timestamp_get($date);
 
-	} // end of func diff
+    } // end func to_timestamp
 
-	/**
-	 * Checks if date has passed
-	 *
-	 * @access public
-	 * @param string $date1
-	 * @param string $date2
-	 * @return bool
-	 */
-	public function is_passed($date1, $date2 = NULL) {
+    /**
+     * Check intersection of dates
+     *
+     * 1. Range of dates with range of dates.
+     * 2. Date in range of dates.
+     *
+     * See more explanation in code.
+     *
+     * @access public
+     * @param string $first_date_start
+     * @param string $first_date_end
+     * @param string $second_date_start
+     * @param string $second_date_end = null
+     * @return bool
+     */
+    public function is_intersects($first_date_start, $first_date_end, $second_date_start, $second_date_end = null) {
+        // Process the arguments
+        $first_date_start = date_create($first_date_start);
+        $first_date_end = date_create($first_date_end);
+        $second_date_start = date_create($second_date_start);
 
-		$date1 = $this->to_timestamp($date1);
+        // Invalid date
+        if(!$first_date_start || !$first_date_end || !$second_date_start){
+            return false;
+        }
 
-		if(!is_null($date2)) {
-			$date2 = $this->to_timestamp($date2);
-		} else {
-			$date2 = time();
-		}
+        if(!is_null($second_date_end)) {
+            $second_date_end = date_create($second_date_end);
+        }
 
-		if($date1 <= $date2) {
-			return false;
-		}
+        // Intersect with start part
+        // Date  :		|----------|
+        // Event :	|----------|
 
-		return true;
+        if(
+            ($second_date_start <= $first_date_end)
+            and
+            ($second_date_start >= $first_date_start)) {
+            return true;
+        }
 
-	} // end of func is_passed
+        if(!$second_date_end) {
+            return false;
+        }
 
-	/**
-	 * Convert Date to timestamp
-	 *
-	 * 2016-09-22 - 1442865600
-	 * 22/09/2016 - 1442865600
-	 * 1442865600 - 1442865600
-	 *
-	 * @access public
-	 * @param mixed
-	 * @return int
-	 */
-	function to_timestamp($date) {
+        // Intersect with End part
+        // Date  :	|----------|
+        // Event :		|----------|
 
-		if(is_int($date)) {
-			return $date;
-		}
+        if(
+            ($second_date_end <= $first_date_end)
+            and
+            ($second_date_end >= $first_date_start)) {
+            return true;
+        }
 
-		if(strpos($date, '/') !== false) {
-			$tmp = explode('/', $date);
-			$date = $tmp[2] . '-' . $tmp[1] . '-' . $tmp[0];
-		}
+        // Overlap totally
+        // Date  :		|----------|
+        // Event :	|------------------|
 
-		$date = strtotime($date);
+        if(
+            ($second_date_start <= $first_date_start)
+            and
+            ($second_date_end >= $first_date_end)) {
+            return true;
+        }
 
-		return $date;
+        return false;
 
-	} // End func to_timestamp
+    } // end func is_intersects
 
-	/**
-	 * Check intersection of dates
-	 *
-	 * 1. Range of dates with range of dates.
-	 * 2. Date in range of dates.
-	 *
-	 *  See more explanation in code.
-	 *
-	 * @access public
-	 * @param mixed $first_date_start
-	 * @param mixed $first_date_end
-	 * @param mixed $second_date_start
-	 * @param mixed $second_date_end = null
-	 * @return bool
-	 */
-	function is_intersects($first_date_start, $first_date_end, $second_date_start, $second_date_end = NULL) {
+    /**
+     * Check if date interval has weekends
+     *
+     * @access public
+     * @param string $date_from
+     * @param string $date_to
+     * @return bool
+     */
+    public function has_weekend($date_from, $date_to) {
+        $date_from = date_create($date_from);
+        $date_to = date_create($date_to);
 
-		// Process the arguments
-		$first_date_start = $this->to_timestamp($first_date_start);
-		$first_date_end = $this->to_timestamp($first_date_end);
-		$second_date_start = $this->to_timestamp($second_date_start);
+        // Invalid date
+        if(!$date_from || !$date_to){
+            return false;
+        }
 
-		if(!is_null($second_date_end)) {
-			$second_date_end = $this->to_timestamp($second_date_end);
-		}
+        // Incorrect date range
+        if($date_from > $date_to) {
+            return false;
+        }
 
-		// Intersect with start part
-		// Date  :      |----------|
-		// Event : |----------|
+        // Dates are equal
+        if($date_from == $date_to) {
+            $day_of_week = date_format($date_from, 'w');
+            if($day_of_week == 6 or $day_of_week == 0) {
+                // It is weekend
+                return true;
+            }
+            return false;
+        }
 
-		if(
-			($second_date_start <= $first_date_end)
-			and
-			($second_date_start >= $first_date_start)) {
-			return true;
-		}
+        // Regular date range
+        while($date_from <= $date_to) {
+            $day_of_week = date_format($date_from, 'w');
+            if($day_of_week == 6 or $day_of_week == 0) {
+                // It is weekend
+                return true;
+            }
 
-		if(is_null($second_date_end)) {
-			return false;
-		}
+            date_modify($date_from, '+1 day');
+        }
 
-		// Intersect with End part
-		// Date  : |----------|
-		// Event :      |----------|
+        return false;
+    } // end func has_weekend
 
-		if(
-			($second_date_end <= $first_date_end)
-			and
-			($second_date_end >= $first_date_start)) {
-			return true;
-		}
+} // End class date_lib
 
-		// Overlap totally
-		// Date  :   |----------|
-		// Event : |--------------|
-
-		if(
-			($second_date_start <= $first_date_start)
-			and
-			($second_date_end >= $first_date_end)) {
-			return true;
-		}
-
-		return false;
-
-	} // End func is_intersects
-
-	/**
-	 * Check if date interval has weekends
-	 *
-	 * @access public
-	 * @param mixed $date_from
-	 * @param mixed $date_to
-	 * @return bool
-	 */
-	public function has_weekend($date_from, $date_to) {
-
-		$date_from = $this->to_timestamp($date_from);
-		$date_to = $this->to_timestamp($date_to);
-
-		// Incorrect date range
-		if($date_from > $date_to) {
-			return false;
-		}
-
-		// Date ranges is equal
-		if($date_from == $date_to) {
-			if(date('w', $date_from) == 6 or date('w', $date_from) == 0) {
-				// it is weekend
-				return true;
-			}
-			return false;
-		}
-
-		// Regular date range
-		while($date_from < $date_to) {
-
-			if(date('w', $date_from) == 6 or date('w', $date_from) == 0) {
-				// it is weekend
-				return true;
-			}
-
-			$date_from += 86400; // Increment 1 day.
-		}
-
-		return false;
-
-	} // End func has_weekend
-
-	/* End of class date_lib */
-}
-
-/* End of file date.lib.php */
+// End of file
 ?>

@@ -23,7 +23,7 @@
  * @package    framework
  * @subpackage kernel
  * @author     toKernel development team <framework@tokernel.com>
- * @copyright  Copyright (c) 2016 toKernel
+ * @copyright  Copyright (c) 2017 toKernel
  * @license    http://www.gnu.org/copyleft/gpl.html GNU Public License
  * @version    1.2.0
  * @link       http://www.tokernel.com
@@ -92,9 +92,9 @@ defined('TK_EXEC') or die('Restricted area.');
 		
     	// Make sure the proper content type is sent with a 500 status
    		if($err_code != 404) {
-    		header('HTTP/1.0 500 Internal Server Error', true, 500);
+    		header('HTTP/1.1 500 Internal Server Error', true, 500);
     	} else {
-    		header("HTTP/1.0 404 Not Found", true, 404);
+    		header("HTTP/1.1 404 Not Found", true, 404);
     	}
 	}
     		

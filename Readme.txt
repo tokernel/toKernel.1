@@ -3,13 +3,12 @@
  ==================================
  
  License GNU GPL <https://www.gnu.org/licenses/gpl.html>
- Copyright (c) 2010-2016, toKernel development team <framework@tokernel.com>
+ Copyright (c) 2010-2017, toKernel development team <framework@tokernel.com>
  http://www.tokernel.com
 
  About project
  -------------
- 
- 
+
  Fully Object-Oriented extensible framework to make website or CMS development simple and flexible.
 
  toKernel is a fully Object-Oriented extensible framework written in PHP.
@@ -19,7 +18,7 @@
  applications, command line applications and run the same application
  in either mode including interactive mode.
 
- http://www.tokernel.com/documentation/project-overview/about-project
+ http://www.tokernel.com/framework/documentation/project-overview/about-project
  
  Why toKernel?
  -------------
@@ -43,6 +42,13 @@
  You should have received a copy of the GNU General Public License
  along with toKernel. If not, see <http://www.gnu.org/licenses/>.
 
+ Install
+ -------
+
+ The fast Install guide located in /install/Install.txt
+ There is one "example" addon to look & feel: application/addons/example
+ The main Setup guide you can read in http://www.tokernel.com/framework/documentation/getting-started/setup-guide
+
  Features
  --------
  
@@ -55,27 +61,22 @@
  Flexible Error handling and logging
  Debugging
  
- http://www.tokernel.com/documentation/features/
+ http://www.tokernel.com/framework/documentation/features/
  
- Documenation
- ------------
+ Documentation
+ -------------
  
- Table of content - http://www.tokernel.com/documentation
- System requirements - http://www.tokernel.com/documentation/project-overview/system-requirements
- Change log - http://www.tokernel.com/documentation/changelog
- Setup guide - http://www.tokernel.com/documentation/getting-started/setup-guide
- FAQ - http://www.tokernel.com/documentation/faq
+ Table of content - http://www.tokernel.com/framework/documentation
+ System requirements - http://www.tokernel.com/framework/documentation/project-overview/system-requirements
+ Change log - http://www.tokernel.com/framework/documentation/changelog
+ Setup guide - http://www.tokernel.com/framework/documentation/getting-started/setup-guide
+ FAQ - http://www.tokernel.com/framework/documentation/faq
  
  Download
  -------- 
  
- toKernel latest version - http://www.tokernel.com/download/
- 
- Events
- ------
- 
- Project news, release notes, etc... - http://www.tokernel.com/events
- 
+ toKernel latest version - http://www.tokernel.com/framework/download/
+
  Credits
  ------- 
 
@@ -85,6 +86,7 @@
  Razmik Davoyan     <razmik@davoyan.name>   Library developer
  Patrick Isbendjian <pi@pisbtech.com>       Documentation editor, library developer
  Karen Grigoryan    <bridge-time@yandex.ru> Source code comments editor
+ Karapet Sargsyan   <join04@yahoo.com>      Developer, Tester, Consultant
 
  THANKS
  ------
@@ -96,5 +98,7 @@
  -------------------
  
  toKernel development team.
- http://www.tokernel.com/feedback/
- framework@tokernel.com
+ Website: http://tokernel.com/#contact
+ Email: framework@tokernel.com
+ Skype: tokernel
+

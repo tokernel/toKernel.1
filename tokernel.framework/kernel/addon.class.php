@@ -22,7 +22,7 @@
  * @package    framework
  * @subpackage kernel
  * @author     toKernel development team <framework@tokernel.com>
- * @copyright  Copyright (c) 2016 toKernel
+ * @copyright  Copyright (c) 2017 toKernel
  * @license    http://www.gnu.org/copyleft/gpl.html GNU Public License
  * @version    3.4.0
  * @link       http://www.tokernel.com
@@ -155,13 +155,13 @@ abstract class addon {
  	$this->log = $this->lib->log->instance('addon_' . $this->id . '.' . $log_ext);
  	
 	$this->language = $this->lib->language->instance(
-						$this->app->language(), 
+						$this->app->language(),
 						array(
-     						TK_CUSTOM_PATH . 'addons' . TK_DS . $this->id . 
+     						TK_CUSTOM_PATH . 'addons' . TK_DS . $this->id .
      						TK_DS . 'languages' . TK_DS,
-     						
-     						TK_PATH . 'addons' . TK_DS . $this->id . 
-     						TK_DS . 'languages' . TK_DS, 
+
+     						TK_PATH . 'addons' . TK_DS . $this->id .
+     						TK_DS . 'languages' . TK_DS,
      					),
      					'Addon: '. $this->id,
 						true);
@@ -259,7 +259,7 @@ abstract class addon {
 	
 	$loaded_from_custom = NULL;
 	
-	/* Parrent module class included in tokernel.inc.php */
+	/* Parent module class included in tokernel.inc.php */
 	
 	// case 1. module exists only in tokernel
 	if(is_file($tk_mod_file) and !is_file($app_mod_file)) {
@@ -291,11 +291,16 @@ abstract class addon {
     }
     
     /* Load new addon object into loaded addons array */
-    $module = new $module_class($params, $this->id, 
-										$this->config, 
-    									$this->log,	$this->language, $module_index);
-    									
-    /* Module loaded as singlton and will be appended to loaded modules array */
+    $module = new $module_class(
+        $params,
+        $this->id,
+        $this->config,
+    	$this->log,
+        $this->language,
+        $module_index
+    );
+
+    /* Module loaded as singleton and will be appended to loaded modules array */
     if($clone == false) {
 		self::$loaded_modules[$module_index] = $module; 
     } 

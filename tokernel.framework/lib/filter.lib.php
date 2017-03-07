@@ -22,9 +22,9 @@
  * @package    framework
  * @subpackage library
  * @author     toKernel development team <framework@tokernel.com>
- * @copyright  Copyright (c) 2016 toKernel
+ * @copyright  Copyright (c) 2017 toKernel
  * @license    http://www.gnu.org/copyleft/gpl.html GNU Public License
- * @version    1.4.1
+ * @version    1.4.2
  * @link       http://www.tokernel.com
  * @since      File available since Release 1.0.0
  */
@@ -316,7 +316,7 @@ class filter_lib {
 		$tmp_arr = array();
 		
 		/* Clean keys also, if array is associative */
-		if($this->lib->data->is_assoc($data)) {
+		if($this->lib->array->is_assoc($data)) {
 			foreach($data as $key => $value) {
 				/* Clean key. */
 				$key = $this->clean_xss($key);

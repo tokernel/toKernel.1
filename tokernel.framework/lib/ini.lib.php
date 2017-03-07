@@ -22,7 +22,7 @@
  * @package     framework
  * @subpackage  library
  * @author      toKernel development team <framework@tokernel.com>
- * @copyright   Copyright (c) 2016 toKernel
+ * @copyright   Copyright (c) 2017 toKernel
  * @license     http://www.gnu.org/copyleft/gpl.html GNU Public License
  * @version     1.3.0
  * @link        http://www.tokernel.com
@@ -526,7 +526,7 @@ class ini_lib {
             return false;
         }
 
-        $this->ini_arr = $this->lib->array->array_key_rename($section, $new_section, $this->ini_arr);
+        $this->ini_arr = $this->lib->array->key_rename($section, $new_section, $this->ini_arr);
 
         return true;
 
@@ -550,7 +550,7 @@ class ini_lib {
 
     /**
      * Sort section item.
-     * Foe now, this function will remoe all comments in sorted section.
+     * For now, this function will remove all comments in sorted section.
      * If the argument $section_or_entire_ini_arr defined as true, then
      * function will sort entire ini file, else if section name specified,
      * function will sort specified section.
@@ -766,7 +766,7 @@ class ini_lib {
 
         // find replace in entire array
         if(is_null($section) and $this->item_exists($item)) {
-            $this->ini_arr = $this->lib->array->array_key_rename($item, $new_item,
+            $this->ini_arr = $this->lib->array->key_rename($item, $new_item,
                 $this->ini_arr);
             return true;
         }
@@ -778,8 +778,7 @@ class ini_lib {
 
         // Search in section if isset
         if($this->item_exists($item, $section)) {
-            $this->ini_arr[$section] = $this->lib->array->array_key_rename($item,
-                $new_item, $this->ini_arr[$section]);
+            $this->ini_arr[$section] = $this->lib->array->key_rename($item, $new_item, $this->ini_arr[$section]);
             return $section;
         }
 

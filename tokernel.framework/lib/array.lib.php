@@ -22,9 +22,9 @@
  * @package    framework
  * @subpackage library
  * @author     toKernel development team <framework@tokernel.com>
- * @copyright  Copyright (c) 2016 toKernel
+ * @copyright  Copyright (c) 2017 toKernel
  * @license    http://www.gnu.org/copyleft/gpl.html GNU Public License
- * @version    1.0.0
+ * @version    1.1.0
  * @link       http://www.tokernel.com
  * @since      File available since Release 1.4.0
  */
@@ -35,7 +35,8 @@ defined('TK_EXEC') or die('Restricted area.');
 /**
  * array_lib class
  *
- * @author David Ayvazyan <tokernel@gmail.com>
+ * @author David A. <tokernel@gmail.com>
+ * @author Karapet S. <join04@yahoo.com>
  */
 class array_lib {
 
@@ -43,12 +44,21 @@ class array_lib {
 	 * Check, is associative array
 	 *
 	 * @access public
-	 * @param array
+	 * @param array $arr
 	 * @return bool
 	 */
 	public function is_assoc($arr) {
 		return array_keys($arr) !== range(0, count($arr) - 1);
 	} // end func is_assoc
+
+    /**
+     * Rename array key
+     *
+     * @deprecated
+     */
+    public function array_key_rename($ext_key, $new_key, $arr) {
+        return $this->key_rename($ext_key, $new_key, $arr);
+    }
 
 	/**
 	 * Rename key in array
@@ -59,7 +69,7 @@ class array_lib {
 	 * @param array $arr
 	 * @return array | bool
 	 */
-	public function array_key_rename($ext_key, $new_key, $arr) {
+	public function key_rename($ext_key, $new_key, $arr) {
 
 		if(!is_array($arr)) {
 			return false;
@@ -77,23 +87,32 @@ class array_lib {
 
 		return $new_arr;
 
-	} // end func array_key_rename
+	} // end func key_rename
+
+    /**
+     * Return position in array by key
+     *
+     * @deprecated
+     */
+    public function array_key_pos($needle, $arr) {
+        return $this->key_pos($needle, $arr);
+    }
 
 	/**
 	 * Return position in array by key
 	 *
 	 * @access public
 	 * @param mixed $needle
-	 * @param array $array
+	 * @param array $arr
 	 * @return int | bool
 	 */
-	function array_key_pos($needle, $array) {
+	public function key_pos($needle, $arr) {
 
-		if(!is_array($array) or is_null($needle)) {
+		if(!is_array($arr) or is_null($needle)) {
 			return false;
 		}
 
-		$tmp = array_keys($array);
+		$tmp = array_keys($arr);
 		$index = array_search($needle, $tmp);
 
 		if($index !== false) {
@@ -102,24 +121,45 @@ class array_lib {
 			return false;
 		}
 
-	} // end func array_key_pos
+	} // end func key_pos
+
+    /**
+     * Return array key by position
+     *
+     * @access public
+     * @param array $arr
+     * @param int $pos
+     * @return mixed
+     * @since version 1.1.0
+     */
+    public function key_by_pos(array $arr, $pos) {
+
+        $tmp = array_keys($arr);
+
+        if(isset($tmp[$pos])) {
+            return $tmp[$pos];
+        }
+
+        return false;
+
+    } // end func key_by_pos
 
 	/**
-	 * Check if all values of array elements in empty
+	 * Check if all values of array elements is empty
 	 *
 	 * @access public
-	 * @param array $array
+	 * @param array $arr
 	 * @return bool
 	 */
-	public function is_elements_empty($array) {
+	public function is_elements_empty($arr) {
 
-		if(empty($array)) {
+		if(empty($arr)) {
 			return true;
 		}
 
 		$tmp = '';
 
-		foreach($array as $key => $value) {
+		foreach($arr as $key => $value) {
 			if(!is_array($value)) {
 				$tmp .= $value;
 			} else {

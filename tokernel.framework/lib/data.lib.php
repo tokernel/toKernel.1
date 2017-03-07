@@ -22,7 +22,7 @@
  * @package    framework
  * @subpackage library
  * @author     toKernel development team <framework@tokernel.com>
- * @copyright  Copyright (c) 2016 toKernel
+ * @copyright  Copyright (c) 2017 toKernel
  * @license    http://www.gnu.org/copyleft/gpl.html GNU Public License
  * @version    1.4.1
  * @link       http://www.tokernel.com
@@ -43,12 +43,12 @@ class data_lib {
  * Create random generated password
  * 
  * @access public
- * @param int $lenght
+ * @param int $length
  * @param bool $uppercase
  * @return string
  * @since 1.1.0
  */
- function create_password($lenght = 8, $uppercase = true) {
+ function create_password($length = 8, $uppercase = true) {
  
  	$chars = "abcdefghijkmnopqrstuvwxyz023456789~`!@#$%^&*()_|=-.,?';:]}[}";
  	$u_chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -63,7 +63,7 @@ class data_lib {
 
     $pass = '' ;
 
-    while ($i < $lenght) {
+    while ($i < $length) {
         $num = rand(1, strlen($chars));
         $tmp = substr($chars, $num, 1);
         $pass = $pass . $tmp;
@@ -78,12 +78,12 @@ class data_lib {
  * Create random generated username
  * 
  * @access public
- * @param int $lenght
+ * @param int $length
  * @param bool $uppercase
  * @return string
  * @since 1.2.0
  */
- function create_username($lenght = 8, $uppercase = true) {
+ function create_username($length = 8, $uppercase = true) {
  
  	$chars = "abcdefghijkmnopqrstuvwxyz023456789_.";
  	$u_chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -98,7 +98,7 @@ class data_lib {
 
     $usr = '' ;
 
-    while ($i < $lenght) {
+    while ($i < $length) {
         $num = rand(1, strlen($chars));
         $tmp = substr($chars, $num, 1);
         $usr = $usr . $tmp;

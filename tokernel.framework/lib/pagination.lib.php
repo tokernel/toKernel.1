@@ -22,9 +22,9 @@
  * @package    framework
  * @subpackage library
  * @author     toKernel development team <framework@tokernel.com>
- * @copyright  Copyright (c) 2016 toKernel
+ * @copyright  Copyright (c) 2017 toKernel
  * @license    http://www.gnu.org/copyleft/gpl.html GNU Public License
- * @version    1.0.6
+ * @version    1.1.0
  * @link       http://www.tokernel.com
  * @since      File available since Release 1.0.0
  */
@@ -36,6 +36,7 @@ defined('TK_EXEC') or die('Restricted area.');
  * pagination_lib class
  * 
  * @author Razmik Davoyan <razmik@davoyan.name>
+ * @author David A. <tokernel@gmail.com>
  */
 class pagination_lib {
 
@@ -66,7 +67,8 @@ class pagination_lib {
  	$this->config['next_link_class'] = '';
  	$this->config['after_main'] = '';
  	$this->config['js_function'] = '';
- 	
+    $this->config['offset_var'] = '{var.offset}';
+
  } // end constructor
  
 /**
@@ -129,6 +131,10 @@ class pagination_lib {
     	return false;
     }
 
+    if($offset <= 0) {
+ 	    $offset = 1;
+    }
+
     if($total <= $offset) {
     	$offset = $total - 1;
     }
@@ -150,7 +156,7 @@ class pagination_lib {
     		$prev_class = '';
     	}
     	
-		$prev_link = $this->to_link($base_url . ($cur_page - 1), 
+		$prev_link = $this->to_link($base_url, ($cur_page - 1),
     								$prev_class, $this->config['prev_link']);
 
     } else {
@@ -165,7 +171,7 @@ class pagination_lib {
     		$next_class = '';
     	}
 
-		$next_link = $this->to_link($base_url . ($cur_page + 1), 
+		$next_link = $this->to_link($base_url, ($cur_page + 1),
     								$next_class, $this->config['next_link']); 
     } else {
     	$next_link = '<span '.$cur_class.'>'.$this->config['next_link'].'</span> ';
@@ -197,13 +203,13 @@ class pagination_lib {
     	for($i = 1; $i < min(max($cur_page - 2, 1), 
     										max($page_count - 4, 1)); $i++) {
     											
-		$buffer .= $this->to_link($base_url.($i), $num_class, $i);
+		$buffer .= $this->to_link($base_url, $i, $num_class, $i);
     		
     	}
     } else {
     	
-		$buffer .= $this->to_link($base_url.'1', $num_class, 1);
-		$buffer .= $this->to_link($base_url.'2', $num_class, 2);
+		$buffer .= $this->to_link($base_url, 1, $num_class, 1);
+		$buffer .= $this->to_link($base_url, 2, $num_class, 2);
 		$buffer .= '<span '.$break_class.'>... </span>';
     }
 
@@ -215,7 +221,7 @@ class pagination_lib {
         	continue;
         }       
         
-		$buffer .= $this->to_link($base_url.($i), $num_class, $i);
+		$buffer .= $this->to_link($base_url, $i, $num_class, $i);
                 
     }
 
@@ -223,15 +229,15 @@ class pagination_lib {
     if($i >= $page_count - 3) {
     	
 		while($i <= $page_count) {
-    		$buffer .= $this->to_link($base_url.($i), $num_class, $i);
+    		$buffer .= $this->to_link($base_url, $i, $num_class, $i);
 			$i++;
     	}
 		
     } else {
 		$buffer .= '<span '.$break_class.'>...</span> ';
-		$buffer .= $this->to_link($base_url . ($page_count - 1), 
+		$buffer .= $this->to_link($base_url, ($page_count - 1),
 									$num_class, ($page_count - 1));
-		$buffer .= $this->to_link($base_url . ($page_count), 
+		$buffer .= $this->to_link($base_url, ($page_count),
 									$num_class, $page_count);    	
     }
 
@@ -252,15 +258,23 @@ class pagination_lib {
  * @param string $show
  * @return string
  */ 
- protected function to_link($link, $class, $show) {
+ protected function to_link($link, $offset, $class, $show) {
 
 	if($this->config['js_function'] != '') {
  		
  		$func = str_replace('{link}', $link, $this->config['js_function']);
  		
- 		return '<a href="javascript:" ' . $class . ' onClick="' . $func .'">'
- 				. $show.'</a> ';
+ 		return '<a href="javascript:" ' . $class . ' onClick="' . $func .'">' . $show . '</a> ';
+
  	} else {
+
+	    if(strpos($link, $this->config['offset_var']) !== false) {
+	        $link = str_replace($this->config['offset_var'], $offset, $link);
+        } else {
+	        $link .= $offset;
+        }
+
+
  		return '<a href="' . $link . '" ' . $class . '>' . $show . '</a> '; 
  	}
  	 

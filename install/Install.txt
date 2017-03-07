@@ -1,0 +1,177 @@
+
+toKernel Universal PHP Framework Version 1.x Installation instructions
+@version 1.0.0
+
+Hi! And Welcome to toKernel Framework's world!
+This Installation instruction will guide you to Install and run your copy of pplication.
+
+See also: http://tokernel.com/framework/documentation/getting-started/setup-guide
+
+1. Setup Application in Web directory
+2. Configure web access
+3. Setup MySQL Database
+4. Start test and enjoy!
+
+1. Setup Application in Web directory.
+--------------------------------------
+
+    For the first, let's unpack the downloaded version of toKernel framework into your web documents folder.
+    Depending on your system the web documents folder can be located in different places.
+    For example:
+
+    /var/www
+    ~/public_html
+    /var/apache/htdocs
+
+    Assume the web directory is /var/www and we starting to make the project with name my_project.
+    Than the root folder of your project will be: /var/www/my_project/
+
+    Now Unpack the downloaded framework archive into /var/www/my_project/
+    So you have to see your project structure as :
+
+    /var/www/my_project/application
+    /var/www/my_project/tokernel.framework
+    /var/www/my_project/install
+    /var/www/my_project/.htaccess
+    /var/www/my_project/ChangeLog.txt
+    /var/www/my_project/index.php
+    /var/www/my_project/License.txt
+    /var/www/my_project/Readme.txt
+
+    If you are in the *Nix environment (Linux/Unix) don't forget to chmod your files to be executable.
+
+2. Configure web access
+-----------------------
+
+    A. Configure the .htaccess file
+
+    Notice: Assume, you setting up your project in Apache Web Server environment.
+
+    Because of different environments can have different url addresses for the web documents directory,
+    we have to configure the .htaccess file.
+
+    The main item that we have to change is the: RewriteBase, which defines your application base url.
+
+    So, if your project located in subdirectory of web documents root as /var/www/my_project,
+    where the web documents root is var/www/, the value of this directive should be:
+
+    RewriteBase /my_project
+
+    There are possible options to configure the 'RewriteBase'.
+
+    Option 1. There is a domain name for your website and the website
+               is placed in 'www' directory (documentroot).
+
+    RewriteBase /
+
+    Option 2. There is a domain name for your website and the website
+               is placed in subdirectory called "my_project"
+
+    RewriteBase /my_project/
+
+    Option 3. There is no domain name for your website and the website
+               is placed in 'www' directory (documentroot).
+
+    RewriteBase /~your_username/
+
+    Option 4. There is no domain name for your website and the website
+               is placed in subdirectory called "my_project"
+
+    RewriteBase /~your_username/my_project/
+
+    B. Configure URL in application.ini
+
+    If you setting up your project in root of web documents or virtual host,
+    than you not need to configure the "base_url" in your project.
+
+    Examples:
+        /var/www/
+        /var/www/my_project (where my_project is accessible as a virtual host)
+        C:\xampp\htdocs\
+
+    In this case, the project will be accessible via web browser by default.
+
+    But in case, your project located in sub-directory of your web documents,
+    you have to configure the "base_url".
+
+    Examples:
+        /var/www/my_project/
+        C:\xampp\htdocs\my_project\
+
+    Open file: application/config/application.ini
+    Find the item "base_url" in section [HTTP] and add the url of your project.
+
+    Examples:
+
+        base_url=http://localhost/my_project/
+        base_url=http://www.example.com/my_project/
+
+    C. Test the web access
+
+    To test your configuration, just access to your project via web browser
+    and you will see the Welcome message of toKernel Framework.
+
+    If it's a case when you using XAMPP like package, you will locate your project in:
+    C:\xampp\htdocs\my_project
+
+    And access to your project via:
+    http://localhost/my_project
+
+3. Setup MySQL Database
+-----------------------
+
+    After setting up the project in your web documents and access to it via browser successfully,
+    it is time to setup and test the functionality to work with MySQL Database.
+
+    As you can noticed, for for now, the toKernel Framework V.1.x supports only MySQL Database functionality.
+    If you interested to work with other Database types please get to toKernel V.2.x.
+
+    Assume, you're familiar with MySQL Database and you're able to run a mysql dump script.
+
+    - Run the MySQL Script /install/db.sql to your mysql server.
+    - Open the file /application/config/databases.ini and edit the connection credentials to your server.
+    - See Examples in /application/addons/example/modules/db_example.module.php
+    - See the documentation of mysql library: http://tokernel.com/framework/documentation/class-libraries/mysql
+
+    To test, how the mysql Database functionality works in toKernel framework see point 4.
+
+4. Start test and enjoy!
+------------------------
+
+    Now, if we have setup our project, it is time to see the functionality examples and start development.
+
+    A. Run in CLI (Command line interface). Assume you're familiar with command line work ;)
+       You can research the CLI functionality in /application/addons/examples/modules/cli_examples.module.php
+       This file presents the possible usage of CLI in toKernel framework.
+
+        - Just display welcome message in CLI screen
+        # php {path_to_root_of_your_project}/index.php --addon example --action welcome
+
+        - Run CLI application in interactive mode (with inserting values)
+        # php {path_to_root_of_your_project}/index.php --addon example --action interactive
+
+        - Run CLI application with parameters
+        # php {path_to_root_of_your_project}/index.php --addon example --action with_params --name David --email tokernel@gmail.com
+
+        - Output CLI colors
+        # php {path_to_root_of_your_project}/index.php --addon example --action colors
+
+    B. Functionality Examples of toKernel framework with MySQL Server Database.
+
+        - Insert record
+        http://localhost/my_project/example/db_insert
+
+        - Update record
+        http://localhost/my_project/example/db_update
+
+        - Delete record
+        http://localhost/my_project/example/db_delete
+
+        - Fetch records
+        http://localhost/my_project/example/db_select
+
+    Now you're welcome to continue your project development!
+
+    The "example" addon in project will explain you a lot of code usage ;)
+
+End of file

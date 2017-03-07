@@ -23,7 +23,7 @@
  * @package    framework
  * @subpackage kernel
  * @author     toKernel development team <framework@tokernel.com>
- * @copyright  Copyright (c) 2016 toKernel
+ * @copyright  Copyright (c) 2017 toKernel
  * @license    http://www.gnu.org/copyleft/gpl.html GNU Public License
  * @version    1.3.0
  * @link       http://www.tokernel.com
@@ -568,9 +568,8 @@ class app extends app_core {
  */
  public function allowed_languages($lp = NULL) {
  	
- 	$a_languages = explode('|' , 
- 							$this->config->item_get('http_allowed_languages', 
- 													'HTTP'));
+ 	$a_languages = explode('|', $this->config->item_get('http_allowed_languages', 'HTTP'));
+
  	if(!is_array($a_languages)) {
  		return false;
  	}
@@ -597,6 +596,7 @@ class app extends app_core {
  	
  	unset($lng_ref);
  	unset($a_languages);
+
  	return $languages;
  	
  } // end func allowed_languages
