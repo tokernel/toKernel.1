@@ -4,15 +4,24 @@
  * Shopping card library.
  *
  * Each item requires to be an assoc array
- * and have keys with values dispayed bellow.
+ * and have keys with values displayed bellow.
  *
  * Example:
  * $item = array(
- *      'price' => 2500.5 // float,
+ *      'price' => 2500.5, // float
  *      'quantity' => 2 // int
  * );
  *
  * Other values of item depends on your needs.
+ * Example:
+ * $item = array(
+ *      'name' => 'PHP Book',
+ *      'description' => 'PHP for beginners',
+ *      'something_else' => 'Something else and so!',
+ *      'price' => 2500.5, // float
+ *      'quantity' => 2 // int
+ * );
+ *
  *
  * This file is part of toKernel.
  *
@@ -33,9 +42,9 @@
  * @package    framework
  * @subpackage library
  * @author     toKernel development team <framework@tokernel.com>
- * @copyright  Copyright (c) 2016 toKernel
+ * @copyright  Copyright (c) 2017 toKernel
  * @license    http://www.gnu.org/copyleft/gpl.html GNU Public License
- * @version    1.0.0
+ * @version    1.0.1
  * @link       http://www.tokernel.com
  * @since      File available since Release 1.5.0
  */
@@ -46,7 +55,7 @@ defined('TK_EXEC') or die('Restricted area.');
 /**
  * shopping_cart_lib class library
  *
- * @author David Ayvazyan <tokernel@gmail.com>
+ * @author David A. <tokernel@gmail.com>
  */
 class shopping_cart_lib {
 
@@ -63,23 +72,23 @@ class shopping_cart_lib {
 	 * Session key for cart items
 	 *
 	 * @var string
-	 * @access private
+	 * @access protected
 	 */
-	private $session_items_key = '_shopping_cart_items_';
+    protected $session_items_key = '_shopping_cart_items_';
 
 	/**
 	 * Session key for cart options
 	 *
 	 * @var string
-	 * @access private
+	 * @access protected
 	 */
-	private $session_key = '_shoping_cart_options_';
+    protected $session_key = '_shopping_cart_options_';
 
 	/**
 	 * Item id key in array
 	 *
-	 * @var protected
-	 * @access private
+	 * @var string
+	 * @access protected
 	 */
 	protected $id_key = '_id';
 
@@ -87,9 +96,9 @@ class shopping_cart_lib {
 	 * The reference of Session library
 	 *
 	 * @var object
-	 * @access private
+	 * @access protected
 	 */
-	private $s;
+    protected $s;
 
 	/**
 	 * Class constructor
@@ -118,7 +127,7 @@ class shopping_cart_lib {
 				$this->item_set($item);
 			}
 		} else {
-			$this->item_set($item);
+			$this->item_set($data);
 		}
 
 	} // End func items_set
@@ -293,7 +302,7 @@ class shopping_cart_lib {
 		foreach($items as $item) {
 
 			if(!isset($item[$this->id_key])) {
-				trigger_error('Shpooing cart item id "'.$this->id_key.'" not set!', E_USER_WARNING);
+				trigger_error('Shopping cart item id "'.$this->id_key.'" not set!', E_USER_WARNING);
 			}
 
 			$this->item_update($item[$this->id_key], $item);
@@ -429,8 +438,6 @@ class shopping_cart_lib {
 			$total_price += ($item['price'] * $item['quantity']);
 		}
 
-		$total_price = $total_price;
-
 		return $total_price;
 
 	} // End func total_price
@@ -517,7 +524,7 @@ class shopping_cart_lib {
 
 	/**
 	 * Create and return unique id for item
-	 * Sometihng strnage, right ? ;)
+	 * Something strange, right ? ;)
 	 *
 	 * @access protected
 	 * @return string
