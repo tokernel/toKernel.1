@@ -77,6 +77,15 @@
  
  toKernel latest version - http://www.tokernel.com/framework/download/
 
+
+ toKernel Online / Social
+ ------------------------
+
+ Facebook: https://www.facebook.com/tokerneldevteam/
+ Twitter: https://twitter.com/tokernel
+ Github: https://github.com/tokernel/toKernel.1
+ Gitter: https://gitter.im/toKernel/Lobby
+
  Credits
  ------- 
 

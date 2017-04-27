@@ -24,7 +24,7 @@
  * @author     toKernel development team <framework@tokernel.com>
  * @copyright  Copyright (c) 2017 toKernel
  * @license    http://www.gnu.org/copyleft/gpl.html GNU Public License
- * @version    1.3.2
+ * @version    1.3.3
  * @link       http://www.tokernel.com
  * @since      File available since Release 1.0.0
  */
@@ -304,7 +304,7 @@ class view {
      * @return array
      * @since version 1.4.0
      */
-    public function get_vas() {
+    public function get_vars() {
         return $this->vars;
     }
 
@@ -348,7 +348,11 @@ class view {
         /* Replace all values */
         if(is_array($str_vals)) {
             foreach($str_vals as $vk => $value) {
-                $this->_buffer = str_replace('{var.'.$vk.'}', $value, $this->_buffer);
+	            // This is for old version: {.var_name}
+            	$this->_buffer = str_replace('{.'.$vk.'}', $value, $this->_buffer);
+            	
+            	// This is new version: {var.var_name}
+            	$this->_buffer = str_replace('{var.'.$vk.'}', $value, $this->_buffer);
             }
         }
 

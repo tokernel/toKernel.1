@@ -3,7 +3,7 @@ toKernel Universal PHP Framework Version 1.x Installation instructions
 @version 1.0.0
 
 Hi! And Welcome to toKernel Framework's world!
-This Installation instruction will guide you to Install and run your copy of pplication.
+This Installation instruction will guide you to Install and run your copy of application.
 
 See also: http://tokernel.com/framework/documentation/getting-started/setup-guide
 
@@ -123,7 +123,7 @@ See also: http://tokernel.com/framework/documentation/getting-started/setup-guid
     After setting up the project in your web documents and access to it via browser successfully,
     it is time to setup and test the functionality to work with MySQL Database.
 
-    As you can noticed, for for now, the toKernel Framework V.1.x supports only MySQL Database functionality.
+    As you can noticed, for now, the toKernel Framework V.1.x supports only MySQL Database functionality.
     If you interested to work with other Database types please get to toKernel V.2.x.
 
     Assume, you're familiar with MySQL Database and you're able to run a mysql dump script.

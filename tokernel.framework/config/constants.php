@@ -33,7 +33,6 @@
 defined('TK_EXEC') or die('Restricted area.');
 
 /* Required PHP Version for toKernel */
-define('TK_PHP_VERSION_REQUIRED', '5.3.29');
 
 /* Project short name */
 define('TK_SHORT_NAME', 'toKernel');

@@ -9,7 +9,7 @@
  * @author     toKernel development team <framework@tokernel.com>
  * @copyright  Copyright (c) 2017 toKernel
  * @license    http://www.gnu.org/copyleft/gpl.html GNU Public License
- * @version    1.0.0
+ * @version    1.1.0
  * @link       http://www.tokernel.com
  * @since      File available since Release 1.7.0
  */
@@ -487,6 +487,43 @@ class example_addon extends addon {
         // This method defined in extended class library
         print_r($s->items_get_json());
 
+    }
+	
+	/**
+	 * This example will demonstrate how to use the pagination class library.
+	 *
+	 * http://localhost/my_project/example/pagination_usage
+	 */
+    public function action_pagination_usage() {
+    	
+    	echo "<h1>Using Pagination library</h1>";
+    	
+    	// Defining a Pagination library object
+    	$p = $this->lib->pagination->instance();
+	
+    	// Getting offset from URL parameters
+	    $offset = $this->lib->url->params(0);
+    	
+	    // Total records (from database)
+    	$total = 1420;
+    	
+    	// How many items on page
+    	$limit = 10;
+		    
+    	// Base url for pagination
+	    $base_url = $this->lib->url->url('example', 'pagination_usage', false, true);
+    	
+	    // Setting some configuration to pagination
+	    $p->configure(
+	    	array(
+			    'prev_link' => '&#9668',
+			    'next_link' => '&#9658'
+		    )
+	    );
+	    
+	    // Outputting the pagination content
+    	echo $p->run($total, $limit, $offset, $base_url);
+    	
     }
 
 } // end class
