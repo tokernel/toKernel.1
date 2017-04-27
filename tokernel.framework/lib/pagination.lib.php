@@ -1,7 +1,7 @@
 <?php
 /**
  * toKernel - Universal PHP Framework.
- * Data pagination lib
+ * Data pagination library
  * 
  * This file is part of toKernel.
  *
@@ -24,7 +24,7 @@
  * @author     toKernel development team <framework@tokernel.com>
  * @copyright  Copyright (c) 2017 toKernel
  * @license    http://www.gnu.org/copyleft/gpl.html GNU Public License
- * @version    1.1.0
+ * @version    1.1.1
  * @link       http://www.tokernel.com
  * @since      File available since Release 1.0.0
  */
@@ -52,7 +52,6 @@ class pagination_lib {
  * Class constructor
  * 
  * @access public
- * @return bool
  */
  public function __construct() {
  	
@@ -141,7 +140,7 @@ class pagination_lib {
 
     $page_count = ceil($total / $limit);
     $cur_page = $offset;
-
+	
     if($this->config['current_class'] != '') {
     	$cur_class = 'class="'.$this->config['current_class'].'"';
     } else {
@@ -156,8 +155,7 @@ class pagination_lib {
     		$prev_class = '';
     	}
     	
-		$prev_link = $this->to_link($base_url, ($cur_page - 1),
-    								$prev_class, $this->config['prev_link']);
+		$prev_link = $this->to_link($base_url, ($cur_page - 1), $prev_class, $this->config['prev_link']);
 
     } else {
     	$prev_link = '<span '.$cur_class.'>'.$this->config['prev_link'].'</span> ';
@@ -171,8 +169,7 @@ class pagination_lib {
     		$next_class = '';
     	}
 
-		$next_link = $this->to_link($base_url, ($cur_page + 1),
-    								$next_class, $this->config['next_link']); 
+		$next_link = $this->to_link($base_url, ($cur_page + 1), $next_class, $this->config['next_link']);
     } else {
     	$next_link = '<span '.$cur_class.'>'.$this->config['next_link'].'</span> ';
     }
@@ -200,21 +197,17 @@ class pagination_lib {
     }
     
     if(min(max($cur_page - 2, 1), max($page_count - 4, 1)) <= 5) {
-    	for($i = 1; $i < min(max($cur_page - 2, 1), 
-    										max($page_count - 4, 1)); $i++) {
-    											
-		$buffer .= $this->to_link($base_url, $i, $num_class, $i);
-    		
+    	for($i = 1; $i < min(max($cur_page - 2, 1), max($page_count - 4, 1)); $i++) {
+    		$buffer .= $this->to_link($base_url, $i, $num_class, $i);
     	}
     } else {
     	
 		$buffer .= $this->to_link($base_url, 1, $num_class, 1);
 		$buffer .= $this->to_link($base_url, 2, $num_class, 2);
-		$buffer .= '<span '.$break_class.'>... </span>';
+		$buffer .= '<span '.$break_class.'>&hellip;</span>'; // ...
     }
 
-    for($i = min(max($cur_page - 2, 1), max($page_count - 4, 1)); 
-        $i <= min(max($cur_page + 2, 5), $page_count); $i++) {
+    for($i = min(max($cur_page - 2, 1), max($page_count - 4, 1)); $i <= min(max($cur_page + 2, 5), $page_count); $i++) {
             
         if($i == $cur_page) {
         	$buffer .= '<span '.$cur_class.'>'.$i.'</span> ';
@@ -225,7 +218,6 @@ class pagination_lib {
                 
     }
 
-
     if($i >= $page_count - 3) {
     	
 		while($i <= $page_count) {
@@ -234,11 +226,10 @@ class pagination_lib {
     	}
 		
     } else {
-		$buffer .= '<span '.$break_class.'>...</span> ';
-		$buffer .= $this->to_link($base_url, ($page_count - 1),
-									$num_class, ($page_count - 1));
-		$buffer .= $this->to_link($base_url, ($page_count),
-									$num_class, $page_count);    	
+    	$number_middle = $cur_page + 1;
+		$buffer .= '<span '.$break_class.'>&hellip; '.$number_middle.' </span> '; // ...
+		$buffer .= $this->to_link($base_url, ($page_count - 1), $num_class, ($page_count - 1));
+		$buffer .= $this->to_link($base_url, ($page_count),	$num_class, $page_count);
     }
 
     $buffer .= $next_link;
@@ -254,6 +245,7 @@ class pagination_lib {
  * 
  * @access protected
  * @param string $link
+ * @param int $offset
  * @param string $class
  * @param string $show
  * @return string
@@ -273,7 +265,6 @@ class pagination_lib {
         } else {
 	        $link .= $offset;
         }
-
 
  		return '<a href="' . $link . '" ' . $class . '>' . $show . '</a> '; 
  	}

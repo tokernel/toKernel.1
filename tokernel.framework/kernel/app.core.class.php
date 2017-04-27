@@ -129,7 +129,7 @@ abstract class app_core {
  
 /**
  * Singleton function for returning 
- * one instabce of this class.
+ * one instance of this class.
  * 
  * @final
  * @static 

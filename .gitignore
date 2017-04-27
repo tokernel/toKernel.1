@@ -165,3 +165,4 @@ pip-log.txt
 application/log/debug.log
 *.log
 Doxyfile
+Notepad-pp-session

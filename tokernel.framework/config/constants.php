@@ -33,7 +33,7 @@
 defined('TK_EXEC') or die('Restricted area.');
 
 /* Required PHP Version for toKernel */
-define('TK_PHP_VERSION_REQUIRED', '5.3.29');
+define('TK_PHP_VERSION_REQUIRED', '5.6');
 
 /* Project short name */
 define('TK_SHORT_NAME', 'toKernel');
@@ -42,7 +42,7 @@ define('TK_SHORT_NAME', 'toKernel');
 define('TK_DESCRIPTION', 'Universal PHP Framework');
 
 /* Project version */
-define('TK_VERSION', '1.7.0');
+define('TK_VERSION', '1.7.1');
 
 /* Short name for DIRECTORY_SEPARATOR */
 define('TK_DS', DIRECTORY_SEPARATOR);
