@@ -6,7 +6,27 @@
  ---------------------------
 
  This release contains very small fixes related to typo and small issues.
+ NOTICE: The toKernel v.1.x now requires PHP 5.6 version at least,
+         because it is only one in 5's family which supports now.
 
- 
+ -------------------------------------------------------------------------
+
+ Addon "example"
+
+    1. New method for testing Pagination library added.
+
+    File: application/addons/example/lib/example.addon.php
+
+ Base View class library in kernel version 1.3.3
+
+	1. Method name fixed for type.
+
+    File: tokernel.framework/kernel/view.class.php
+
+ Pagination class library Version 1.1.1
+
+	1. Small fixed.
+
+    File: tokernel.framework/lib/pagination.lib.php
 
  End of file
