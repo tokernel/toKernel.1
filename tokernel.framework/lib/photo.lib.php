@@ -24,7 +24,7 @@
  * @author     toKernel development team <framework@tokernel.com>
  * @copyright  Copyright (c) 2017 toKernel
  * @license    http://www.gnu.org/copyleft/gpl.html GNU Public License
- * @version    1.0.1
+ * @version    1.0.2
  * @link       http://www.tokernel.com
  * @since      File available since Release 1.1.3
  */
@@ -111,7 +111,7 @@ class photo_lib {
  					  ' in file `' . $ini_file . '` !', E_USER_ERROR);
  	}
 
- 	self::$default_opts = $lib_config->get_section('DEFAULT_CONFIG');
+ 	self::$default_opts = $lib_config->section_get('DEFAULT_CONFIG');
 	
 	/* Set cache dir path */
 	$this->cache_dir = TK_CUSTOM_PATH . self::$default_opts['cache_dir'] . TK_DS;
