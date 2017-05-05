@@ -26,7 +26,7 @@
  * @author     toKernel development team <framework@tokernel.com>
  * @copyright  Copyright (c) 2017 toKernel
  * @license    http://www.gnu.org/copyleft/gpl.html GNU Public License
- * @version    3.0.0
+ * @version    3.0.1
  * @link       http://www.tokernel.com
  * @since      File available since Release 1.0.0
  */
@@ -101,7 +101,6 @@ class mysql_lib {
      * Class constructor
      *
      * @access public
-     * @return object
      */
     public function __construct() {
         $this->lib = lib::instance();
@@ -115,7 +114,7 @@ class mysql_lib {
      */
     public function __destruct() {
 
-        $this->conn_link = null;
+        $this->conn_res = null;
         $this->conn_ini = null;
         $this->log = null;
         $this->err_message = '';
