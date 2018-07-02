@@ -26,7 +26,7 @@
  * @author     toKernel development team <framework@tokernel.com>
  * @copyright  Copyright (c) 2017 toKernel
  * @license    http://www.gnu.org/copyleft/gpl.html GNU Public License
- * @version    3.0.0
+ * @version    3.0.2
  * @link       http://www.tokernel.com
  * @since      File available since Release 1.0.0
  */
@@ -101,7 +101,6 @@ class mysql_lib {
      * Class constructor
      *
      * @access public
-     * @return object
      */
     public function __construct() {
         $this->lib = lib::instance();
@@ -115,7 +114,7 @@ class mysql_lib {
      */
     public function __destruct() {
 
-        $this->conn_link = null;
+        $this->conn_res = null;
         $this->conn_ini = null;
         $this->log = null;
         $this->err_message = '';
@@ -422,41 +421,6 @@ class mysql_lib {
         return $result_data;
 
     } // end func result
-
-    /**
-     * Return count(*) from table
-     *
-     * @deprecated
-     * @access public
-     * @param string $table
-     * @param mixed array | null $where
-     * @param mixed string | null $exp
-     * @return mixed integer | bool
-     */
-    public function count($table, $where = NULL, $exp = 'AND') {
-
-        $this->reconnect();
-
-        if(strtoupper($exp) != 'AND' and strtoupper($exp) != 'OR') {
-            return false;
-        }
-
-        $w = '';
-        if(is_array($where)) {
-            foreach($where as $field => $value) {
-                $w .= $field . " = '" . $value . "' " . $exp . " ";
-            }
-            $w = rtrim($w, " " . $exp . " ");
-            $w = " where " . $w;
-        }
-
-        $query = "select count(*) as cnt from " . $table . " " . $w;
-
-        $result = $this->result($query);
-
-        return $result;
-
-    } // end func count
 
     /**
      * Return array from by query string

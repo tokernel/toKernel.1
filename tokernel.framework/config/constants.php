@@ -22,7 +22,7 @@
  * @package    framework
  * @subpackage configuration
  * @author     toKernel development team <framework@tokernel.com>
- * @copyright  Copyright (c) 2017 toKernel
+ * @copyright  Copyright (c) 2018 toKernel
  * @license    http://www.gnu.org/copyleft/gpl.html GNU Public License
  * @version    1.0.0
  * @link       http://www.tokernel.com
@@ -42,7 +42,7 @@ define('TK_SHORT_NAME', 'toKernel');
 define('TK_DESCRIPTION', 'Universal PHP Framework');
 
 /* Project version */
-define('TK_VERSION', '1.7.1');
+define('TK_VERSION', '1.8.0');
 
 /* Short name for DIRECTORY_SEPARATOR */
 define('TK_DS', DIRECTORY_SEPARATOR);

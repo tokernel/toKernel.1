@@ -50,7 +50,7 @@ class filter_lib {
  private $lib;
  
 /**
- * Deprecated globals, will removed.
+ * D e p r e c a t e d globals, will removed.
  * 
  * @access private
  * @var array
@@ -131,7 +131,7 @@ class filter_lib {
 /**
  * Clean globals.
  * 
- * 1. Unset deprecated globals
+ * 1. Unset d e p r e c a t e d globals
  * 2. Clean globals and include to $clean_globals array.
  * 
  * @access public
@@ -529,7 +529,8 @@ class filter_lib {
  * @return string
  */
  public function strip_image_tags($data, $keep_src = false) {
-	if($keep_src) {
+	
+ 	if($keep_src) {
 		$src_str = '$1';
 	} else {
 		$src_str = '';

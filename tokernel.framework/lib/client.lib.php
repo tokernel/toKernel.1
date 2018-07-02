@@ -26,7 +26,7 @@
  * @author     toKernel development team <framework@tokernel.com>
  * @copyright  Copyright (c) 2017 toKernel
  * @license    http://www.gnu.org/copyleft/gpl.html GNU Public License
- * @version    1.0.0
+ * @version    1.0.1
  * @link       http://www.tokernel.com
  * @since      File available since Release 1.0.4
  */
@@ -136,7 +136,7 @@ class client_lib {
  * @access protected
  * @var array
  */ 
- protected $languages;
+ protected $languages = array();
  
 /**
  * Is robot

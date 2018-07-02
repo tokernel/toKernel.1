@@ -47,7 +47,7 @@ define('TK_START_RUN', round(microtime(true), 3));
  * 
  * defined('TK_EXEC') or die('Restricted area.');
  * 
- * This defination allows to run below included files.
+ * This definition allows to run below included files.
  */
 define('TK_EXEC', true);
 
