@@ -22,11 +22,12 @@
  * @package    framework
  * @subpackage kernel
  * @author     toKernel development team <framework@tokernel.com>
- * @copyright  Copyright (c) 2017 toKernel
+ * @copyright  Copyright (c) 2018 toKernel
  * @license    http://www.gnu.org/copyleft/gpl.html GNU Public License
- * @version    1.3.3
+ * @version    1.5.0
  * @link       http://www.tokernel.com
  * @since      File available since Release 1.0.0
+ * @todo       Remove deprecated functionality
  */
 
 /* Restrict direct access to this file */
@@ -46,7 +47,7 @@ class view {
      * @var object
      * @access protected
      */
-    protected $__lib_;
+    protected $lib;
 
     /**
      * Main Application object for
@@ -62,6 +63,7 @@ class view {
      *
      * @access protected
      * @var object
+     * @deprecated
      */
     protected $config;
 
@@ -70,6 +72,7 @@ class view {
      *
      * @var object
      * @access protected
+     * @deprecated
      */
     protected $log;
 
@@ -102,6 +105,7 @@ class view {
      *
      * @access protected
      * @var array
+     * @deprecated
      */
     protected $vars = array();
 
@@ -119,34 +123,32 @@ class view {
      * @access protected
      * @var string
      */
-    protected $id = '';
+    protected $id_addon = '';
 
     /**
      * Class construcor
      *
-     * @access public
      * @param string $file
      * @param string $id_addon
      * @param object $config
      * @param object $log
      * @param object $language
-     * @param array $params
-     * @return void
+     * @param array $values
      */
     public function __construct($file, $id_addon, ini_lib $config,
-                                log_lib $log, language_lib $language, $params) {
+                                log_lib $log, language_lib $language, $values) {
 
         $this->lib = lib::instance();
         $this->app = app::instance();
 
+        $this->language = $language;
+        $this->file = $file;
+        $this->id_addon = $id_addon;
+        $this->values = $values;
+
+        /* @deprecated */
         $this->config = $config;
         $this->log = $log;
-        $this->language = $language;
-
-        $this->file = $file;
-        $this->id = $id_addon;
-
-        $this->values = $params;
 
     } // end constructor
 
@@ -157,54 +159,56 @@ class view {
      * @return void
      */
     public function __destruct() {
+
         unset($this->_buffer);
         unset($this->values);
-        unset($this->vars);
         unset($this->file);
-        unset($this->id);
+        unset($this->id_addon);
+
+        /* @deprecated */
+        unset($this->vars);
+
     } // end destructor
 
     /**
-     * Return variable by name
+     * Return value by name
      *
      * @access public
-     * @param string $var
+     * @param string $item
      * @return mixed
      */
-    public function __get($var) {
-        if(isset($this->vars[$var])) {
-            return $this->vars[$var];
-        } else {
-            //trigger_error('Undefined item `' . $var . '` in view object!`', E_USER_NOTICE);
-            return NULL;
-        }
+    public function __get($item) {
+        return $this->get_value($item);
     } // end func __get
 
     /**
-     * Set variable by name
+     * Set value by name
      *
      * @access public
-     * @param string $var_name
-     * @param mixed $var_value
+     * @param string $item
+     * @param mixed $value
      * @return void
      */
-    public function __set($var_name, $var_value) {
-        $this->vars[$var_name] = $var_value;
+    public function __set($item, $value) {
+        $this->set_value($item, $value);
     }
 
     /**
-     * Unset a variable by name
+     * Unset a value by name
      *
      * @access public
      * @param string $var
-     * @return mixed
+     * @return bool
      * @since 1.3.0
      */
-    public function __unset($var) {
+    public function __unset($item) {
 
-        if(isset($this->vars[$var])) {
-            unset($this->vars[$var]);
+        if(isset($this->values[$item])) {
+            unset($this->values[$item]);
+            return true;
         }
+
+        return false;
 
     } // end func __unset
 
@@ -212,13 +216,13 @@ class view {
      * Check whether a variable has been defined
      *
      * @access public
-     * @param string $var
-     * @return mixed
+     * @param string $item
+     * @return bool
      * @since 1.3.0
      */
-    public function __isset($var) {
+    public function __isset($item) {
 
-        if(isset($this->vars[$var])) {
+        if(isset($this->values[$item])) {
             return true;
         } else {
             return false;
@@ -234,22 +238,9 @@ class view {
      * @since 1.2.0
      */
     public function reset() {
-        $this->vars = array();
         $this->values = array();
         $this->_buffer = NULL;
     }
-
-    /**
-     * Call for accessing addon functions in this view
-     *
-     * @access public
-     * @param string $func
-     * @param array $arguments
-     * @return void
-     */
-    //public function __call($func, $args) {
-    //return call_user_func_array(array($this->lib->addons->$this->id_addon, $func), $args);
-    //}
 
     /**
      * Return id_addon of this view
@@ -262,60 +253,95 @@ class view {
     }
 
     /**
-     * Set value to replace
+     * Set value
      *
      * @access public
-     * @param string | array $val_name
-     * @param $string $value = NULL
+     * @param string $item
+     * @param mixed $value
      * @return void
      */
-    public function set_value($val_name, $value = NULL) {
-
-        if(is_array($val_name)) {
-            foreach($val_name as $n => $v) {
-                $this->values[$n] = $v;
-            }
-        } else {
-            $this->values[$val_name] = $value;
-        }
+    public function set_value($item, $value) {
+        $this->values[$item] = $value;
     } // end func add_value
+
+    /**
+     * @access public
+     * @param array $values
+     * @return void
+     * @since version 1.5.0
+     */
+    public function set_values(array $values) {
+
+        if(!empty($values)) {
+            $this->values = array_merge($this->values, $values);
+        }
+
+    } // End func set_values
 
     /**
      * Get value by name
      *
      * @access public
-     * @param string $val_name
+     * @param string $item
      * @return mixed
      */
-    public function get_value($val_name) {
+    public function get_value($item) {
 
-        if(is_set($this->values[$val_name])) {
-            return $this->values[$val_name];
+        if(isset($this->values[$item])) {
+            return $this->values[$item];
         } else {
+            trigger_error('Undefined item `' . $item . '` in view object!`', E_USER_NOTICE);
             return NULL;
         }
 
     } // end func get_value
 
     /**
-     * Get all vars ov view object
+     * Return all given values
+     *
+     * @access public
+     * @return array
+     * @since version 1.5.0
+     */
+    public function get_values() {
+        return $this->values;
+    }
+
+    /**
+     * Get all values ov view object
      *
      * @access public
      * @return array
      * @since version 1.4.0
+     * @deprecated
      */
     public function get_vars() {
-        return $this->vars;
+        return $this->values;
     }
 
     /**
-     * Call Interpreter and echo the content.
+     * Call Interpreter and output the content.
      *
      * @access public
+     * @param array $values
      * @return void
      */
-    public function show($values = NULL) {
-        echo $this->run($values);
+    public function output($values = array()) {
+
+        $this->set_values($values);
+
+        echo $this->run();
+
+    } // End func show
+
+    /**
+     * This method replaced by output()
+     *
+     * @param array $values
+     * @deprecated
+     */
+    public function show($values = array()) {
+        $this->output($values);
     }
 
     /**
@@ -325,20 +351,9 @@ class view {
      * @param array $values
      * @return string
      */
-    public function run($values = array()) {
+    public function run(array $values = array()) {
 
-        /* Merge this values with new values */
-        if(!empty($values)) {
-
-            $str_vals = array_merge($this->values, $values);
-
-            foreach($values as $item => $value) {
-                $this->$item = $value;
-            }
-
-        } else {
-            $str_vals = $this->values;
-        }
+        $this->set_values($values);
 
         ob_start();
         require($this->file);
@@ -346,23 +361,24 @@ class view {
         ob_end_clean();
 
         /* Replace all values */
-        if(is_array($str_vals)) {
-            foreach($str_vals as $vk => $value) {
+        if(!empty($this->values)) {
+
+            foreach($this->values as $item => $value) {
 	            // This is for old version: {.var_name}
-            	$this->_buffer = str_replace('{.'.$vk.'}', $value, $this->_buffer);
+            	$this->_buffer = str_replace('{.'.$item.'}', $value, $this->_buffer);
             	
             	// This is new version: {var.var_name}
-            	$this->_buffer = str_replace('{var.'.$vk.'}', $value, $this->_buffer);
+            	$this->_buffer = str_replace('{var.'.$item.'}', $value, $this->_buffer);
             }
         }
 
-        tk_e::log_debug('End for addon/module - "' . $this->id . '". File - "' .
+        tk_e::log_debug('End for addon/view - "' . $this->id_addon . '". File - "' .
             basename($this->file) . '".',
             get_class($this) . '->' . __FUNCTION__);
 
         return $this->_buffer;
 
-    }
+    } // End func run
 
     /**
      * Get language value by expression
@@ -403,6 +419,7 @@ class view {
      * @param string $item
      * @param string $section
      * @return mixed
+     * @deprecated
      */
     final public function config($item = NULL, $section = NULL) {
         return $this->config->item_get($item, $section);

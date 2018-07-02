@@ -21,7 +21,7 @@
 # @package    toKernel
 # @subpackage main
 # @author     toKernel development team <framework@tokernel.com>
-# @copyright  Copyright (c) 2017 toKernel
+# @copyright  Copyright (c) 2018 toKernel
 # @license    http://www.gnu.org/copyleft/gpl.html GNU Public License
 # @version    1.0.2
 # @link       http://www.tokernel.com
@@ -65,7 +65,7 @@ RewriteEngine On
 #           RewriteBase /~your_username/mysite/
 #
 # configured with option 1
-RewriteBase /
+RewriteBase /toKernel.1/
 
 # Rewrite conditions configuration
 RewriteCond %{REQUEST_FILENAME} !-f

@@ -3,7 +3,7 @@
  ==================================
  
  License GNU GPL <https://www.gnu.org/licenses/gpl.html>
- Copyright (c) 2010-2017, toKernel development team <framework@tokernel.com>
+ Copyright (c) 2010-2018, toKernel development team <framework@tokernel.com>
  http://www.tokernel.com
 
  About project
@@ -110,4 +110,3 @@
  Website: http://tokernel.com/#contact
  Email: framework@tokernel.com
  Skype: tokernel
-

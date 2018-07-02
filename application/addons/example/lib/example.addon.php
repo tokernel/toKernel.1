@@ -234,11 +234,17 @@ class example_addon extends addon {
     public function action_template_with_widgets() {
 
         // Setting the application template to process.
-        $this->app->set_template('example.my_template_with_widgets');
+        $this->app->set_template(
+            'example.my_template_with_widgets',
+            array(
+                'name' => TK_SHORT_NAME,
+                'version' => TK_VERSION
+            )
+        );
 
         // This output will display in template widget named "__THIS__".
         // See: /application/templates/frontend/example.my_template.tpl.php
-        echo 'This is the addon action output.';
+        echo '[This is the addon action output.]';
 
     }
 

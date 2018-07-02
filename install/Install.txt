@@ -1,6 +1,6 @@
 
 toKernel Universal PHP Framework Version 1.x Installation instructions
-@version 1.0.0
+@version 1.0.2
 
 Hi! And Welcome to toKernel Framework's world!
 This Installation instruction will guide you to Install and run your copy of application.
@@ -15,7 +15,7 @@ See also: http://tokernel.com/framework/documentation/getting-started/setup-guid
 1. Setup Application in Web directory.
 --------------------------------------
 
-    For the first, let's unpack the downloaded version of toKernel framework into your web documents folder.
+    First, let's unpack the downloaded version of toKernel framework into your web documents folder.
     Depending on your system the web documents folder can be located in different places.
     For example:
 
@@ -23,8 +23,8 @@ See also: http://tokernel.com/framework/documentation/getting-started/setup-guid
     ~/public_html
     /var/apache/htdocs
 
-    Assume the web directory is /var/www and we starting to make the project with name my_project.
-    Than the root folder of your project will be: /var/www/my_project/
+    Assume the web directory is /var/www and we starting to make the project with the name my_project.
+    Then the root folder of your project will be: /var/www/my_project/
 
     Now Unpack the downloaded framework archive into /var/www/my_project/
     So you have to see your project structure as :
@@ -45,15 +45,15 @@ See also: http://tokernel.com/framework/documentation/getting-started/setup-guid
 
     A. Configure the .htaccess file
 
-    Notice: Assume, you setting up your project in Apache Web Server environment.
+    Notice: Assume, you are setting up your project in Apache or Nginx Web Server environment.
 
     Because of different environments can have different url addresses for the web documents directory,
     we have to configure the .htaccess file.
 
     The main item that we have to change is the: RewriteBase, which defines your application base url.
 
-    So, if your project located in subdirectory of web documents root as /var/www/my_project,
-    where the web documents root is var/www/, the value of this directive should be:
+    So, if your project is located in a subdirectory of web document's root as /var/www/my_project,
+    where the web document's root is var/www/, the value of this directive should be:
 
     RewriteBase /my_project
 
@@ -81,8 +81,8 @@ See also: http://tokernel.com/framework/documentation/getting-started/setup-guid
 
     B. Configure URL in application.ini
 
-    If you setting up your project in root of web documents or virtual host,
-    than you not need to configure the "base_url" in your project.
+    If you are setting up your project in the root of the web documents or virtual host,
+    then you do not need to configure the "base_url" in your project.
 
     Examples:
         /var/www/
@@ -91,7 +91,7 @@ See also: http://tokernel.com/framework/documentation/getting-started/setup-guid
 
     In this case, the project will be accessible via web browser by default.
 
-    But in case, your project located in sub-directory of your web documents,
+    But in case your project is located in a sub-directory of your web documents,
     you have to configure the "base_url".
 
     Examples:
@@ -111,7 +111,7 @@ See also: http://tokernel.com/framework/documentation/getting-started/setup-guid
     To test your configuration, just access to your project via web browser
     and you will see the Welcome message of toKernel Framework.
 
-    If it's a case when you using XAMPP like package, you will locate your project in:
+    In case you are using a package such as XAMPP, you will locate your project in:
     C:\xampp\htdocs\my_project
 
     And access to your project via:
@@ -123,8 +123,8 @@ See also: http://tokernel.com/framework/documentation/getting-started/setup-guid
     After setting up the project in your web documents and access to it via browser successfully,
     it is time to setup and test the functionality to work with MySQL Database.
 
-    As you can noticed, for now, the toKernel Framework V.1.x supports only MySQL Database functionality.
-    If you interested to work with other Database types please get to toKernel V.2.x.
+    As you might have noticed, currently the toKernel Framework V.1.x supports only MySQL Database functionality.
+    If you are interested to work with other Database types please get to toKernel V.2.x.
 
     Assume, you're familiar with MySQL Database and you're able to run a mysql dump script.
 
@@ -173,5 +173,8 @@ See also: http://tokernel.com/framework/documentation/getting-started/setup-guid
     Now you're welcome to continue your project development!
 
     The "example" addon in project will explain you a lot of code usage ;)
+
+    C. There is also "Test" addon included to run and test the functionality in your PHP Environment.
+        http://localhost/my_project/test/all
 
 End of file

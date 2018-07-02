@@ -25,9 +25,10 @@
  * @author     toKernel development team <framework@tokernel.com>
  * @copyright  Copyright (c) 2017 toKernel
  * @license    http://www.gnu.org/copyleft/gpl.html GNU Public License
- * @version    1.3.0
+ * @version    1.4.0
  * @link       http://www.tokernel.com
  * @since      File available since Release 1.0.0
+ * @todo       Add possible variables to template_vars
  */
 
 /* Restrict direct access to this file */
@@ -64,6 +65,14 @@ class app extends app_core {
  * @var string
  */ 
  private $template;
+
+/**
+ * Template vars
+ *
+ * @access private
+ * @var array
+ */
+ private $template_vars = Array();
 
 /**
  * Is output buffer from cache.
@@ -287,36 +296,28 @@ class app extends app_core {
     		$this->template = $this->lib->url->template;
     	}
     }
-    
-    /* 
-     * Get addon's buffered template.
-     *  
-     * The owner of 'load_template()' method is called addon,
-     * because it is possible to use '$this' in template file. 
-     * So using '$this' in template file we will access to 
-     * addon methods.
+
+    self::$output_buffer = '';
+
+    /*
+     * Load template Object if template file exists
      */
-	$addon_template_buffer = $addon->load_template($this->template);
-	
-	/* 
-	 * Interpret template if template buffer is not empty.
-	 * Addon can have actions such as ajax requests
-	 * which can not have template files, because 
-	 * templates mines the full html document. So
-	 * Ajax request action can use only 'view' files.  
-	 */
-	self::$output_buffer = '';
-	
-	if($addon_template_buffer != '') {
-		self::$output_buffer .= $this->lib->template->interpret(
-											$addon_template_buffer, 
-				                          	$addon_called_func_buffer);
-	} else {
-		self::$output_buffer = $addon_called_func_buffer;
-		
-		tk_e::log_debug('Template file "'. $this->template . '" not detected',
-						'app->'.__FUNCTION__);
-	}
+    $template_file = $this->lib->template->exists($this->template);
+
+    if($template_file) {
+
+         $template_obj = $this->lib->template->instance($template_file);
+         self::$output_buffer .= $template_obj->run($this->template_vars, $addon_called_func_buffer);
+
+         tk_e::log_debug('Template file "'. $template_file . '" parsed', 'app->'.__FUNCTION__);
+
+    } else {
+
+        self::$output_buffer .= $addon_called_func_buffer;
+
+        tk_e::log_debug('Template file "' . $template_file . '" not detected', 'app->' . __FUNCTION__);
+
+    }
 
 	/* 
 	 * Try to write content to cache.
@@ -510,15 +511,18 @@ class app extends app_core {
  * 
  * @access public
  * @param string $tempalte
+ * @param array $template_vars
  * @return bool
  */ 
- public function set_template($template) {
+ public function set_template($template, array $template_vars = Array()) {
 	
 	if(!isset(self::$instance)) {
  		trigger_error('Application instance is empty ('.__CLASS__.')', 
 	              E_USER_ERROR );
  	}
- 	
+
+ 	$this->template_vars = array_merge($this->template_vars, $template_vars);
+
 	$this->lib->url->set_template($template);
 	$this->template = $template;
 	

@@ -24,7 +24,7 @@
  * @author     toKernel development team <framework@tokernel.com>
  * @copyright  Copyright (c) 2017 toKernel
  * @license    http://www.gnu.org/copyleft/gpl.html GNU Public License
- * @version    1.1.0
+ * @version    1.1.1
  * @link       http://www.tokernel.com
  * @since      File available since Release 1.4.0
  */
@@ -50,15 +50,6 @@ class array_lib {
 	public function is_assoc($arr) {
 		return array_keys($arr) !== range(0, count($arr) - 1);
 	} // end func is_assoc
-
-    /**
-     * Rename array key
-     *
-     * @deprecated
-     */
-    public function array_key_rename($ext_key, $new_key, $arr) {
-        return $this->key_rename($ext_key, $new_key, $arr);
-    }
 
 	/**
 	 * Rename key in array
@@ -88,15 +79,6 @@ class array_lib {
 		return $new_arr;
 
 	} // end func key_rename
-
-    /**
-     * Return position in array by key
-     *
-     * @deprecated
-     */
-    public function array_key_pos($needle, $arr) {
-        return $this->key_pos($needle, $arr);
-    }
 
 	/**
 	 * Return position in array by key

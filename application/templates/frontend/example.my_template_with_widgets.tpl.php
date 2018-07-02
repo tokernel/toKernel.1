@@ -30,5 +30,8 @@ defined('TK_EXEC') or die('Restricted area.');
     <!-- Display widget with parameters -->
     <!-- widget addon="example" action="widget_with_params" params="project=My Project|version=1.0.0 alpha" -->
 
+    <div>
+        Framework: {var.name} {var.version}
+    </div>
 </body>
 </html>

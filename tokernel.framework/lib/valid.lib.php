@@ -24,7 +24,7 @@
  * @author     toKernel development team <framework@tokernel.com>
  * @copyright  Copyright (c) 2017 toKernel
  * @license    http://www.gnu.org/copyleft/gpl.html GNU Public License
- * @version    1.4.0
+ * @version    1.4.1
  * @link       http://www.tokernel.com
  * @since      File available since Release 1.0.0
  */
@@ -125,30 +125,6 @@ class valid_lib {
         }
 
     } // End func username
-
-    /**
-     * Check is password 6-128 chars.
-     *
-     * @deprecated
-     * @access public
-     * @param string $data
-     * @param integer $min
-     * @param integer $max
-     * @return bool
-     */
-    public function password($data, $min = 6, $max = 128) {
-
-        if(!is_scalar($data)) {
-            return false;
-        }
-
-        if(preg_match("/^[\41-\176]{".$min.",".$max."}+$/", $data)) {
-            return true;
-        } else {
-            return false;
-        }
-
-    } // End func password
 
     /**
      * Check password strength
@@ -322,13 +298,6 @@ class valid_lib {
         }
 
     } // end func between
-
-    /**
-     * @deprecated
-     */
-    public function az_09($data) {
-        return $this->alpha_numeric($data);
-    } // end func az_09
 
     /**
      * Check string is alpha-numeric

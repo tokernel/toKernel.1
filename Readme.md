@@ -4,7 +4,7 @@
  [![Gitter](https://badges.gitter.im/gitterHQ/gitter.svg)](https://gitter.im/toKernel/Lobby)
  
  License GNU GPL <https://www.gnu.org/licenses/gpl.html>  
- Copyright (c) 2010-2017, toKernel development team <framework@tokernel.com>  
+ Copyright (c) 2010-2018, toKernel development team <framework@tokernel.com>  
  http://www.tokernel.com  
 
  About project
@@ -95,8 +95,8 @@
  Razmik Davoyan     <razmik@davoyan.name>   Library developer  
  Patrick Isbendjian <pi@pisbtech.com>       Documentation editor, library developer  
  Karen Grigoryan    <bridge-time@yandex.ru> Source code comments editor  
- Karapet Sargsyan   <join04@yahoo.com>      Developer, Tester, Consultant  
-
+ Karapet Sargsyan   <join04@yahoo.com>      Developer, Tester, Consultant
+ 
  THANKS
  ------
  
