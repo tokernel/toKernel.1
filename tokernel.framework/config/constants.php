@@ -42,7 +42,7 @@ define('TK_SHORT_NAME', 'toKernel');
 define('TK_DESCRIPTION', 'Universal PHP Framework');
 
 /* Project version */
-define('TK_VERSION', '1.8.0');
+define('TK_VERSION', '1.8.1');
 
 /* Short name for DIRECTORY_SEPARATOR */
 define('TK_DS', DIRECTORY_SEPARATOR);

@@ -28,6 +28,7 @@
  * @link       http://www.tokernel.com
  * @since      File available since Release 1.0.0
  * @todo	   Create functions - sync, compare.
+ * @todo       Change he way of languages loading. Get rid of more functionality. Run faster!
  */
 
 /* Restrict direct access to this file */

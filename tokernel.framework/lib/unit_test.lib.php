@@ -24,10 +24,11 @@
  * @author     toKernel development team <framework@tokernel.com>
  * @copyright  Copyright (c) 2018 toKernel
  * @license    http://www.gnu.org/copyleft/gpl.html GNU Public License
- * @version    1.0.0
+ * @version    1.1.0
  * @link       http://www.tokernel.com
  * @since      File available since Release 1.8.0
  * @todo       Generate backtrace
+ * @todo       Finalize display_results() method for CLI mode.
  */
 
 /* Restrict direct access to this file */
@@ -39,6 +40,15 @@ defined('TK_EXEC') or die('Restricted area.');
  * @author David Ayvazyan <tokernel@gmail.com>
  */
 class unit_test_lib {
+
+    /**
+     * Library object for working with
+     * libraries in this class
+     *
+     * @var object
+     * @access protected
+     */
+    protected $lib;
 
     /**
      * Expected types and values
@@ -61,6 +71,15 @@ class unit_test_lib {
      * @var array
      */
     private $results = array();
+
+    /**
+     * Class constructor
+     *
+     * @access public
+     */
+    public function __construct() {
+        $this->lib = lib::instance();
+    } // end of func __construct
 
     /**
      * Run Test by value and expected value
@@ -188,6 +207,90 @@ class unit_test_lib {
     public function get_results() {
         return $this->results;
     }
+
+    /**
+     * Display results as table
+     *
+     * @access public
+     * @return void
+     * @since Version 1.1.0
+     */
+    public function display_results() {
+
+        // Head
+        if(TK_RUN_MODE == 'cli') {
+            $this->lib->cli->out(TK_NL.'['.TK_SHORT_NAME . ' unit Testing]'.TK_NL, 'yellow');
+        } else {
+            echo "<h1>".TK_SHORT_NAME . ' unit testing</h1>';
+        }
+
+        // Check if empty results
+        if(empty($this->results)) {
+            if(TK_RUN_MODE == 'cli') {
+                $this->lib->cli->out('There are no results of unit testing!' . TK_NL, 'red');
+            } else {
+                echo '<p style="color:red">There are no results of unit testing!</p><br>';
+            }
+            return false;
+        }
+
+        if(TK_RUN_MODE != 'cli') {
+            echo '<table style="border:1px solid;border-color:grey;width:100%;padding:3px;">';
+            echo '<thaed>';
+            echo '<th>Name</th>';
+            echo '<th nowrap="nowrap">Given value</th>';
+            echo '<th nowrap="nowrap">Given type</th>';
+            echo '<th nowrap="nowrap">Expected value</th>';
+            echo '<th nowrap="nowrap">Expected type</th>';
+            echo '<th nowrap="nowrap">Result</th>';
+            echo '<th nowrap="nowrap">Test by</th>';
+            echo '</thaed>';
+            echo '<tbody>';
+        }
+
+        foreach($this->results as $result) {
+
+            if(!isset($result['expected']['value'])) {
+                $result['expected']['value'] = 'N/A';
+            }
+
+            if(TK_RUN_MODE == 'cli') {
+
+                print_r($result);
+
+            } else {
+
+                $td_style = 'style="border-top:1px solid;border-color:grey;padding:3px;"';
+
+                if($result['result'] == 'OK') {
+                    $result_label = '<span style="color:green"><strong>'.$result['result'].'</strong></span>';
+                } else {
+                    $result_label = '<span style="color:red"><strong>'.$result['result'].'</strong></span>';
+                }
+
+                echo '<tr>';
+                echo '<td '.$td_style.'>'.$result['name'].'</td>';
+                echo '<td '.$td_style.'>'.$result['given']['value'].'</td>';
+                echo '<td '.$td_style.'>'.$result['given']['type'].'</td>';
+                echo '<td '.$td_style.'>'.$result['expected']['value'].'</td>';
+                echo '<td '.$td_style.'>'.$result['expected']['type'].'</td>';
+                echo '<td '.$td_style.'>'.$result_label.'</td>';
+                echo '<td '.$td_style.'>'.$result['test_by'].'</td>';
+                echo '</tr>';
+            }
+
+        }
+
+        if(TK_RUN_MODE == 'cli') {
+            $this->lib->cli->out('Done!' . TK_NL, 'green');
+        } else {
+            echo '</tbody>';
+            echo '</table>';
+        }
+
+        return true;
+
+    } // End func display_results
 
     /**
      * Reset Results

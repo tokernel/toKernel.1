@@ -1,8 +1,7 @@
 <?php
 /**
  * toKernel - Universal PHP Framework.
- * Parent module class for modules. All module classes
- * must to be inherited this, for correct functionality.
+ * Base module class
  *
  * This file is part of toKernel.
  *
@@ -25,10 +24,9 @@
  * @author     toKernel development team <framework@tokernel.com>
  * @copyright  Copyright (c) 2018 toKernel
  * @license    http://www.gnu.org/copyleft/gpl.html GNU Public License
- * @version    2.3.5
+ * @version    2.3.6
  * @link       http://www.tokernel.com
  * @since      File available since Release 1.0.0
- * @todo       Remove deprecated functionality
  */
 
 /* Restrict direct access to this file */
@@ -60,7 +58,7 @@ class module {
 
     /**
      * Application object for accessing
-     * aplication functions in this class
+     * application functions in this class
      *
      * @var object
      * @access protected
@@ -141,16 +139,8 @@ class module {
 
         $this->params = $params;
 
-        /* Define module id */
-        $tmp_id = get_class($this);
-
-        // Define module id related to stage, if extended
-        /* @deprecated */
-        if (substr($tmp_id, -11) == '_ext_module') {
-            $this->id = substr($tmp_id, 0, -11);
-        } else {
-            $this->id = substr($tmp_id, 0, -7);
-        }
+        // Define module id
+        $this->id = substr(get_class($this), 0, -7);
 
         // Initialize language
         $this->language = $this->lib->language->instance(
@@ -159,16 +149,10 @@ class module {
                 TK_CUSTOM_PATH . 'addons' . TK_DS . $this->id_addon .
                 TK_DS . 'languages' . TK_DS,
 
-                TK_PATH . 'addons' . TK_DS . $this->id_addon .
-                TK_DS . 'languages' . TK_DS,
-
                 TK_CUSTOM_PATH . 'addons' . TK_DS . $this->id_addon .
                 TK_DS . 'modules' . TK_DS . $this->id .
-                TK_DS . 'languages' . TK_DS,
+                TK_DS . 'languages' . TK_DS
 
-                TK_PATH . 'addons' . TK_DS . $this->id_addon .
-                TK_DS . 'modules' . TK_DS . $this->id .
-                TK_DS . 'languages' . TK_DS,
             ),
             'Addon: ' . $this->id_addon . ' Module: ' . $this->id,
             true);
@@ -194,9 +178,6 @@ class module {
 
     /**
      * Load view file for module and return `view` object.
-     * Include view file from application dir if exists,
-     * else include from framework dir.
-     * Return false, if view file not exists.
      *
      * @final
      * @access public
@@ -209,63 +190,40 @@ class module {
 
         $view_dir = $this->id;
 
-        /* Remove addon name from class name */
+        // Remove addon name from class name
         $view_dir = substr($view_dir, (strlen($this->id_addon) + 1), 100);
 
-        /* Parent view class included in tokernel.inc.php */
-        $app_view_file = TK_CUSTOM_PATH . 'addons' . TK_DS . $this->id_addon .
-            TK_DS . 'modules' . TK_DS . $view_dir . TK_DS .
-            'views' . TK_DS . $file . '.view.php';
+        // Parent view class included in tokernel.inc.php
+        $parent_addon = $this->id_addon;
+        $view_file = $this->lib->addons->$parent_addon->path() . 'modules' . TK_DS .$view_dir . TK_DS . 'views' . TK_DS . $file . '.view.php';
 
-        /* @deprecated */
-        $tk_view_file = TK_PATH . 'addons' . TK_DS . $this->id_addon .
-            TK_DS . 'modules' . TK_DS . $view_dir . TK_DS .
-            'views' . TK_DS . $file . '.view.php';
+        // Check if view file exists
+        if(!is_file($view_file)) {
 
-        /*
-         * Define existing file for include.
-         * return false if view file not exists.
-         */
-        if (is_file($app_view_file)) {
-            $file_to_load = $app_view_file;
-            $loaded_from_custom = true;
-        } elseif (is_file($tk_view_file)) {
-            /* @deprecated */
-            $file_to_load = $tk_view_file;
-            $loaded_from_custom = false;
-        } else {
+            tk_e::log_debug(
+                'View file `'.$view_file.'` not found for module '.get_class($this),
+                get_class($this) . '->' . __FUNCTION__
+            );
 
-            $loaded_from_custom = false;
-
-            tk_e::log_debug('There are no view file "' . $file . '" to load.',
-                get_class($this) . '->' . __FUNCTION__);
-
-            trigger_error('There are no view file `' . $file . '.view.php` ' .
-                'for module `' . $this->id . '`. Addon: ' .
-                $this->id_addon, E_USER_ERROR);
+            trigger_error('View file `'.$view_file.'` not found for module '.get_class($this), E_USER_ERROR);
 
             return false;
         }
 
-        if (!$loaded_from_custom) {
-            /* @deprecated */
-            tk_e::log_debug($file . ' from framework path with params: Array[' .
-                count($params) . ']', get_class($this) . '->' . __FUNCTION__);
-        } else {
-            tk_e::log_debug($file . ' from application path with params: Array[' .
-                count($params) . ']', get_class($this) . '->' . __FUNCTION__);
-        }
+        tk_e::log_debug(
+            'Loaded view file ' . $view_file . ' with params: Array['.count($params).']',
+            get_class($this) . '->' . __FUNCTION__
+        );
 
-        /* Return view object */
-        /* @deprecated Remove $this->config, $this->log from View */
-        return new view($file_to_load, $this->id, $this->config, $this->log, $this->language, $params);
+        // Return view object
+        return new view($view_file, $this->id, $this->language, $params);
 
     } // end func load_view
 
     /**
-     * Return true if addon called from backend url or
-     * backend_dir is empty (not set) in configuration.
-     * Else, redirect to error_404
+     * Display Error 404 page if addon controller does'nt accessed with backend URL.
+     * http://example.com/{backend_dir}/{addon_id} -> Return true
+     * http://example.com/{addon_id} -> Display Error 404 page.
      *
      * @access public
      * @return bool
@@ -274,7 +232,10 @@ class module {
     public function check_backend() {
 
         if ($this->app->config('backend_dir', 'HTTP') != $this->lib->url->backend_dir()) {
-            $this->app->error_404('Cannot call method of class `' . get_class($this) . '` by this url.');
+            $this->app->error_404(
+                'Cannot access this page without backend URL. ' .
+                'Should be: ' . $this->lib->url->base_url() . $this->app->config('backend_dir', 'HTTP') . '/'. $this->id_addon . ' ' .
+                'Instead of: ' . $this->lib->url->base_url() . $this->id_addon);
             return false;
         }
 
@@ -287,17 +248,25 @@ class module {
      *
      * @final
      * @access public
-     * @param string $item
+     * @param string $item = NULL
      * @param string $section = NULL
      * @return mixed
      */
-    final public function config($item, $section = NULL) {
+    final public function config($item = NULL, $section = NULL) {
 
-        if (isset($item)) {
+        // Check arguments
+        if(is_null($item) and is_null($section)) {
+            trigger_error('At least one argument requires to get config value for addon `'.$this->id.'` !', E_USER_ERROR);
+            return false;
+        }
+
+        // Return item value
+        if (!is_null($item)) {
             return $this->config->item_get($item, $section);
         }
 
-        if (!isset($item) and isset($section)) {
+        // Return section values
+        if (is_null($item) and !is_null($section)) {
             return $this->config->section_get($section);
         }
 
@@ -344,8 +313,6 @@ class module {
 
     } // end func language
 
-    /* End of class module */
-}
+} // End of class module
 
-/* End of file */
-?>
+// End of file

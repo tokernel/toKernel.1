@@ -24,7 +24,7 @@
  * @author     toKernel development team <framework@tokernel.com>
  * @copyright  Copyright (c) 2018 toKernel
  * @license    http://www.gnu.org/copyleft/gpl.html GNU Public License
- * @version    2.0.0
+ * @version    2.0.1
  * @link       http://www.tokernel.com
  * @since      File available since Release 1.0.0
  */
@@ -229,6 +229,13 @@ class template_lib {
 
     } // End func extract_widget_tag
 
+    /**
+     * Run widget tag
+     *
+     * @access public
+     * @param array $widget_data
+     * @return string
+     */
     public function run_widget_tag(array $widget_data) {
 
         if(empty($widget_data['addon'])) {
@@ -239,7 +246,7 @@ class template_lib {
             trigger_error('Action definition required to run addon widget!', E_USER_ERROR);
         }
 
-        $addon = $this->lib->addons->$widget_data['addon'];
+        $addon_name = $widget_data['addon'];
         $action = $widget_data['action'];
 
         if(isset($widget_data['params'])) {
@@ -251,10 +258,10 @@ class template_lib {
         ob_start();
 
         if(!isset($widget_data['module'])) {
-            $addon->$action($params);
+            $this->lib->addons->$addon_name->$action($params);
         } else {
             $module_name = $widget_data['module'];
-            $addon->$module_name->$action($params);
+            $this->lib->addons->$addon_name->$module_name->$action($params);
         }
 
         $buffer = ob_get_clean();
@@ -277,6 +284,7 @@ class template_lib {
      *
      * @access public
      * @param array $template_vars
+     * @param string $replace_this_widget
      * @return string
      */
     public function run(array $template_vars = array(), $replace_this_widget = '') {
