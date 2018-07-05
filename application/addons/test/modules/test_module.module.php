@@ -22,7 +22,7 @@ class test_test_module_module extends module {
 
     public function run_test() {
 
-        echo "Testing addon module inside" . TK_NL;
+        echo "<h1>Testing addon module inside</h1>";
 
         $t = $this->lib->unit_test;
 
@@ -46,12 +46,10 @@ class test_test_module_module extends module {
         $buffer = $view->run();
         $t->run_by_type($buffer, unit_test_lib::TYPE_STRING, 'Check if View file method run() returns type string.');
 
-        echo '<pre>';
-        print_r($t->get_results());
+        $t->display_results();
         $t->reset();
-        echo '</pre>';
 
-        echo "View file parsed content".TK_NL;
+        echo "<h2>View file parsed content</h2>";
         echo '<hr>';
         echo '<pre>';
         echo htmlspecialchars($buffer);

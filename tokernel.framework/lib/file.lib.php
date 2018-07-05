@@ -22,9 +22,9 @@
  * @package    framework
  * @subpackage library
  * @author     toKernel development team <framework@tokernel.com>
- * @copyright  Copyright (c) 2017 toKernel
+ * @copyright  Copyright (c) 2018 toKernel
  * @license    http://www.gnu.org/copyleft/gpl.html GNU Public License
- * @version    1.4.0
+ * @version    1.5.0
  * @link       http://www.tokernel.com
  * @since      File available since Release 1.0.0
  */
@@ -52,7 +52,6 @@ class file_lib {
      * Class constructor
      *
      * @access public
-     * @return void
      */
     public function __construct() {
         $this->lib = lib::instance();
@@ -285,32 +284,23 @@ class file_lib {
      * @return bool
      */
     public function append($file, $content) {
-
-        if(!is_writable($file) or !is_file($file)) {
-            return false;
-        }
-
-        $fh = fopen($file, 'a');
-
-        if(!$fh) {
-            return false;
-        }
-
-        fwrite($fh, $content);
-        fclose($fh);
-
-        return true;
+        return $this->write($file, $content, true);
     } // end func append
 
     /**
-     * Write data to file (overwrite if file exists)
+     * Write data to file
      *
      * @access public
      * @param string $file
      * @param string $content
-     * @return bool
+     * @param mixed $do_append
+     * @return mixed int | bool
      */
-    public function write($file, $content) {
+    public function write($file, $content, $do_append = false) {
+
+        if($do_append == true) {
+            return file_put_contents($file, $content, FILE_APPEND);
+        }
 
         return file_put_contents($file, $content);
 
@@ -365,7 +355,7 @@ class file_lib {
         // Sort the list before return.
         sort($files_arr);
 
-        /* advenced information */
+        /* advanced information */
         if($adv != true) {
             return $files_arr;
         }
@@ -474,7 +464,7 @@ class file_lib {
     } // end func perms
 
     /**
-     * Return formated size
+     * Return formatted size
      *
      * @access public
      * @param integer $bytes

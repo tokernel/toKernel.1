@@ -2,121 +2,42 @@
  toKernel - Universal PHP Framework - CHANGELOG
  ==============================================
 
- Version 1.8.0 - 02 July 2018
+ Version 1.8.1 - 05 July 2018
  ----------------------------
 
- Addon "test"
+ Addon "test" Version 1.1.0
 
-    1. This addon developed to run and test whole toKernel framework functionality
-       In the addon controller you can see actions to run and test.
+    1. New Testing functionality added.
 
         Test Functionality for:
-        - Addons
-        - Views
-        - Modules
+        - Libraries
+            - file
 
     File: application/addons/test
 
- Library - Unit Test Version 1.0.0
-
-	1. Library to run tests by value or type
-
-    File: tokernel.framework/lib/unit_test.lib.php
-
- Library - Template Version 1.0.7
+ Library - Template Version 2.0.1
 
     1. Small fixes for PHP 7.x compatibility
 
     File: tokernel.framework/lib/template.lib.php
 
- Library - Array Version 1.1.1
+ Library Unit test Version 1.1.0
 
-    1. Removed deprecated methods
-        - array_key_rename() - instead use: key_rename()
-        - array_key_pos() - instead use: key_pos()
+    1. New method display_results() to display all test results in table
 
-    File: tokernel.framework/lib/array.lib.php
+    File: tokernel.framework/lib/unit_test.lib.php
 
- Library - Validation Version 1.4.1
+ Library 'File' Version 1.5.0
 
-    1. Removed deprecated methods
-        - password() - instead use password_strength()
-        - az_09() - instead use alpha_numeric()
+    1. New 3th argument added to method write().
+        If true, then the content will be appended to file if exists.
 
-    File: tokernel.framework/lib/valid.lib.php
+    File: tokernel.framework/lib/file.lib.php
 
- Library - MySQL Version 3.0.2
+ Base Addon class Version 3.4.1
 
-     1. Removed deprecated method(s)
-        - count()
+    1. Removed deprecated methods and functionality
 
-     File: tokernel.framework/lib/mysql.lib.php
-
- Library - Template Version 2.0.0
-
-     1. Load template with given arguments to replace in content like in view files:
-        {var.item_name}
-
-     2. Define widget with specified module of addon:
-        <!-- widget addon="users" module="account" action="get_name" params="type=short|prefix=yes" -->
-        this will equal to:
-        $this->lib->addons->users->account->get_name(array('type'=>'short','prefix'=>'yes'));
-        Will call method get_name() of module "account" of addon "users".
-
-     3. More optimized template content parsing functionality.
-
-     File: tokernel.framework/lib/template.lib.php
-
- Base Module class Version 2.3.5
-
-     1. Bug fixes in methods:
-        - config()
-        - language()
-        - load_module()
-
-     2. Deprecated functionality to load view files from framework path.
-        In next release all view files will only contain in application's addon.
-
-     File: tokernel.framework/kernel/module.class.php
-
- Base View class Version 1.5.0
-
-    1. Fixed id_addon value initialization.
-
-    2. Deprecated methods
-        - config()
-        - get_vars() - Will use get_values() instead.
-        - show() - Will use output() instead.
-
-    3. Configuration and Logging objects will be deprecated in next release.
-
-    4. New method set_values(array values)
-       Now you can set multiple values at once by calling set_values() with assoc array argument.
-
-    5. New method get_values() to get all values.
-
-    File: tokernel.framework/kernel/view.class.php
-
- Application kernel file for HTTP Mode Version 1.4.0
-
-    1. Changed the way to load template with new version of template library.
-
-    2. Method set_template() takes another optional argument for template variables.
-
-    File: tokernel.framework/kernel/app.http.class.php
-
- Deprecated Addons functionality inside framework kernel
-
-    1. After next release the tokernel.framework will not contain "addons" directory
-       and addons with functionality should be located only in application.
-
-    File: tokernel.framework/addons
-
- Deprecated Base addon class allowed actions functionality
-
-    1. After next release the addons allowed actions functionality will be removed.
-
-       Methods will be removed from base Addon Class.
         - params_count_allowed()
         - params_allowed()
         - action_allowed()
@@ -127,18 +48,66 @@
         - tk_url()
         - load_template()
 
-       File(s) will be removed:
-        - /applications/addons/{addon_name}/config/actions.ini
+    2. Removed second argument $custom_only from method module_exists()
+        because the module can be loaded only from application path.
 
     File: tokernel.framework/kernel/addon.class.php
-          tokernel.framework/kernel/module.class.php
-          applications/addons/{addon_name}/config/actions.ini
 
- Deprecated Templates functionality inside framework kernel
+ Base Module class Version 2.3.6
 
-    1. After next release the templates directory will be removed from framework
-       and will located only in /application/templates
+    1. Removed deprecated methods and functionality
+
+    2. Fixed bug in method config()
+
+    File: tokernel.framework/kernel/module.class.php
+
+ Base View Class Version 1.5.1
+
+    1. Removed deprecated methods and functionality
+
+        - get_vars()
+        - show() - use output() instead.
+        - config()
+
+    2. 'Config' and 'log' objects no longer available in view.
+
+        - $this->config
+        - $this->log
+
+    3. Replacements in view file
+        It is now only {var.name} is possible to use instead of {.name} in view files.
+
+    File: tokernel.framework/kernel/view.class.php
+
+ Templates files location
+
+    1. Removed templates directory from framework path.
+        All default and custom created template files only can be located in /application/templates/ directory.
 
     File: tokernel.framework/templates/
+
+ Addons functionality inside framework kernel
+
+    1. Removed addons directory from framework kernel.
+        All addons can be located only in /application/addons directory.
+
+    File: tokernel.framework/addons
+
+ Deprecated constants
+
+    1. In next release Core defined constants should be replaced.
+
+        TK_APP_PATH -> TK_PROJECT_PATH: /var/www/my_project/
+        TK_CUSTOM_PATH -> TK_APP_PATH: /var/www/my_project/application/
+        TK_CUSTOM_DIR -> TK_APP_DIR: application
+
+        Constants listed below will not be changed:
+
+        TK_PATH: /var/www/my_project/tokernel.framework
+        TK_DIR: tokernel.framework
+
+    File: index.php
+          tokernel.framework/tokernel.inc.php
+
 
  End of file

@@ -10,6 +10,8 @@
  * file - tokernel/path/kernel/error.http.class.php
  * 
  * Restrict direct access to this file
+ *
+ * @todo figure out debugging functionality.
  */
 defined('TK_EXEC') or die('Restricted area.');
 ?>

@@ -22,9 +22,9 @@
  * @package    framework
  * @subpackage library
  * @author     toKernel development team <framework@tokernel.com>
- * @copyright  Copyright (c) 2017 toKernel
+ * @copyright  Copyright (c) 2018 toKernel
  * @license    http://www.gnu.org/copyleft/gpl.html GNU Public License
- * @version    1.0.7
+ * @version    1.0.8
  * @link       http://www.tokernel.com
  * @since      File available since Release 1.0.0
  */
@@ -529,7 +529,7 @@ class cli_lib {
 	/* Output usage info */
 	$message = TK_NL;
 	$message .= TK_NL . " Usage: /usr/bin/php " .
-	            TK_APP_PATH . $_SERVER['PHP_SELF'];
+	            TK_APP_PATH . 'index.php';
 
 	$message .= TK_NL . "    --addon addon_name ";
 	$message .= TK_NL . "    --action action_name ";

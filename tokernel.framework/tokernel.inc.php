@@ -163,7 +163,17 @@ if(version_compare(PHP_VERSION, TK_PHP_VERSION_REQUIRED, '<')) {
  * TK_CUSTOM_PATH is the full path of application directory.
  * For example: /var/www/html/your_application/app_framework_custom_dir/
  * 
- * @todo It is possible to change this constant name in the future.
+ * @todo Replace this constants in next release and correct comments.
+ * @deprecated TK_CUSTOM_PATH, TK_CUSTOM_DIR
+ *
+ *     TK_APP_PATH -> TK_PROJECT_PATH: /var/www/my_project/
+ *     TK_CUSTOM_PATH -> TK_APP_PATH: /var/www/my_project/application/
+ *     TK_CUSTOM_DIR -> TK_APP_DIR: application
+ *
+ *     Constants listed below will not be changed:
+ *
+ *     TK_PATH: /var/www/my_project/tokernel.framework
+ *     TK_DIR: tokernel.framework
  */ 
 if(TK_CUSTOM_DIR != '') {
 	define('TK_CUSTOM_PATH', TK_APP_PATH . TK_CUSTOM_DIR . TK_DS);

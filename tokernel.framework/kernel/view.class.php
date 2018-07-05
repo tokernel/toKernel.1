@@ -24,10 +24,9 @@
  * @author     toKernel development team <framework@tokernel.com>
  * @copyright  Copyright (c) 2018 toKernel
  * @license    http://www.gnu.org/copyleft/gpl.html GNU Public License
- * @version    1.5.0
+ * @version    1.5.1
  * @link       http://www.tokernel.com
  * @since      File available since Release 1.0.0
- * @todo       Remove deprecated functionality
  */
 
 /* Restrict direct access to this file */
@@ -59,24 +58,6 @@ class view {
     protected $app;
 
     /**
-     * Addon configuration object
-     *
-     * @access protected
-     * @var object
-     * @deprecated
-     */
-    protected $config;
-
-    /**
-     * Addon log instance
-     *
-     * @var object
-     * @access protected
-     * @deprecated
-     */
-    protected $log;
-
-    /**
      * Addon language
      *
      * @access protected
@@ -101,15 +82,6 @@ class view {
     protected $values = array();
 
     /**
-     * Mixed variables
-     *
-     * @access protected
-     * @var array
-     * @deprecated
-     */
-    protected $vars = array();
-
-    /**
      * View file with full path
      *
      * @access protected
@@ -130,13 +102,10 @@ class view {
      *
      * @param string $file
      * @param string $id_addon
-     * @param object $config
-     * @param object $log
-     * @param object $language
+     * @param object language_lib $language
      * @param array $values
      */
-    public function __construct($file, $id_addon, ini_lib $config,
-                                log_lib $log, language_lib $language, $values) {
+    public function __construct($file, $id_addon, language_lib $language, array $values) {
 
         $this->lib = lib::instance();
         $this->app = app::instance();
@@ -145,10 +114,6 @@ class view {
         $this->file = $file;
         $this->id_addon = $id_addon;
         $this->values = $values;
-
-        /* @deprecated */
-        $this->config = $config;
-        $this->log = $log;
 
     } // end constructor
 
@@ -164,9 +129,6 @@ class view {
         unset($this->values);
         unset($this->file);
         unset($this->id_addon);
-
-        /* @deprecated */
-        unset($this->vars);
 
     } // end destructor
 
@@ -197,7 +159,7 @@ class view {
      * Unset a value by name
      *
      * @access public
-     * @param string $var
+     * @param string $item
      * @return bool
      * @since 1.3.0
      */
@@ -308,18 +270,6 @@ class view {
     }
 
     /**
-     * Get all values ov view object
-     *
-     * @access public
-     * @return array
-     * @since version 1.4.0
-     * @deprecated
-     */
-    public function get_vars() {
-        return $this->values;
-    }
-
-    /**
      * Call Interpreter and output the content.
      *
      * @access public
@@ -335,17 +285,7 @@ class view {
     } // End func show
 
     /**
-     * This method replaced by output()
-     *
-     * @param array $values
-     * @deprecated
-     */
-    public function show($values = array()) {
-        $this->output($values);
-    }
-
-    /**
-     * Interprete view file and return buffer
+     * Interpret view file and return buffer
      *
      * @access public
      * @param array $values
@@ -364,11 +304,7 @@ class view {
         if(!empty($this->values)) {
 
             foreach($this->values as $item => $value) {
-	            // This is for old version: {.var_name}
-            	$this->_buffer = str_replace('{.'.$item.'}', $value, $this->_buffer);
-            	
-            	// This is new version: {var.var_name}
-            	$this->_buffer = str_replace('{var.'.$item.'}', $value, $this->_buffer);
+	            $this->_buffer = str_replace('{var.'.$item.'}', $value, $this->_buffer);
             }
         }
 
@@ -410,20 +346,6 @@ class view {
         return $this->language->get($item);
 
     } // end func language
-
-    /**
-     * Return addon configuration values
-     *
-     * @final
-     * @access public
-     * @param string $item
-     * @param string $section
-     * @return mixed
-     * @deprecated
-     */
-    final public function config($item = NULL, $section = NULL) {
-        return $this->config->item_get($item, $section);
-    } // end func config
 
     /* End of class view */
 }
